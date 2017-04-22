@@ -1,0 +1,777 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="41.多用派发队列，少用同步锁
+
+在Objective-C中，如果有多个线程要执行同一份代码，那么有时候可能会出现问题。这种情况下，通常要使用锁来实现某种同步机制。
+同步块，这种写法会根据给定的对象，自动创建一个锁，并等待块中的代码执行完毕。然而，滥用@synchronized (self)则会降低代码效率，因为公用同一个锁的那些同步块。 
+
+12@synchronized (self) &amp;#12">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Effective-Objecive-C-2-0-读书笔记（五）">
+<meta property="og:url" content="http://yoursite.com/2017/04/22/Effective-Objecive-C-2-0-读书笔记（五）/index.html">
+<meta property="og:site_name" content="AndyMu">
+<meta property="og:description" content="41.多用派发队列，少用同步锁
+
+在Objective-C中，如果有多个线程要执行同一份代码，那么有时候可能会出现问题。这种情况下，通常要使用锁来实现某种同步机制。
+同步块，这种写法会根据给定的对象，自动创建一个锁，并等待块中的代码执行完毕。然而，滥用@synchronized (self)则会降低代码效率，因为公用同一个锁的那些同步块。 
+
+12@synchronized (self) &amp;#12">
+<meta property="og:image" content="http://yoursite.com/2017/04/22/Effective-Objecive-C-2-0-读书笔记（五）/11.png">
+<meta property="og:image" content="http://yoursite.com/2017/04/22/Effective-Objecive-C-2-0-读书笔记（五）/12.png">
+<meta property="og:image" content="http://yoursite.com/2017/04/22/Effective-Objecive-C-2-0-读书笔记（五）/13.png">
+<meta property="og:image" content="http://yoursite.com/2017/04/22/Effective-Objecive-C-2-0-读书笔记（五）/14.png">
+<meta property="og:updated_time" content="2017-04-22T12:16:40.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Effective-Objecive-C-2-0-读书笔记（五）">
+<meta name="twitter:description" content="41.多用派发队列，少用同步锁
+
+在Objective-C中，如果有多个线程要执行同一份代码，那么有时候可能会出现问题。这种情况下，通常要使用锁来实现某种同步机制。
+同步块，这种写法会根据给定的对象，自动创建一个锁，并等待块中的代码执行完毕。然而，滥用@synchronized (self)则会降低代码效率，因为公用同一个锁的那些同步块。 
+
+12@synchronized (self) &amp;#12">
+<meta name="twitter:image" content="http://yoursite.com/2017/04/22/Effective-Objecive-C-2-0-读书笔记（五）/11.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"hide"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/04/22/Effective-Objecive-C-2-0-读书笔记（五）/"/>
+
+
+
+
+
+  <title> Effective-Objecive-C-2-0-读书笔记（五） | AndyMu </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?2f238e42b6a0fb6febddb7c69e4d1198";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">AndyMu</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/04/22/Effective-Objecive-C-2-0-读书笔记（五）/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="AndyMu">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/images/avatar.png">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="AndyMu">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="AndyMu" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Effective-Objecive-C-2-0-读书笔记（五）
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-04-22T17:49:20+08:00">
+                2017-04-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <a href="/2017/04/22/Effective-Objecive-C-2-0-读书笔记（五）/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/04/22/Effective-Objecive-C-2-0-读书笔记（五）/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="41-多用派发队列，少用同步锁"><a href="#41-多用派发队列，少用同步锁" class="headerlink" title="41.多用派发队列，少用同步锁"></a>41.多用派发队列，少用同步锁</h2><hr>
+<ul>
+<li>在Objective-C中，如果有多个线程要执行同一份代码，那么有时候可能会出现问题。这种情况下，通常要使用锁来实现某种同步机制。</li>
+<li>同步块，这种写法会根据给定的对象，自动创建一个锁，并等待块中的代码执行完毕。然而，滥用@synchronized (self)则会降低代码效率，因为公用同一个锁的那些同步块。 </li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">@synchronized (self) &#123;       </div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>NSLock对象(递归锁)，线程能够多次持有该锁，而不会出现死锁现象</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">_lcok = [[NSLock alloc]init];</div><div class="line">- (void)synchronized&#123;</div><div class="line">    [_lcok lock];  </div><div class="line">//</div><div class="line">    [_lcok unlock];</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>这两种方法都很好，不过也有其缺陷。比方说，在极端情况下，同步块会导致死锁，另外，其效率也不见得很高，而如果直接使用锁对象的话，一旦遇到死锁，就会非常麻烦。</li>
+<li>有种简单而高效的办法可以代替同步块或锁对象，那就是使用”串行同步队列”。全部加锁任务都在GCD中处理，而GCD是在相当深的底层来实现的，于是能够所许多优化。其实也并不一定非得是同步的。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">dispatch_queue_t _syncQueue = dispatch_queue_create(&quot;com.boccfc.com&quot;, DISPATCH_QUEUE_CONCURRENT</div><div class="line">);</div><div class="line">    </div><div class="line">dispatch_sync(_syncQueue, ^&#123;       </div><div class="line">    &#125;);</div><div class="line">```    </div><div class="line">* 下面为最为高效的办法去处理-读取并行,设置串行(使用栅栏块)</div><div class="line">![1](Effective-Objecive-C-2-0-读书笔记（五）/1.png)</div></pre></td></tr></table></figure>
+<p>dispatch_barrier_sync(_syncQueue, ^{<br>    });<br>dispatch_barrier_async(_syncQueue, ^{<br>    });<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line"> * 在队列中，栅栏块必须单独执行，不能与其他块并行。这只对并发队列有意义，因为串行队列中的快总是按顺序逐个执行的。并发队列如果发现接下来要处理的块是个栅栏块，那么就一直要等当前(当前队列)所有并发块都执行完毕，才会单独执行这个栅栏块。</div><div class="line"> </div><div class="line">&gt; 派发队列可用来表述同步语义，这种做法要比使用@synchronized块或NSLock对象更简单</div><div class="line"></div><div class="line">&gt; 将同步与异步派发结合起来，可以实现与普通加锁机制一样的同步行为，而这么做却不会阻塞执行异步派发的线程</div><div class="line"></div><div class="line">&gt; 使用同步队列及栅栏块，可以令同步行为更加高效。</div><div class="line"></div><div class="line">## 42.多用GCD，少用performSelector系列方法</div><div class="line">----------</div><div class="line">* 其中最简单的就是”performSelector”。该方法的签名如下，它接受一个参数，就是要执行的那个选择子，该方法与直接调用选择子等效。</div><div class="line">[object performSelector:@selector(selectName)];</div><div class="line">[object selectName];</div><div class="line">* 当先把选择子保存起来，等某个事件发生之后再调用，performSelector 很有可能造成内存泄露。</div><div class="line">* 返回值只能是void或对象类型。参数类型是id，且参数最多为两个。</div><div class="line">* 尽量用替代方案</div><div class="line">![2](Effective-Objecive-C-2-0-读书笔记（五）/2.png)</div><div class="line">![3](Effective-Objecive-C-2-0-读书笔记（五）/3.png)</div><div class="line"></div><div class="line">&gt; performSelector 系列方法在内存管理方面容易有疏失。它无法确定将要执行的选择子具体是什么，因而ARC编译器也就无法插入适当的内存管理方法</div><div class="line"></div><div class="line">&gt; performSelector 系列方法所能处理的选择子太过局限了，选择子的返回值类型及发送给方法的参数个数都受限制</div><div class="line"></div><div class="line">&gt; 如果想把任务放在另一个线程上执行，那么最好不要用performSelector系列方法，而是应该把任务封装在块里，然后调用机制的大众书派发相关方法来实现。</div><div class="line"></div><div class="line">## 43.掌握GCD及操作队列的使用时机</div><div class="line">----------</div><div class="line"></div><div class="line">## 44.通过Dispatch Group 机制，根据系统资源状况来执行任务</div><div class="line">----------</div><div class="line">*  dispatch group 是GCD的一项特性，能够把任务分组。调用者可以等待这组任务执行完毕，也可以在提供回调函数之后继续往下执行，这组任务完成时，调用者会得到通知。</div></pre></td></tr></table></figure></p>
+<p>dispatch_group_t af_url_session_manager_completion_group = dispatch_group_create();<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">* 想把任务编组，有两种办法</div></pre></td></tr></table></figure></p>
+<p>1️⃣dispatch_group_async(dispatch_group_t  _Nonnull group, dispatch_queue_t  _Nonnull<br> queue, ^{</p>
+<pre><code>})
+</code></pre><p>2️⃣dispatch_group_enter(dispatch_group_t  _Nonnull<br> group)<br>  dispatch_group_leave(dispatch_group_t<br>_Nonnull group)<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">* 下面这个函数可用于等待 dispatch group 执行完毕</div></pre></td></tr></table></figure></p>
+<p>1️⃣dispatch_group_wait(dispatch_group_t  _Nonnull group, dispatch_time_t timeout)<br>DISPATCH_TIME_FOREVER 表示函数会一直等待dispatch group 执行完<br>2️⃣dispatch_group_notify(dispatch_group_t  _Nonnull group, dispatch_queue_t  _Nonnull<br> queue, ^{</p>
+<pre><code>})
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">* 与wait函数略有不同的是:开发者可以向此函数传入块，等dispatch group 执行完毕之后，块会在特定的线程上执行。</div><div class="line">![4](Effective-Objecive-C-2-0-读书笔记（五）/4.png)</div><div class="line">![5](Effective-Objecive-C-2-0-读书笔记（五）/5.png)</div><div class="line">* 开发者未必总需要使用 dispatch group。有时候采用单个队列搭配标准的异步派发，也可以实现同样效果</div><div class="line">&gt; 一系列任务可归入一个dispatch group 之中。开发者可以在这组任务执行完毕时获得通知</div><div class="line"></div><div class="line">&gt; 通过dispatch group,可以在并发式派发队列里同时执行多项任务。此时GCD会根据系统资源状况来调度这些并发执行的任务。开发者若自己来实现此功能，则需编写大量代码。</div><div class="line"></div><div class="line"></div><div class="line">## 45.使用dispatch_once来执行只需运行一次的线程安全代码</div><div class="line">----------</div><div class="line">* 单例模式对Objective-C开发者来说并不陌生，常见的实现方式为：在类中编写名为sharedInstance的方法，该方法只会返回全类公用的单例实例，而不会每次调用时都创建新的实例。常见的有两种方法</div></pre></td></tr></table></figure>
+<p>1️⃣+ (id)sharedInstance{<br>static TDRectangle <em> rectangle = nil;<br>@synchronized (self) {<br>if(!rectangle) {<br>   rectangle = [[self alloc]init];<br>        }<br>    }<br>return rectangle;<br>}<br>2️⃣+ (id)sharedInstance{<br>static TDRectangle </em> rectangle = nil;<br>static dispatch_once_t onceToken;<br>dispatch_once(&amp;onceToken, ^{<br>  rectangle = [[self alloc]init];<br>    });<br>return rectangle;<br>}<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div></pre></td><td class="code"><pre><div class="line">* 重要的一点在于，此操作完全是线程安全的。请注意，对于只需执行一次的块来说，每次调用函数时传入的标记都必须完全相同。开发者通常将标记变量申明在static或global作用域中。</div><div class="line">&gt; 经常需要编写”只需执行一次的线程安全代码”。通过GCD所提供的diapatch_once函数，很容易就能实现此功能</div><div class="line"></div><div class="line">&gt; 标记应该声明在static或global作用域中，这样的话，在把只需执行一次的块传给dispatch_once函数时，穿进去的标记也是相同的</div><div class="line"></div><div class="line">## 46.不要使用dispatch_get_current_queue</div><div class="line">----------</div><div class="line"></div><div class="line">## 47.熟悉系统框架</div><div class="line">----------</div><div class="line">* 将一系列代码封装为动态库，并在其中放入描述其接口的头文件，这样做出来的东西就叫框架。有时为iOS平台构建的第三方框架所使用的是静态库，这是因为iOS应用程序不允许在其中包含动态库。不过，所用iOS平台的系统框架仍然使用动态库。</div><div class="line">* 开发”带图形界面的应用程序”时，会用到名为Cocoa的框架，在iOS上称为Cocoa Touch。其实Cocoa本身并不是框架，但是里面集成了一批创建应用程序时经常会用到的框架。</div><div class="line">* 开发过程中主要框架是Foundation，像是NSObject、NSArray、NSDictionary、等类都在其中。Foundation框架中的类，使用NS这个前缀。</div><div class="line">* 还有一个与Founction相伴的框架，叫做CoreFoundation。虽然从技术上讲，CoreFounction框架不是Objective-C框架，但它却是编写Objective-C应用程序时所应熟悉的重要框架，Foundation框架中的许多功能，都可以再次框架中找到对应的C语言API。</div><div class="line">* CFNetwork 此框架提供了C语言级别的网络通信能力，它将”BSD套接字”抽象成易于使用的网络接口。而Foundation则将该框架里的部分内容封装为Objective-C语言的接口，以便进行网络通信，例如可以用NSURLConnection从URL中下载数据</div><div class="line">* CoreAudio 该框架所提供的C语言API可用来操作设备上的音频硬件。这个框架属于比较难用的那种，因为音频处理本身就很复杂。所幸这套API可以抽象出另一套Objective-C式API,用后者处理音频问题会简单些</div><div class="line">* AVFoundation 此框架所提供的Objective-C接口可将对象可用来回放并录制音频及视频，比如能够在UI试图类里播放视频</div><div class="line">* CoreData 此框架所提供的Objective-C接口可将对象放入数据库，便于持久化保存。CoreData 会处理数据的获取及存储事宜</div><div class="line">* CoreText 此框架提供的C语言接口可以高效执行文字排版及渲染操作</div><div class="line">* 可以看出Objective-C编程的一项重要特点，那就是:经常需要使用底层的C语言级API。用C语言来实现API的好处是，可以绕过Objective-C的运行期系统，从而提升执行速度。</div><div class="line">* iOS应用程序核心UI框架是UIKit,在这些主要的UI框架之下，是CoreAnimation与CoreGraphics框架</div><div class="line"></div><div class="line">&gt; 许多系统框架都可以直接使用。其中最重要的是Foundation与CoreFoundataion，这两个框架提供了构建应用程序所需的许多核心功能</div><div class="line"></div><div class="line">&gt; 许多常见任务都能用框架来做，例如音频与视频处理、网路通信、数据管理等。</div><div class="line"></div><div class="line">&gt; 请记住：用纯C写成的框架与用Objective-C写成的一样重要，若想成为优秀的Objective-C开发者，应该掌握C语言的核心概念</div><div class="line"></div><div class="line">## 48.多用块枚举，少用for循环</div><div class="line">----------</div><div class="line">* for循环 </div><div class="line">* 遍历数组的第一种办法就是采用老式的for循环，这令人想起：在作为Objective-C根基的C语言里，就已经由此特性了。这是个很基本的办法，因此功能非常有限。</div><div class="line">![6](Effective-Objecive-C-2-0-读书笔记（五）/6.png)</div><div class="line">* 字典与set都是“无序的”，所有无法根据特定的整数下标来直接访问其中的值。于是，就需要先获取字典里的所有键或是set里的所用对象，这两种情况下，都可以在获取到的有序数组上遍历，以便借此访问源字典及原set中的值。</div><div class="line">* NSEnumerator</div><div class="line">![7](Effective-Objecive-C-2-0-读书笔记（五）/7.png)</div><div class="line">![8](Effective-Objecive-C-2-0-读书笔记（五）/8.png)</div><div class="line">* 这种写法的功能与标准的for循环相似，但是代码却多了一些。其真正优势在于：不论遍历那种collection，都可以采用这套相似的语法。</div><div class="line">* 快速遍历</div><div class="line">* 快速遍历与使用NSEnumerator来遍历差不多，然而语法更简洁，它为for循环开设了in关键字。这个关键字简化了遍历collection所需的语法。</div><div class="line">![9](Effective-Objecive-C-2-0-读书笔记（五）/9.png)</div><div class="line">* 如果某个类的对象支持快速遍历，那么就可以宣称自己遵从名为NSFastEnumeration的协议，从而开发者可以采用此语法来迭代该对象。</div><div class="line">![10](Effective-Objecive-C-2-0-读书笔记（五）/10.png)</div><div class="line">* 在目前所介绍的遍历方式中，这种方法是语法最简单且效率最高的，然而如果在遍历字典时需要同时获取键与值，那么会多出来一步。</div><div class="line"></div><div class="line">* 基于块的遍历方式</div><div class="line">* - (void)enumerateObjectsUsingBlock:(void (NS_NOESCAPE ^)(ObjectType obj, NSUInteger idx, BOOL *stop))block</div><div class="line">* 此种写法遍历时既能获取对象，也能知道其下标。此方法还提供了一种优雅的机制，用于终止遍历操作。此方法不仅可用来遍历数组。NSSet里面也有同样的块枚举方法，NSDictionary也是这样。</div><div class="line">* - (void)enumerateKeysAndObjectsUsingBlock:(void (NS_NOESCAPE ^)(KeyType key, ObjectType obj, BOOL *stop))block</div><div class="line">* 此方法大大胜过其他方式的地方在于:1️⃣遍历时可以直接获取更多信息。2️⃣能够修改块的方法签名，以免进行类型转换操作</div><div class="line">* 用此方法也可以执行方向遍历。数组、字典、set都实现了前述方法的另一个版本，是开发者可向其传入”选项掩码”</div><div class="line">* - (void)enumerateKeysAndObjectsWithOptions:(NSEnumerationOptions)opts usingBlock:(void (NS_NOESCAPE ^)(KeyType key, ObjectType obj, BOOL *stop))block</div><div class="line">* NSEnumerationConcurrent 选项即可开启并行执行此功能，NSEnumerationReverse 选项即可开启方向遍历此功能。</div><div class="line"></div><div class="line">&gt; 遍历collection有四种方式，最基本的办法是for循环，其次是NSEnumerator遍历法及快速遍历法，最新、最先进的方式则是”块枚举法”</div><div class="line"></div><div class="line">&gt; “快枚举法”本身就能通过GCD来并发执行遍历操作，无须另行编写代码。而采用其他遍历方法则无法轻易实现这一点</div><div class="line"></div><div class="line">&gt; 若提前知道待遍历的collection含有何种对象，则应修改块签名，指出对象的具体类型</div><div class="line"></div><div class="line">## 49.对自定义其内存管理语义的collection使用无缝桥接</div><div class="line">----------</div><div class="line">* Foundation框架定义了这些数组、字典、set及其他各种collection所对应的Objective-C类。与之相似，CoreFoundation框架也定义了一套C语言API，用于操作表示这些collection及其他各种collection的数据结构。</div><div class="line">* 例如:NSArray是Foundation框架中表示数组的Objective-C类，而CFArray则是CoreFoundation框架中的等价物。</div><div class="line">* 使用”无缝桥接”技术，可以再定义与Foundation框架中的Objective-C类和定义与CoreFoundation框架中的C数据结构之间互相装换。</div></pre></td></tr></table></figure></p>
+<p>NSArray *anNSArray = @[@1,@2,@3,@4,@5];<br>CFArrayRef aCFArray = (__bridge CFArrayRef)anNSArray;</p>
+<p>NSArray <em>otherAnNSArray = (__bridge_transfer NSArray </em>)aCFArray;<br>```</p>
+<ul>
+<li><strong> bridge本身的意思是：ARC仍然具备这个Objective-C对象的所有权。而</strong> bridge<strong> retained则与之相反，意味着ARC将交出对象的所有权。若是前面那段代码改用它来实现，那么用完数组之后就要加上CFRelease(aCFArray)以释放其内存。与之相似，反响转换可通过</strong> bridge__ transfer来实现。</li>
+<li>以纯Objective-C来编写应用程序时，为何要用到这种功能呢?这是因为:Foundation框架中的Objective-C类所具备的某些功能，是CoreFoundation框架中的C语言数据结构所不具备的，反之亦然。</li>
+</ul>
+<blockquote>
+<p>通过无缝桥接技术，可以再Foundation框架中的Objective-C对象与CoreFoundation框架中的C语言数据结构体之间来回转换</p>
+<p>在CoreFoundation层面创建collection时，可以指定许多回调函数，这些函数表示此collection应如何处理其元素。然后，可运用无缝桥接技术，将其转换成具备特殊内存管理语义的Objective-C colletcion</p>
+</blockquote>
+<h2 id="50-构建缓存时选用NSCache而非NSDictionary"><a href="#50-构建缓存时选用NSCache而非NSDictionary" class="headerlink" title="50.构建缓存时选用NSCache而非NSDictionary"></a>50.构建缓存时选用NSCache而非NSDictionary</h2><hr>
+<ul>
+<li>当系统资源将要耗尽时，它可以自动删减缓存。它还会先行删减”最久未使用的”对象</li>
+<li>NSCache并不会”拷贝”键，而是会”保留”它。</li>
+<li>NSCache是线程安全的。</li>
+<li>下面代码演示了缓存的用法<br><img src="/2017/04/22/Effective-Objecive-C-2-0-读书笔记（五）/11.png" alt="11"><br><img src="/2017/04/22/Effective-Objecive-C-2-0-读书笔记（五）/12.png" alt="12"><br><img src="/2017/04/22/Effective-Objecive-C-2-0-读书笔记（五）/13.png" alt="13"><br><img src="/2017/04/22/Effective-Objecive-C-2-0-读书笔记（五）/14.png" alt="14"></li>
+</ul>
+<blockquote>
+<p>实现缓存时应选用NSCache而非NSDictionary对象。因为NSCache可以提供优雅的自动删减功能，而且是”线程安全的”，此外，它与字典不同，并不会拷贝键。</p>
+<p>可以给NSCache对象设置上限，用以限制缓存中的对象个数及”总成本”，而这些尺度则定义了缓存删减其中对象的时机。但是绝对不要把这些尺度当成可靠的”硬限制”，他们仅对NSCashe起引导作用</p>
+</blockquote>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/images/wechat-reward-image.png" alt="AndyMu WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="/images/alipay-reward-image.png" alt="AndyMu Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/04/22/Effective-Objecive-C-2-0-读书笔记（四）/" rel="next" title="Effective-Objecive-C-2-0-读书笔记（四）">
+                <i class="fa fa-chevron-left"></i> Effective-Objecive-C-2-0-读书笔记（四）
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/04/22/Effective-Objecive-C-2-0-读书笔记（六）/" rel="prev" title="Effective-Objecive-C-2-0-读书笔记（六）">
+                Effective-Objecive-C-2-0-读书笔记（六） <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2017/04/22/Effective-Objecive-C-2-0-读书笔记（五）/"
+           data-title="Effective-Objecive-C-2-0-读书笔记（五）" data-url="http://yoursite.com/2017/04/22/Effective-Objecive-C-2-0-读书笔记（五）/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.png"
+               alt="AndyMu" />
+          <p class="site-author-name" itemprop="name">AndyMu</p>
+          <p class="site-description motion-element" itemprop="description">我是一只有点懒惰的小蚂蚁,为着自己的大米在码农的日子上渐行渐远。</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">8</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/zhenhuamu" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/u/2684149271" target="_blank" title="微博">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  微博
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#41-多用派发队列，少用同步锁"><span class="nav-number">1.</span> <span class="nav-text">41.多用派发队列，少用同步锁</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#50-构建缓存时选用NSCache而非NSDictionary"><span class="nav-number">2.</span> <span class="nav-text">50.构建缓存时选用NSCache而非NSDictionary</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2013 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">AndyMu</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"zhenhuamu"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+</body>
+</html>
