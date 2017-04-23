@@ -105,7 +105,7 @@ C语言函数调用，所调用的函数乃是消息传递机制中的核心函�
 <meta property="og:image" content="http://yoursite.com/2014/06/16/Effective-Objecive-C-2-0-读书笔记（二）/3.png">
 <meta property="og:image" content="http://yoursite.com/2014/06/16/Effective-Objecive-C-2-0-读书笔记（二）/4.png">
 <meta property="og:image" content="http://yoursite.com/2014/06/16/Effective-Objecive-C-2-0-读书笔记（二）/5.png">
-<meta property="og:updated_time" content="2017-04-22T09:47:20.000Z">
+<meta property="og:updated_time" content="2017-04-23T09:00:19.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Effective-Objecive-C-2-0-读书笔记（二）">
 <meta name="twitter:description" content="11.理解objc_msgSend的作用
@@ -381,7 +381,7 @@ C语言函数调用，所调用的函数乃是消息传递机制中的核心函�
       
         <h2 id="11-理解objc-msgSend的作用"><a href="#11-理解objc-msgSend的作用" class="headerlink" title="11.理解objc_msgSend的作用"></a>11.理解objc_msgSend的作用</h2><hr>
 <ul>
-<li>由于Objective-C是C的超集，所以最好先理解C语言的函数调用方式。C语言使用”静态绑定”，也就是说，在编译期就能决定运行时所应调用的函数。</li>
+<li>由于<code>Objective-C</code>是C的超集，所以最好先理解C语言的函数调用方式。C语言使用”静态绑定”，也就是说，在编译期就能决定运行时所应调用的函数。</li>
 <li>只有一个函数指令,不过待调用的函数地址无法硬编译在指令之中，而是要在运行期读取出来，这是”动态绑定”</li>
 <li>C语言函数调用，所调用的函数乃是消息传递机制中的核心函数，叫做<code>objc_msgSend</code>  </li>
 <li><code>((void (*)(id, SEL)objc_msgSend(self,@selector(selector))))</code> </li>
@@ -393,9 +393,9 @@ C语言函数调用，所调用的函数乃是消息传递机制中的核心函�
 <h2 id="12-理解消息转发机制"><a href="#12-理解消息转发机制" class="headerlink" title="12.理解消息转发机制"></a>12.理解消息转发机制</h2><hr>
 <ul>
 <li>在编译期向类发送了其无法解读的消息并不会报错，因为在运行期可以继续向类中添加方法，所以编译器在编译时还无法确知类中到底会不会有某个方法实现，当对象接收到无法解读的消息后，就会启动”消息转发”机制</li>
-<li>消息转发两大阶段，第一阶段先征询接受者，所属的类，看其是否能动态添加方法，以处理当前这个”未知的选择子”，这叫做”动态方法解析”。第二阶段即第一级段执行完了，接受者看看有没有其他手段来处理与消息相关的方法调用，则运行期系统会把消息转给那个对象，转发过程结束。若没有”备援的接受者“，则启动完整的消息转发机制，运行期会把消息有关的全部细节都封装到NSIvocation对象中，再给接受者最后一次机会。</li>
+<li>消息转发两大阶段，第一阶段先征询接受者，所属的类，看其是否能动态添加方法，以处理当前这个”未知的选择子”，这叫做”动态方法解析”。第二阶段即第一级段执行完了，接受者看看有没有其他手段来处理与消息相关的方法调用，则运行期系统会把消息转给那个对象，转发过程结束。若没有”备援的接受者“，则启动完整的消息转发机制，运行期会把消息有关的全部细节都封装到<code>NSIvocation</code>对象中，再给接受者最后一次机会。</li>
 <li>动态方法解析 — 对象在收到无法解读的消息后，首先调用其所属类的下列类方法 </li>
-<li><code>+ (BOOL)resolveInstanceMethod:(SEL)sel</code>  常用于实现@dynamic属性</li>
+<li><code>+ (BOOL)resolveInstanceMethod:(SEL)sel</code>  常用于实现<code>@dynamic</code>属性</li>
 <li>备援接受者<code>- (id)forwardingTargetForSelector:(SEL)aSelector</code>  注意我们无法操作经由这一步转发的消息。若是想在发送给备援接受者之前先修改消息内容，那就得通过完整的消息转发机制来做了</li>
 <li>完整的消息转发<code>- (void)forwardInvocation:(NSInvocation *)anInvocation</code> </li>
 </ul>
@@ -411,8 +411,8 @@ C语言函数调用，所调用的函数乃是消息传递机制中的核心函�
 <h2 id="13-用”方法调配技术”-调试”黑盒方法”"><a href="#13-用”方法调配技术”-调试”黑盒方法”" class="headerlink" title="13.用”方法调配技术” 调试”黑盒方法”"></a>13.用”方法调配技术” 调试”黑盒方法”</h2><hr>
 <ul>
 <li>我们既不需要源代码，也不需要通过继承子类来覆写方法就能改变这个类本身的功能，新功能将在本类的所有实例中生效，而不是仅限于覆写了相关方法的那些子类实例。此方案经常成为”方法调配”</li>
-<li>类的方法列表会把选择子的名称映射到相关的方法实现之上，使得”动态消息派发系统”能够据此找到应该调用的方法。这些方法均以函数指针的形式来表示，这种指针叫做IMP 原型如下: id (* IMP)（id, SEL, …）</li>
-<li>Objective-C运行期系统提供的几个方法都能用来操作这张表。开发者可以向其中新增选择子，也可以改变某选择子所对应的方法实现，还可以交换两个选择子所映射到的指针。</li>
+<li>类的方法列表会把选择子的名称映射到相关的方法实现之上，使得”动态消息派发系统”能够据此找到应该调用的方法。这些方法均以函数指针的形式来表示，这种指针叫做IMP 原型如下: <code>id (* IMP)（id, SEL, …）</code></li>
+<li><code>Objective-C</code>运行期系统提供的几个方法都能用来操作这张表。开发者可以向其中新增选择子，也可以改变某选择子所对应的方法实现，还可以交换两个选择子所映射到的指针。</li>
 <li><code>void method_exchangeImplementations(Method m1, Method m2)</code>交换方法实现，参数表示带交换的两个方法实现</li>
 <li><code>Method class_getInstanceMethod(Class cls, SEL name)</code>  方法实现函数获得</li>
 <li><code>Example</code>交换<code>NSString</code> 实例方法                                                              <code>Method originalMethod = class_getInstanceMethod([NSString class], @selector(lowercaseString));</code><br><code>Method swppedMethod = class_getInstanceMethod([NSString class], @selector(uppercaseString));
@@ -426,17 +426,14 @@ method_exchangeImplementations(originalMethod, swppedMethod);</code> </li>
 </blockquote>
 <h2 id="14-理解”类对象”的用意"><a href="#14-理解”类对象”的用意" class="headerlink" title="14.理解”类对象”的用意"></a>14.理解”类对象”的用意</h2><hr>
 <ul>
-<li>“在运行期检视对象类型”这一操作也叫做”类型信息查询”，这个强大而有用的特性内置于Foundation框架的NSObject协议里，凡是由公共根类(即NSObject与NSProxy)继承而来的对象都要遵从此协议。在程序中不要直接比较对象所属的类，明智的做法是调用”类型信息查询方法”。</li>
-<li>每一个Objective-C对象实例都是指向某块内存数据的指针。所以在声明变量时，类型后面跟一个”<em>”字符<br>NSString </em>pointerVariable = @”Some string”;</li>
-<li><ul>
-<li>对于通用的对象类型id,由于其本身已经是指针了，所以我们能够这样写:<br>id pointerVariable = @”Some string”;</li>
-</ul>
-</li>
-<li>描述Objective-C对象所用的数据结构定义在运行期程序库的头文件里，id类型本身也在定义在这里<br><img src="/2014/06/16/Effective-Objecive-C-2-0-读书笔记（二）/1.png" alt="1"><br>由此可见，每个对象结构体的首个成员是Class类的变量。该变量定义了对象所属的类，通常称为”isa”指针。<br><img src="/2014/06/16/Effective-Objecive-C-2-0-读书笔记（二）/2.png" alt="2"><br>此结构体存放类的”元数据”，例如类的实例实现了几个方法，具备多少个实例变量等信息。此结构体的首个变量也是isa指针，说明Class本身亦为Objective-C对象。结构体里还有个变量叫做super_class，它定义了本类的超类。类对象所属的类型是另外一个类，叫做”元类”，用来表述类对象本身具备的元数据。”类方法”就定义与此，因为这些方法可以理解成类对象的实例方法<br>。每个类仅有一个”类对象”，而每个”类对象”仅有一个与之相关的”元类”。<br><img src="/2014/06/16/Effective-Objecive-C-2-0-读书笔记（二）/3.png" alt="3"></li>
-<li>super_class指针确立了继承关系，而isa指针描述了实例所属的类。</li>
-<li>isMemberOfClass 能够判断出对象是否为某个特定类的实例</li>
-<li>isKindOfClass 则能够判断出对象是否为某类或其派生类的实例<br><img src="/2014/06/16/Effective-Objecive-C-2-0-读书笔记（二）/4.png" alt="4"></li>
-<li>由于Objective-C使用”动态类型系统”，所以用于查询对象所属类的类型信息查询功能非常有用。<br><img src="/2014/06/16/Effective-Objecive-C-2-0-读书笔记（二）/5.png" alt="5"></li>
+<li>“在运行期检视对象类型”这一操作也叫做”类型信息查询”，这个强大而有用的特性内置于<code>Foundation</code>框架的<code>NSObject</code>协议里，凡是由公共根类(即<code>NSObject</code>与<code>NSProxy</code>)继承而来的对象都要遵从此协议。在程序中不要直接比较对象所属的类，明智的做法是调用”类型信息查询方法”。</li>
+<li>每一个<code>Objective-C</code>对象实例都是指向某块内存数据的指针。所以在声明变量时，类型后面跟一个”<em>”字符<br>`NSString </em>pointerVariable = @”Some string”;`</li>
+<li>对于通用的对象类型id,由于其本身已经是指针了，所以我们能够这样写:<br><code>id pointerVariable = @&quot;Some string”;</code></li>
+<li>描述<code>Objective-C</code>对象所用的数据结构定义在运行期程序库的头文件里，id类型本身也在定义在这里<br><img src="/2014/06/16/Effective-Objecive-C-2-0-读书笔记（二）/1.png" alt="1"><br>由此可见，每个对象结构体的首个成员是Class类的变量。该变量定义了对象所属的类，通常称为”isa”指针。<br><img src="/2014/06/16/Effective-Objecive-C-2-0-读书笔记（二）/2.png" alt="2"><br>此结构体存放类的”元数据”，例如类的实例实现了几个方法，具备多少个实例变量等信息。此结构体的首个变量也是isa指针，说明<code>Class</code>本身亦为<code>Objective-C</code>对象。结构体里还有个变量叫做<code>super_class</code>，它定义了本类的超类。类对象所属的类型是另外一个类，叫做”元类”，用来表述类对象本身具备的元数据。”类方法”就定义与此，因为这些方法可以理解成类对象的实例方法<br>。每个类仅有一个”类对象”，而每个”类对象”仅有一个与之相关的”元类”。<br><img src="/2014/06/16/Effective-Objecive-C-2-0-读书笔记（二）/3.png" alt="3"></li>
+<li><code>super_class</code>指针确立了继承关系，而isa指针描述了实例所属的类。</li>
+<li><code>isMemberOfClass</code> 能够判断出对象是否为某个特定类的实例</li>
+<li><code>isKindOfClass</code> 则能够判断出对象是否为某类或其派生类的实例<br><img src="/2014/06/16/Effective-Objecive-C-2-0-读书笔记（二）/4.png" alt="4"></li>
+<li>由于<code>Objective-C</code>使用”动态类型系统”，所以用于查询对象所属类的类型信息查询功能非常有用。<br><img src="/2014/06/16/Effective-Objecive-C-2-0-读书笔记（二）/5.png" alt="5"></li>
 </ul>
 <blockquote>
 <p>每个实例都有一个指向Class对象的指针，用以表明其类型，而这些Class对象则构成了类的继承体系</p>
@@ -445,7 +442,7 @@ method_exchangeImplementations(originalMethod, swppedMethod);</code> </li>
 </blockquote>
 <h2 id="15-用前缀避免命名空间冲突"><a href="#15-用前缀避免命名空间冲突" class="headerlink" title="15.用前缀避免命名空间冲突"></a>15.用前缀避免命名空间冲突</h2><hr>
 <ul>
-<li>Objective-C没有命名空间机制</li>
+<li><code>Objective-C</code>没有命名空间机制</li>
 <li>Apple宣称其保留使用所有”两字母前缀”的权利，所以你自己选用的前缀应该是三个字母</li>
 <li>应该给C函数及全局变量的名字加上前缀</li>
 </ul>
@@ -460,7 +457,7 @@ method_exchangeImplementations(originalMethod, swppedMethod);</code> </li>
 </ul>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">//Using default values</div><div class="line">- (instancetype)init&#123;</div><div class="line">    return [self initWithWidth:5.0 andHeight:10.0];</div><div class="line">&#125;</div><div class="line">//Throwing an exception</div><div class="line">- (instancetype)init&#123;</div><div class="line">    @throw [NSException exceptionWithName:NSInternalInconsistencyException reason:@&quot;Must use initWithWidth:andHeight: instead.&quot; userInfo:nil];</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <ul>
-<li>不过在Objective-C程序中，只有当发生严重错误时，才应该抛出异常。</li>
+<li>不过在<code>Objective-C</code>程序中，只有当发生严重错误时，才应该抛出异常。</li>
 <li>如果子类的全能初始化方法与超类方法的名称不一样,那么总应该覆写超类的全能初始化方法</li>
 <li>每一个子类的全能初始化方法都应该调用其超类的相关方法，并逐层向上。</li>
 </ul>
@@ -471,15 +468,15 @@ method_exchangeImplementations(originalMethod, swppedMethod);</code> </li>
 </blockquote>
 <h2 id="17-实现description方法"><a href="#17-实现description方法" class="headerlink" title="17.实现description方法"></a>17.实现description方法</h2><hr>
 <ul>
-<li>有个简单的方法，可以在 description 中输出很多互不相同的信息，那就是借助NSDictionary类的description方法。</li>
+<li>有个简单的方法，可以在 <code>description</code> 中输出很多互不相同的信息，那就是借助<code>NSDictionary</code>类的<code>description</code>方法。</li>
 </ul>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">- (NSString*)description&#123;   </div><div class="line">return [NSString stringWithFormat:@&quot;&lt;%@: %p, %@&gt;&quot;,[self class],self,@&#123;@&quot;width&quot;:@(_width),@&quot;height&quot;:@(_height)&#125;</div><div class="line">];</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <ul>
-<li>NSObject协议中还有个方法要注意，那就是debugDescription，此方法的用意与description非常相似。debugDescription方法是开发者在调试器中以控制台命令打印对象时才调用的</li>
+<li><code>NSObject</code>协议中还有个方法要注意，那就是<code>debugDescription</code>，此方法的用意与<code>description</code>非常相似。<code>debugDescription</code>方法是开发者在调试器中以控制台命令打印对象时才调用的</li>
 </ul>
 <blockquote>
-<p>实现description方法返回一个意义的字符串，用以描述该实例</p>
-<p>若想在调试时打印出更详尽的对象描述信息，则应实现debugDescription方法</p>
+<p>实现<code>description</code>方法返回一个意义的字符串，用以描述该实例</p>
+<p>若想在调试时打印出更详尽的对象描述信息，则应实现<code>debugDescription</code>方法</p>
 </blockquote>
 <h2 id="18-尽量使用不可变对象"><a href="#18-尽量使用不可变对象" class="headerlink" title="18.尽量使用不可变对象"></a>18.尽量使用不可变对象</h2><hr>
 <ul>
@@ -497,7 +494,7 @@ method_exchangeImplementations(originalMethod, swppedMethod);</code> </li>
 <blockquote>
 <p>尽量创建不可变的对象</p>
 <p>若某属性仅可用于对象内部修改，则在”<code>class-continuation</code>分类”中将其有<code>readonly</code>属性扩展为<code>readwrite</code>属性</p>
-<p>不要把可变的collection作为属性公开，而应该提供先关方法，以此修改对象中的可变collection</p>
+<p>不要把可变的<code>collection</code>作为属性公开，而应该提供相关方法，以此修改对象中的可变<code>collection</code></p>
 </blockquote>
 <h2 id="19-使用清晰而协调的命名方式"><a href="#19-使用清晰而协调的命名方式" class="headerlink" title="19.使用清晰而协调的命名方式"></a>19.使用清晰而协调的命名方式</h2><hr>
 <ul>
@@ -507,10 +504,10 @@ method_exchangeImplementations(originalMethod, swppedMethod);</code> </li>
 <li>应该把表示参数类型的名词放在参数前面</li>
 <li>如果方法要在当前对象上执行操作，那么就应该包含动词；若执行操作时还需要参数，则应该在动词后面加上一个或多个名词</li>
 <li>不要使用str这种简称，应该用string这样的全称</li>
-<li>Boolean属性应加is前缀。如果某方法返回非属性的Boolean值，那么应该根据某功能，选用has或is前缀</li>
+<li><code>Boolean</code>属性应加is前缀。如果某方法返回非属性的<code>Boolean</code>值，那么应该根据某功能，选用has或is前缀</li>
 </ul>
 <blockquote>
-<p>起名时应遵从标准的Objective-C命名规范</p>
+<p>起名时应遵从标准的<code>Objective-C</code>命名规范</p>
 <p>方法名要言简意核</p>
 <p>方法名里不要使用缩略后的类型名称</p>
 <p>给方法起名时的第一要务就是确保其风格与你自己的代码或多要集成的框架相符</p>
@@ -577,8 +574,8 @@ method_exchangeImplementations(originalMethod, swppedMethod);</code> </li>
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2016/03/21/浅谈APP马甲/" rel="prev" title="浅谈APP马甲">
-                浅谈APP马甲 <i class="fa fa-chevron-right"></i>
+              <a href="/2014/06/22/Effective-Objecive-C-2-0-读书笔记（三）/" rel="prev" title="Effective-Objecive-C-2-0-读书笔记（三）">
+                Effective-Objecive-C-2-0-读书笔记（三） <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
