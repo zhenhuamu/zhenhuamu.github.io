@@ -107,7 +107,7 @@
 <meta property="og:image" content="http://yoursite.com/2017/05/23/BuildSettings常用参数和Xcode常用变量/10.png">
 <meta property="og:image" content="http://yoursite.com/2017/05/23/BuildSettings常用参数和Xcode常用变量/11.png">
 <meta property="og:image" content="http://yoursite.com/2017/05/23/BuildSettings常用参数和Xcode常用变量/12.png">
-<meta property="og:updated_time" content="2017-05-23T15:38:30.000Z">
+<meta property="og:updated_time" content="2017-05-23T15:46:43.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="BuildSettings常用参数和Xcode常用变量">
 <meta name="twitter:description" content="配置的优先级
@@ -399,6 +399,12 @@
 <p>–</p>
 <p>默认情况下的变量<br><code>$(default)</code> 代替<br><code>/Users/xxx/Library/Developer/Xcode/DerivedData/CProjectSet-                 erpfssifqoxezbcceyoqjoclrfds</code></p>
 <p><code>$(SYMROOT)</code> = <code>$(default)/Build</code><br>对应于Build Products Path设置，如果为自荐方式，这个值填了无效果，如果为使用targets配置方式这里填的才起效果<br><code>$(SYMROOT)/intermediates</code><br>中间构建文件存放路径，其中在Intermediates Build files path中只需要设为<code>$(SYMROOT)</code>即可，intermediates系统自动生成<br><code>$(BUILD_DIR)</code> = <code>$(SYMROOT)/products</code><br><code>$(BUILD_ROOT)</code> = <code>$(BUILD_DIR)</code><br><code>$(CONFIGURATION)</code><br>当项目Build时选译Build configuration为Debug时值为Debug，当选为Release时，值为Release<br><code>$(EFFECTIVE_PLATFORM_NAME)</code><br>当模似器时为值为-iphonesimulator 当为真机时为-iphoneos<br><code>$(PROJECT_TEMP_DIR)</code><br><code>(SYMROOT)/intermediates/xxxx.build</code><br>基中xxxx表过项目名称<br><code>$(CONFIGURATION_BUILD_DIR)</code> = <code>$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)</code><br>(Per-Configuration Build Products Path)<br><code>$(CONFIGURATION_TEMP_DIR)</code> = <code>$(PROJECT_TEMP_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)</code><br>(Per-Configuration Intermediate File Path)<br><code>$(BUILT_PRODUCTS_DIR)</code><br>build成功后的，最终产品路径－－可以在Build Settings参数的Build Products Path项里设置</p>
+<hr>
+<h3 id="参考文章："><a href="#参考文章：" class="headerlink" title="参考文章："></a>参考文章：</h3><ol>
+<li><a href="http://www.jianshu.com/p/0509b438e84e" target="_blank" rel="external">Xcode Build Settings 分析</a></li>
+<li><a href="https://developer.apple.com/legacy/library/documentation/DeveloperTools/Reference/XcodeBuildSettingRef/0-Introduction/introduction.html" target="_blank" rel="external">苹果官方文档</a></li>
+<li><a href="http://www.jianshu.com/p/74b2a1a46179" target="_blank" rel="external">Xcode中的环境变量</a></li>
+</ol>
 
       
     </div>
@@ -584,7 +590,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#配置的优先级"><span class="nav-number">1.</span> <span class="nav-text">配置的优先级</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置详情"><span class="nav-number">2.</span> <span class="nav-text">配置详情</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#常用变量"><span class="nav-number">3.</span> <span class="nav-text">常用变量</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#配置的优先级"><span class="nav-number">1.</span> <span class="nav-text">配置的优先级</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置详情"><span class="nav-number">2.</span> <span class="nav-text">配置详情</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#常用变量"><span class="nav-number">3.</span> <span class="nav-text">常用变量</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#参考文章："><span class="nav-number">3.1.</span> <span class="nav-text">参考文章：</span></a></li></ol></li></ol></div>
             
 
           </div>
