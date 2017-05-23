@@ -1,0 +1,749 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="配置的优先级
+
+配置详情
+1.ArchitecturesAdditional SDKs：在编译的时候需要附加的SDK。Architecture ： 支持的处理器架构。支持的指令集越多，就会编译出包含多个指令集代码的数据包，对应生成二进制包就越大，最终目标文件也会变大。Base SDK：App所能支持的最大iOS版本。Xcode默认会设置为能够支持的最新版本。Build Active Archite">
+<meta property="og:type" content="article">
+<meta property="og:title" content="BuildSettings常用参数和Xcode常用变量">
+<meta property="og:url" content="http://yoursite.com/2017/05/23/BuildSettings常用参数和Xcode常用变量/index.html">
+<meta property="og:site_name" content="AndyMu">
+<meta property="og:description" content="配置的优先级
+
+配置详情
+1.ArchitecturesAdditional SDKs：在编译的时候需要附加的SDK。Architecture ： 支持的处理器架构。支持的指令集越多，就会编译出包含多个指令集代码的数据包，对应生成二进制包就越大，最终目标文件也会变大。Base SDK：App所能支持的最大iOS版本。Xcode默认会设置为能够支持的最新版本。Build Active Archite">
+<meta property="og:image" content="http://yoursite.com/2017/05/23/BuildSettings常用参数和Xcode常用变量/1.png">
+<meta property="og:image" content="http://yoursite.com/2017/05/23/BuildSettings常用参数和Xcode常用变量/2.png">
+<meta property="og:image" content="http://yoursite.com/2017/05/23/BuildSettings常用参数和Xcode常用变量/3.png">
+<meta property="og:image" content="http://yoursite.com/2017/05/23/BuildSettings常用参数和Xcode常用变量/4.png">
+<meta property="og:image" content="http://yoursite.com/2017/05/23/BuildSettings常用参数和Xcode常用变量/5.png">
+<meta property="og:image" content="http://yoursite.com/2017/05/23/BuildSettings常用参数和Xcode常用变量/6.png">
+<meta property="og:image" content="http://yoursite.com/2017/05/23/BuildSettings常用参数和Xcode常用变量/8.png">
+<meta property="og:image" content="http://yoursite.com/2017/05/23/BuildSettings常用参数和Xcode常用变量/9.png">
+<meta property="og:image" content="http://yoursite.com/2017/05/23/BuildSettings常用参数和Xcode常用变量/10.png">
+<meta property="og:image" content="http://yoursite.com/2017/05/23/BuildSettings常用参数和Xcode常用变量/11.png">
+<meta property="og:image" content="http://yoursite.com/2017/05/23/BuildSettings常用参数和Xcode常用变量/12.png">
+<meta property="og:updated_time" content="2017-05-23T15:38:30.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="BuildSettings常用参数和Xcode常用变量">
+<meta name="twitter:description" content="配置的优先级
+
+配置详情
+1.ArchitecturesAdditional SDKs：在编译的时候需要附加的SDK。Architecture ： 支持的处理器架构。支持的指令集越多，就会编译出包含多个指令集代码的数据包，对应生成二进制包就越大，最终目标文件也会变大。Base SDK：App所能支持的最大iOS版本。Xcode默认会设置为能够支持的最新版本。Build Active Archite">
+<meta name="twitter:image" content="http://yoursite.com/2017/05/23/BuildSettings常用参数和Xcode常用变量/1.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"hide"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/05/23/BuildSettings常用参数和Xcode常用变量/"/>
+
+
+
+
+
+  <title> BuildSettings常用参数和Xcode常用变量 | AndyMu </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?2f238e42b6a0fb6febddb7c69e4d1198";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">AndyMu</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/05/23/BuildSettings常用参数和Xcode常用变量/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="AndyMu">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/images/avatar.png">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="AndyMu">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="AndyMu" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                BuildSettings常用参数和Xcode常用变量
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-05-23T22:23:42+08:00">
+                2017-05-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <a href="/2017/05/23/BuildSettings常用参数和Xcode常用变量/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/05/23/BuildSettings常用参数和Xcode常用变量/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="配置的优先级"><a href="#配置的优先级" class="headerlink" title="配置的优先级"></a>配置的优先级</h2><hr>
+<p><img src="/2017/05/23/BuildSettings常用参数和Xcode常用变量/1.png" alt="1"></p>
+<h2 id="配置详情"><a href="#配置详情" class="headerlink" title="配置详情"></a>配置详情</h2><hr>
+<p><strong>1.Architectures</strong><br><img src="/2017/05/23/BuildSettings常用参数和Xcode常用变量/2.png" alt="2"><br><code>Additional SDKs：</code>在编译的时候需要附加的SDK。<br><code>Architecture ：</code> 支持的处理器架构。支持的指令集越多，就会编译出包含多个指令集代码的数据包，对应生成二进制包就越大，最终目标文件也会变大。<br><code>Base SDK：</code>App所能支持的最大iOS版本。Xcode默认会设置为能够支持的最新版本。<br><code>Build Active Architecture Only :</code> 如果此项为YES，则Xcode会根据当前所连接设备的版本只将相应的Architecture编译入app。否则会同时编译“Valid Architectures”中的指令集。<br><code>Supported Platform：</code>app支持的平台。目前可选的有iOS、macOS、tvOS、watchOS。<br><code>Valid Architectures：</code>指即将编译的指令集，可以设为 arm64、armv7s、armv7。 </p>
+<p><strong>2.Assets</strong><br><img src="/2017/05/23/BuildSettings常用参数和Xcode常用变量/3.png" alt="3"><br><code>Asset Pack Manifest URL Prefix:</code>资源包清单的下载路径URL前缀<br><code>Embed Asset Packs In Product Bundle:</code>是否将资源包嵌入产品的bundle中<br><code>Enable On Demand Resources:</code>是否开启按需获取资源功能<br><code>On Demand Resources Initial Install Tags:</code>按需加载资源时的初始安装资源文件标签<br><code>On Demand Resources Prefetch Order:</code>按需加载资源时预加载的标签顺序  </p>
+<p><strong>3.Build Locations</strong><br><img src="/2017/05/23/BuildSettings常用参数和Xcode常用变量/4.png" alt="4"><br><code>Build Products Paths:</code>产品文件和编译中间文件的根目录。产品文件和编译时临时文件都将放在这个目录的子目录中。<br><code>Intermediate Build Files Path:</code>编译时临时文件的存放位置。编译中间文件格式为product name+.build，如MyProduct.build。<br>Per-configuration Build Products Path:当前编译设置下的产品存放位置。<br><code>Per-configuration Intermediate Build Files Path:</code>当前编译设置下编译时临时文件的存放位置。<br><code>Precompiled Headers Cache Path:</code>预编译头文件缓存存放路径。通过这个配置，Targets可以互相共享预编译的头文件。   </p>
+<p><strong>4.Build Options</strong><br><img src="/2017/05/23/BuildSettings常用参数和Xcode常用变量/5.png" alt="5"><br><code>Always Embed Swift Standard Libraries：</code>始终嵌入swift标准库。对于未使用swift代码的情况可以设置为NO。<br><code>Build Variants:</code>此项可以设定生成产品的变种。您可以创建额外的产品变种作为特殊用途。例如，您可以使用编译配置文件的名称来创建一个高度定制的二进制文件。<br>Build Variants的值有三个：<br>normal-用于生成普通的二进制文件；<br>profile-用于可以生成配置信息的二进制文件；<br>debug-用于生成带有debug标志、额外断言和诊断代码的二进制文件。<br><code>Compiler For C/C++/Objective-C:</code>选择使用的编译器。目前Xcode8.2默认使用APPLE LLVM 8.0版本的编译器。<br><code>Debug Information Format:</code>记录debug信息的文件格式。共有DWARF with dSYM File和DWARF两种可以选择。建议选择DWARF with dSYM File。DWARF是较老的文件格式，会在编译时将debug信息写在执行文件中。<br><code>Enable BitCodebitcode:</code>是被编译程序的一种中间形式的代码。包含bitcode配置的程序将会在App store上被编译和链接。bitcode允许苹果在后期重新优化我们程序的二进制文件，而不需要我们重新提交一个新的版本到App store上。当我们提交程序到App store上时，Xcode会将程序编译为一个中间表现形式(bitcode)。然后App store会再将这个botcode编译为可执行的64位或32位程序。<br>现在需要考虑的是三个平台：iOS，Mac OS，watchOS。<br>对应iOS，bitcode是可选的。<br>对于watchOS，bitcode是必须的。<br>Mac OS不支持bitcode。<br><code>Enable Testability:</code>是否支持测试。默认选NO。<br><code>Generate Profiling Code:</code>是否生成配置代码。默认选择NO。<br><code>Precompiled Header Uses Files From Build Directory:</code>预编译build路径中的头文件。由于编译过程比较耗时，且两次编译之间未必会改动所有文件。因此将不会改动的常用文件保留成预编译文件将大大减少编译时的时间。建议这一项选择YES。<br><code>Require Only App-Extension-Safe API:</code>如果我们要想应用扩展使用内嵌框架，那么首先要配置一下。将target的Require Only App-Extension-Safe API选项设置为Yes。如果你不这样设置，那么Xcode会向你提示警告：linking against dylib not safe for use in application extensions。<br><code>Scan All Source Files for Includes:</code>扫描include文件所包含的所有源文件。<br><code>Validate Built Product:</code>这个选项决定了是否在编译的时候进行验证。验证的内容和app store的审查内容一致。默认选项是debug时不验证，release时验证。   </p>
+<p><strong>5.Deployment</strong><br><img src="/2017/05/23/BuildSettings常用参数和Xcode常用变量/6.png" alt="6"><br><code>Deployment Location:</code>指定产品文件是否放置在安装目录(DSTROOT)或构建目录(SYMROOT)。<br>YES: Product files are placed in $DSTROOT.<br>NO: Product files are placed in $SYMROOT.<br><code>Skip Install:</code>指定是否将产品的位置由DSTROOT表示或卸载产品目录中的目录由TARGET_TEMP_DIR表示<br><code>iOS Deployment Target：</code>iOS部署对象，比如iOS8到iOS10的一种版本 </p>
+<p><strong>6.Headers</strong> </p>
+<p><strong>7.Kernel Module</strong> </p>
+<p><strong>8.Linking</strong><br><img src="/2017/05/23/BuildSettings常用参数和Xcode常用变量/8.png" alt="8"><br><code>Other Linker Flags：</code>其他链接标签，当导入的静态库使用了类别，需要设为-ObjC</p>
+<p><strong>9.Packaging</strong><br><img src="/2017/05/23/BuildSettings常用参数和Xcode常用变量/9.png" alt="9"><br><code>Defines Module:</code>是否定义模块。默认app类的工程为NO，framwork工程默认为YES<br><code>Expand Build Setting in Info.plist File:</code>告诉编译器是否处理info.plist。默认是YES。这是一个很大的特点，因为它避免了有根据您的构建设置和配置不同的Info.plist中，避免您在多个地方修改设置。 但是如果你真的不想要它，只需在项目或目标的构建设置中关闭此设置<br>Info.plist File:创建工程后默认会创建一个info.plist文件。也可以根据需要进行主动创建<br><code>Private Headers Folder Path:</code>私有头文件的存放位置<br><code>Product Bundle Identifier:</code>产品bundle的标识<br><code>Product Module Name:</code>产品模块名称<br><code>Product Name:</code>产品名称<br><code>Public Headers Folder Path:</code>公共头文件路径<br><code>Wrapper Extension:</code>打包的扩展名，默认app  </p>
+<p><strong>10.Search Paths</strong><br><img src="/2017/05/23/BuildSettings常用参数和Xcode常用变量/10.png" alt="10"><br><code>Always Search User Path:</code>是否搜索用户指定的路径，默认是NO<br><code>Framework Search Paths:</code>工程引用的framework搜索路径<br><code>Header Search Paths:</code>工程中引用的头文件搜索路径<br><code>Library Search Paths:</code>library搜索路径，比如静态.a库<br><code>Sub-Directories to Exclude in Recursive Searches：</code>指定哪些类型的子目录在递归查找时忽略<br><code>Sub-Directories to include in Recursive Searches：</code>指定哪些类型的子目录在递归查找时包含User Header Search Paths：`设置头文件搜索路径，这个只有当Always Search User Path开启后才有效   </p>
+<p><strong>11.singing</strong><br><img src="/2017/05/23/BuildSettings常用参数和Xcode常用变量/11.png" alt="11"><br><code>Code Signing Entitlements:</code>授权机制。在Xcode的capabilities选项卡下选择一些选项后，Xcode就会生成这样一段XML，Xcode会自动生成一个entitlements文件，然后再需要的时候往里面添加条目。当构建整个应用时，这个文件也会提及给codesign作为应用所需要拥有哪些授权的参考。这些授权信息必须都在开发者中心的AppID中启用，并且包含在配置文件中<br><code>Code Signing Identity:</code>配置证书<br><code>Development Team:</code>开发者所在的群组<br><code>Provisioning Profile:</code>配置描述文件  </p>
+<p><strong>12.User-Defined</strong><br><img src="/2017/05/23/BuildSettings常用参数和Xcode常用变量/12.png" alt="12"><br>这里用户可以在debug、release或者自己定义的编译模式下设置不同的变量，可以达到一套代码同时支持多个不同版本的目的。比如可以编译出叫APP1和APP2两个名字不一样的APP。</p>
+<h2 id="常用变量"><a href="#常用变量" class="headerlink" title="常用变量"></a>常用变量</h2><hr>
+<p><code>$(TARGET_NAME)</code>  目标工程名称<br><code>$(SRCROOT)</code>  工程文件根目录（一般为.xcodeproj所在的目录）<br><code>$(PROJECT_DIR)</code>  .xcodeproj所在目录<br><code>$(CURRENT_PROJECT_VERSION)</code> 当前工程版本号<br><code>$(PRODUCT_BUNDLE_IDENTIFIER)</code> 当前工程的bundle identifier<br><code>$(ASSETCATALOG_COMPILER_APPICON_NAME)</code>  产品 icon文件名字<br><code>$(INFOPLIST_FILE)</code> info.plist文件目录<br><code>$(GCC_PREPROCESSOR_DEFINITIONS)</code>  是 GCC 预编译头参数，通常我们可以对预编译宏定义进行默认赋值<br><code>$(DEVELOPMENT_TEAM)</code> 开发team<br><code>$(inherited)</code>  继承Projret相应的设置</p>
+<p>–</p>
+<p>默认情况下的变量<br><code>$(default)</code> 代替<br><code>/Users/xxx/Library/Developer/Xcode/DerivedData/CProjectSet-                 erpfssifqoxezbcceyoqjoclrfds</code></p>
+<p><code>$(SYMROOT)</code> = <code>$(default)/Build</code><br>对应于Build Products Path设置，如果为自荐方式，这个值填了无效果，如果为使用targets配置方式这里填的才起效果<br><code>$(SYMROOT)/intermediates</code><br>中间构建文件存放路径，其中在Intermediates Build files path中只需要设为<code>$(SYMROOT)</code>即可，intermediates系统自动生成<br><code>$(BUILD_DIR)</code> = <code>$(SYMROOT)/products</code><br><code>$(BUILD_ROOT)</code> = <code>$(BUILD_DIR)</code><br><code>$(CONFIGURATION)</code><br>当项目Build时选译Build configuration为Debug时值为Debug，当选为Release时，值为Release<br><code>$(EFFECTIVE_PLATFORM_NAME)</code><br>当模似器时为值为-iphonesimulator 当为真机时为-iphoneos<br><code>$(PROJECT_TEMP_DIR)</code><br><code>(SYMROOT)/intermediates/xxxx.build</code><br>基中xxxx表过项目名称<br><code>$(CONFIGURATION_BUILD_DIR)</code> = <code>$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)</code><br>(Per-Configuration Build Products Path)<br><code>$(CONFIGURATION_TEMP_DIR)</code> = <code>$(PROJECT_TEMP_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)</code><br>(Per-Configuration Intermediate File Path)<br><code>$(BUILT_PRODUCTS_DIR)</code><br>build成功后的，最终产品路径－－可以在Build Settings参数的Build Products Path项里设置</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/images/wechat-reward-image.png" alt="AndyMu WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="/images/alipay-reward-image.png" alt="AndyMu Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/03/21/浅谈APP马甲/" rel="next" title="浅谈APP马甲">
+                <i class="fa fa-chevron-left"></i> 浅谈APP马甲
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2017/05/23/BuildSettings常用参数和Xcode常用变量/"
+           data-title="BuildSettings常用参数和Xcode常用变量" data-url="http://yoursite.com/2017/05/23/BuildSettings常用参数和Xcode常用变量/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.png"
+               alt="AndyMu" />
+          <p class="site-author-name" itemprop="name">AndyMu</p>
+          <p class="site-description motion-element" itemprop="description">我是一只有点懒惰的小蚂蚁,为着自己的大米在码农的日子上渐行渐远。</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">9</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/zhenhuamu" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/u/2684149271" target="_blank" title="微博">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  微博
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#配置的优先级"><span class="nav-number">1.</span> <span class="nav-text">配置的优先级</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置详情"><span class="nav-number">2.</span> <span class="nav-text">配置详情</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#常用变量"><span class="nav-number">3.</span> <span class="nav-text">常用变量</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2013 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">AndyMu</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"zhenhuamu"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+</body>
+</html>
