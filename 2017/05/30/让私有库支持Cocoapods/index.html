@@ -84,26 +84,33 @@
 
 
 
-<meta name="description" content="什么是 File Templates?
-说File Templates 可能很多人不知道是什么，但是如果说Cocoa Touch Class大家应该就不陌生了，作为一名iOS开发者，我们无时无刻不在使用Xcode,不在创建新的NSObject、UIViewController、xib、storyboard等文件。我们在创建这些文件的时候Xcode会自动帮我们集成一套模板。
-系统模板路径(xcode">
+<meta name="description" content="将私有库上传仓库并打tag
+将自己的私有库代码上传到github，并打tag。
+1231.这里不一定是gitbub,也可以是私有的git仓库。2.cocoapods是依赖tag版本的,所以必须打tag,以后再次更新只需打一个tag。3.创建LICENSE(许可证/授权)文件,此文件必须要有。
+创建.podspec
+cd到你要创建.podspec文件的目录pod spec create MZHBai">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Xcode File Templates 巧用">
-<meta property="og:url" content="http://yoursite.com/2014/04/25/Xcode-File-Templates-巧用/index.html">
+<meta property="og:title" content="让私有库支持Cocoapods">
+<meta property="og:url" content="http://yoursite.com/2017/05/30/让私有库支持Cocoapods/index.html">
 <meta property="og:site_name" content="AndyMu">
-<meta property="og:description" content="什么是 File Templates?
-说File Templates 可能很多人不知道是什么，但是如果说Cocoa Touch Class大家应该就不陌生了，作为一名iOS开发者，我们无时无刻不在使用Xcode,不在创建新的NSObject、UIViewController、xib、storyboard等文件。我们在创建这些文件的时候Xcode会自动帮我们集成一套模板。
-系统模板路径(xcode">
-<meta property="og:image" content="http://yoursite.com/2014/04/25/Xcode-File-Templates-巧用/1.png">
-<meta property="og:image" content="http://yoursite.com/2014/04/25/Xcode-File-Templates-巧用/2.png">
-<meta property="og:image" content="http://yoursite.com/2014/04/25/Xcode-File-Templates-巧用/3.png">
-<meta property="og:updated_time" content="2017-04-23T11:58:04.000Z">
+<meta property="og:description" content="将私有库上传仓库并打tag
+将自己的私有库代码上传到github，并打tag。
+1231.这里不一定是gitbub,也可以是私有的git仓库。2.cocoapods是依赖tag版本的,所以必须打tag,以后再次更新只需打一个tag。3.创建LICENSE(许可证/授权)文件,此文件必须要有。
+创建.podspec
+cd到你要创建.podspec文件的目录pod spec create MZHBai">
+<meta property="og:image" content="http://yoursite.com/2017/05/30/让私有库支持Cocoapods/1.png">
+<meta property="og:image" content="http://yoursite.com/2017/05/30/让私有库支持Cocoapods/2.png">
+<meta property="og:image" content="http://yoursite.com/2017/05/30/让私有库支持Cocoapods/3.png">
+<meta property="og:image" content="http://yoursite.com/2017/05/30/让私有库支持Cocoapods/4.png">
+<meta property="og:updated_time" content="2017-05-30T15:22:37.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Xcode File Templates 巧用">
-<meta name="twitter:description" content="什么是 File Templates?
-说File Templates 可能很多人不知道是什么，但是如果说Cocoa Touch Class大家应该就不陌生了，作为一名iOS开发者，我们无时无刻不在使用Xcode,不在创建新的NSObject、UIViewController、xib、storyboard等文件。我们在创建这些文件的时候Xcode会自动帮我们集成一套模板。
-系统模板路径(xcode">
-<meta name="twitter:image" content="http://yoursite.com/2014/04/25/Xcode-File-Templates-巧用/1.png">
+<meta name="twitter:title" content="让私有库支持Cocoapods">
+<meta name="twitter:description" content="将私有库上传仓库并打tag
+将自己的私有库代码上传到github，并打tag。
+1231.这里不一定是gitbub,也可以是私有的git仓库。2.cocoapods是依赖tag版本的,所以必须打tag,以后再次更新只需打一个tag。3.创建LICENSE(许可证/授权)文件,此文件必须要有。
+创建.podspec
+cd到你要创建.podspec文件的目录pod spec create MZHBai">
+<meta name="twitter:image" content="http://yoursite.com/2017/05/30/让私有库支持Cocoapods/1.png">
 
 
 
@@ -131,13 +138,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2014/04/25/Xcode-File-Templates-巧用/"/>
+  <link rel="canonical" href="http://yoursite.com/2017/05/30/让私有库支持Cocoapods/"/>
 
 
 
 
 
-  <title> Xcode File Templates 巧用 | AndyMu </title>
+  <title> 让私有库支持Cocoapods | AndyMu </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -288,7 +295,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-  <link itemprop="mainEntityOfPage" href="http://yoursite.com/2014/04/25/Xcode-File-Templates-巧用/">
+  <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/05/30/让私有库支持Cocoapods/">
 
   <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
     <meta itemprop="name" content="AndyMu">
@@ -312,7 +319,7 @@
             
             
               
-                Xcode File Templates 巧用
+                让私有库支持Cocoapods
               
             
           </h1>
@@ -325,8 +332,8 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2014-04-25T23:52:14+08:00">
-                2014-04-25
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-05-30T23:19:49+08:00">
+                2017-05-30
               </time>
             
 
@@ -341,8 +348,8 @@
             
               <span class="post-comments-count">
                 <span class="post-meta-divider">|</span>
-                <a href="/2014/04/25/Xcode-File-Templates-巧用/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2014/04/25/Xcode-File-Templates-巧用/" itemprop="commentCount"></span>
+                <a href="/2017/05/30/让私有库支持Cocoapods/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/05/30/让私有库支持Cocoapods/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -368,28 +375,20 @@
       
 
       
-        <h2 id="什么是-File-Templates"><a href="#什么是-File-Templates" class="headerlink" title="什么是 File Templates?"></a>什么是 File Templates?</h2><hr>
-<p>说File Templates 可能很多人不知道是什么，但是如果说Cocoa Touch Class大家应该就不陌生了，作为一名iOS开发者，我们无时无刻不在使用Xcode,不在创建新的NSObject、UIViewController、xib、storyboard等文件。我们在创建这些文件的时候Xcode会自动帮我们集成一套模板。</p>
-<p><strong>系统模板路径(xcode(8.2.1)可能不同版本路径不一样)</strong>  </p>
-<pre><code>/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/Library/Xcode/Templates/File Templates/Source
-</code></pre><p><strong>其实File Templates下文件和Xcode-&gt;new-&gt;file 是对应的如图:</strong><br><img src="/2014/04/25/Xcode-File-Templates-巧用/1.png" alt="1"><br><img src="/2014/04/25/Xcode-File-Templates-巧用/2.png" alt="2"></p>
-<h2 id="Template文件夹"><a href="#Template文件夹" class="headerlink" title=".Template文件夹"></a>.Template文件夹</h2><hr>
-<blockquote>
-<p>模版文件夹：里面包含<code>___FILEBASENAME___.h</code>、<code>___FILEBASENAME___.m</code> 、<code>___FILEBASENAME___.xib</code>、<code>___FILEBASENAME___.swift</code>、<code>___FILEBASENAME___.xib</code>等文件。<br>TemplateIcon.png：模版显示的图片。<br>TemplateInfo.plist：模版的配置信息。</p>
-</blockquote>
-<h2 id="TemplateInfo-plist"><a href="#TemplateInfo-plist" class="headerlink" title="TemplateInfo.plist"></a>TemplateInfo.plist</h2><hr>
-<p><img src="/2014/04/25/Xcode-File-Templates-巧用/3.png" alt="3"></p>
-<blockquote>
-<p>SortOrder 模板在界面中的位置<br>Options 创建file的四个选项  </p>
-<blockquote>
-<p>Item 1 -&gt; Default： 默认显示Class<br>Item 1 -&gt; FallbackHeader： 默认.h导入的头文件<br>Item 1 -&gt; Values： 模板的名称<br>Item 1 -&gt; Suffixes： 创建相应模板的默认名称<br>Item 2 -&gt; RequiredOptions -&gt; cocoaSubclass：是否支持选择 xib；</p>
-</blockquote>
-</blockquote>
-<h2 id="常用编译器定义的宏"><a href="#常用编译器定义的宏" class="headerlink" title="常用编译器定义的宏"></a>常用编译器定义的宏</h2><hr>
-<blockquote>
-<p>DATE：标识当前时间；<br>FILENAME：带文件后缀的全名；<br>FILEBASENAME：不带文件后缀的名字；<br>FULLUSERNAME：当前的用户名；<br>PROJECTNAME：工程名字；<br>FILEBASENAMEASIDENTIFIER： VC类名称；<br>IMPORTHEADER_cocoaSubclass： 导入的头文件。   </p>
-</blockquote>
-<h5 id="到此自己可以自定义自己的模板了"><a href="#到此自己可以自定义自己的模板了" class="headerlink" title="到此自己可以自定义自己的模板了!!!"></a>到此自己可以自定义自己的模板了!!!</h5><hr>
+        <h3 id="将私有库上传仓库并打tag"><a href="#将私有库上传仓库并打tag" class="headerlink" title="将私有库上传仓库并打tag"></a>将私有库上传仓库并打<code>tag</code></h3><hr>
+<p>将自己的私有库代码上传到github，并打tag。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">1.这里不一定是gitbub,也可以是私有的git仓库。</div><div class="line">2.cocoapods是依赖tag版本的,所以必须打tag,以后再次更新只需打一个tag。</div><div class="line">3.创建LICENSE(许可证/授权)文件,此文件必须要有。</div></pre></td></tr></table></figure>
+<h3 id="创建-podspec"><a href="#创建-podspec" class="headerlink" title="创建.podspec"></a>创建<code>.podspec</code></h3><hr>
+<p>cd到你要创建<code>.podspec</code>文件的目录<br><code>pod spec create MZHBaiduMobStat</code></p>
+<h3 id="编辑-podspec"><a href="#编辑-podspec" class="headerlink" title="编辑.podspec"></a>编辑<code>.podspec</code></h3><hr>
+<p>创建的default的<code>.podspec</code>文件，里面有充足的注释，可以根据自己的需求做相应修改。<a href="https://guides.cocoapods.org/syntax/podspec.html" target="_blank" rel="external">官方介绍</a><br><img src="/2017/05/30/让私有库支持Cocoapods/1.png" alt="1"></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">1.注意license、source、source_files、public_header_files、resource_bundles、vendored_libraries的路径否正确。</div><div class="line">2.需要注意，依赖项不仅要包含你自己类库的依赖，还要包括所有第三方类库的依赖，只有这样当你的类库打包成.a或.framework时才能让其他项目正常使用。</div></pre></td></tr></table></figure>
+<h3 id="验证-podspec"><a href="#验证-podspec" class="headerlink" title="验证.podspec"></a>验证<code>.podspec</code></h3><hr>
+<p>检查一下你工程下面的文件，你的项目、<code>.podspec</code>文件、<code>LICENSE</code>文件。验证会先测试本地<code>.podspec</code>文件是否存在语法错误.<br><code>pod spec lint MZHBaiduMobStat.podspec</code><br><img src="/2017/05/30/让私有库支持Cocoapods/2.png" alt="2"></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">1.--allow-warnings 忽略一些警告</div><div class="line">2.--verbose 可以看到详细的信息</div><div class="line">3.这个过程可能会出现错误信息,不过一般看提示修改即可。</div></pre></td></tr></table></figure>
+<h3 id="利用pod-trunk发布程序"><a href="#利用pod-trunk发布程序" class="headerlink" title="利用pod trunk发布程序"></a>利用pod trunk发布程序</h3><hr>
+<p>首先可以查看自己是否注册过trunk，若没有注册需要注册后使用。<br>1.查看自己是否注册过<br><code>pod trunk me</code><br>2.注册<br><code>pod trunk register muzhenhua0601@163.com &quot;AndyMu&quot; --verbose</code><br>3.注册成功<br><img src="/2017/05/30/让私有库支持Cocoapods/3.png" alt="3"><br>4.发布<br>发布时会验证<code>podspec</code>的有效性，如果你在手动验证<code>podspec</code>时使用了<code>--allow-warnings</code>等修饰符，那么发布的时候也应该使用相同的字段修饰，否则出现相同的报错。<br><code>pod trunk push MZHBaiduMobStat.podspec</code><br><img src="/2017/05/30/让私有库支持Cocoapods/4.png" alt="4"><br>5.验证<br><code>pod search MZHBaiduMobStat</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">1.trunk需要CocoaPods 0.33版本以上。</div><div class="line">2.注册完成之后会给你的邮箱发个激活邮件，需要激活下。</div><div class="line">3.注册trunk的时候可能比较慢，可以挂代理注册。并且注册完后，许要等2、3分支才查看到结果。</div><div class="line">4.在验证的时候，可能已经发布成功了但是搜不到，需要</div><div class="line">pod setup : 初始化</div><div class="line">pod repo update : 更新仓库</div><div class="line">5.如果第4步不生效，可以删除~/Library/Caches/CocoaPods目录下的search_index.json文件</div></pre></td></tr></table></figure>
 
       
     </div>
@@ -437,15 +436,15 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
+              <a href="/2017/05/29/SDK开发简介/" rel="next" title="SDK开发简介">
+                <i class="fa fa-chevron-left"></i> SDK开发简介
+              </a>
+            
           </div>
 
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2014/06/05/Effective-Objecive-C-2-0-读书笔记（一）/" rel="prev" title="Effective-Objecive-C-2-0-读书笔记（一）">
-                Effective-Objecive-C-2-0-读书笔记（一） <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -471,8 +470,8 @@
           
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2014/04/25/Xcode-File-Templates-巧用/"
-           data-title="Xcode File Templates 巧用" data-url="http://yoursite.com/2014/04/25/Xcode-File-Templates-巧用/">
+      <div class="ds-thread" data-thread-key="2017/05/30/让私有库支持Cocoapods/"
+           data-title="让私有库支持Cocoapods" data-url="http://yoursite.com/2017/05/30/让私有库支持Cocoapods/">
       </div>
     
   </div>
@@ -575,7 +574,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是-File-Templates"><span class="nav-number">1.</span> <span class="nav-text">什么是 File Templates?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Template文件夹"><span class="nav-number">2.</span> <span class="nav-text">.Template文件夹</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TemplateInfo-plist"><span class="nav-number">3.</span> <span class="nav-text">TemplateInfo.plist</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#常用编译器定义的宏"><span class="nav-number">4.</span> <span class="nav-text">常用编译器定义的宏</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#到此自己可以自定义自己的模板了"><span class="nav-number">4.0.0.1.</span> <span class="nav-text">到此自己可以自定义自己的模板了!!!</span></a></li></ol></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#将私有库上传仓库并打tag"><span class="nav-number">1.</span> <span class="nav-text">将私有库上传仓库并打tag</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建-podspec"><span class="nav-number">2.</span> <span class="nav-text">创建.podspec</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#编辑-podspec"><span class="nav-number">3.</span> <span class="nav-text">编辑.podspec</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#验证-podspec"><span class="nav-number">4.</span> <span class="nav-text">验证.podspec</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#利用pod-trunk发布程序"><span class="nav-number">5.</span> <span class="nav-text">利用pod trunk发布程序</span></a></li></ol></div>
             
 
           </div>
