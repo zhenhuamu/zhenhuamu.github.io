@@ -1,0 +1,821 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="前言
+碎片化时间是移动设备用户在使用应用时的一大特点，用户希望随时拿起手机就能查看资讯，处理事务，而通知可以在重要的事件和信息发生时提醒用户。完美的通知展示可以很好地帮助用户使用应用，体现出应用的价值，进而有很大可能将用户带回应用，提高活跃度。正因如此，不论是 Apple 还是第三方开发者们，都很重视通知相关的开发工作，而通知也成为了很多应用的必备功能，开发者们都希望通知能带来更好地体验和更多的用">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Notification历史和现状">
+<meta property="og:url" content="http://yoursite.com/2016/10/17/Notification历史和现状/index.html">
+<meta property="og:site_name" content="AndyMu">
+<meta property="og:description" content="前言
+碎片化时间是移动设备用户在使用应用时的一大特点，用户希望随时拿起手机就能查看资讯，处理事务，而通知可以在重要的事件和信息发生时提醒用户。完美的通知展示可以很好地帮助用户使用应用，体现出应用的价值，进而有很大可能将用户带回应用，提高活跃度。正因如此，不论是 Apple 还是第三方开发者们，都很重视通知相关的开发工作，而通知也成为了很多应用的必备功能，开发者们都希望通知能带来更好地体验和更多的用">
+<meta property="og:image" content="http://yoursite.com/2016/10/17/Notification历史和现状/2.png">
+<meta property="og:image" content="http://yoursite.com/2016/10/17/Notification历史和现状/1.png">
+<meta property="og:updated_time" content="2017-06-17T12:19:24.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Notification历史和现状">
+<meta name="twitter:description" content="前言
+碎片化时间是移动设备用户在使用应用时的一大特点，用户希望随时拿起手机就能查看资讯，处理事务，而通知可以在重要的事件和信息发生时提醒用户。完美的通知展示可以很好地帮助用户使用应用，体现出应用的价值，进而有很大可能将用户带回应用，提高活跃度。正因如此，不论是 Apple 还是第三方开发者们，都很重视通知相关的开发工作，而通知也成为了很多应用的必备功能，开发者们都希望通知能带来更好地体验和更多的用">
+<meta name="twitter:image" content="http://yoursite.com/2016/10/17/Notification历史和现状/2.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"hide"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/10/17/Notification历史和现状/"/>
+
+
+
+
+
+  <title> Notification历史和现状 | AndyMu </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?2f238e42b6a0fb6febddb7c69e4d1198";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">AndyMu</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/10/17/Notification历史和现状/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="AndyMu">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/images/avatar.png">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="AndyMu">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="AndyMu" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Notification历史和现状
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-10-17T20:16:12+08:00">
+                2016-10-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <a href="/2016/10/17/Notification历史和现状/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/10/17/Notification历史和现状/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><hr>
+<p>碎片化时间是移动设备用户在使用应用时的一大特点，用户希望随时拿起手机就能查看资讯，处理事务，而通知可以在重要的事件和信息发生时提醒用户。完美的通知展示可以很好地帮助用户使用应用，体现出应用的价值，进而有很大可能将用户带回应用，提高活跃度。正因如此，不论是 Apple 还是第三方开发者们，都很重视通知相关的开发工作，而通知也成为了很多应用的必备功能，开发者们都希望通知能带来更好地体验和更多的用户。<br>–来自<strong>onevcat</strong></p>
+<h1 id="发展历程"><a href="#发展历程" class="headerlink" title="发展历程"></a>发展历程</h1><hr>
+<ul>
+<li>iOS 3 - 引入推送通知<code>UIApplication</code>的 <code>registerForRemoteNotificationTypes</code>与<code>UIApplicationDelegate</code>的 <code>application(_:didRegisterForRemoteNotificationsWithDeviceToken:)</code>，<code>application(_:didReceiveRemoteNotification:)</code></li>
+<li>iOS 4 - 引入本地通知<code>scheduleLocalNotification</code>，<code>presentLocalNotificationNow:</code>， <code>application(_:didReceiveLocalNotification:)</code></li>
+<li>iOS 5 - 加入通知中心页面</li>
+<li>iOS 6 - 通知中心页面与 iCloud 同步</li>
+<li>iOS 7 - 后台静默推送<code>application(_:didReceiveRemoteNotification:fetchCompletionHandle:)</code></li>
+<li>iOS 8 - 重新设计<code>notification</code>权限请求，<code>Actionable</code>通知<code>registerUserNotificationSettings(_:)</code>，<code>UIUserNotificationAction</code>与<code>UIUserNotificationCategory</code>，<code>application(_:handleActionWithIdentifier:forRemoteNotification:completionHandler:)</code>等</li>
+<li>iOS 9 - Text Input action，基于HTTP/2的推送请求<code>UIUserNotificationActionBehavior</code>，全新的Provider API等  </li>
+</ul>
+<p>–来自<strong>onevcat</strong></p>
+<h1 id="代码现状"><a href="#代码现状" class="headerlink" title="代码现状"></a>代码现状</h1><hr>
+<p>这里推荐一个<a href="https://github.com/KnuffApp/Knuff" target="_blank" rel="external">推送测试工具</a>。</p>
+<h3 id="注册"><a href="#注册" class="headerlink" title="注册"></a>注册</h3><ul>
+<li>iOS7~iOS8</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">UIRemoteNotificationType remoteNotiType =</div><div class="line">        UIRemoteNotificationTypeBadge |</div><div class="line">        UIRemoteNotificationTypeSound |</div><div class="line">        UIRemoteNotificationTypeAlert;</div><div class="line">[application registerForRemoteNotificationTypes:remoteNotiType];</div></pre></td></tr></table></figure>
+<ul>
+<li>iOS8~iOS10</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">UIUserNotificationType userNotiType =</div><div class="line">        UIUserNotificationTypeBadge |</div><div class="line">        UIUserNotificationTypeSound |</div><div class="line">        UIUserNotificationTypeAlert;</div><div class="line">UIUserNotificationSettings *mySettings = [UIUserNotificationSettings settingsForTypes:userNotiType categories:nil];</div><div class="line">[application registerUserNotificationSettings:mySettings];</div><div class="line">[application registerForRemoteNotifications];</div><div class="line"></div><div class="line">//另一种方式也可以在这个回调方法中注册</div><div class="line">- (void)application:(UIApplication *)application didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSettings &#123;</div><div class="line">    //注册远程通知</div><div class="line">    [application registerForRemoteNotifications];</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>iOS10~…</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];</div><div class="line">center.delegate = self;</div><div class="line">[center requestAuthorizationWithOptions:</div><div class="line">            UNAuthorizationOptionAlert | </div><div class="line">            UNAuthorizationOptionBadge |</div><div class="line">            UNAuthorizationOptionSound</div><div class="line">                      completionHandler:^(BOOL granted, NSError * _Nullable error) &#123;</div><div class="line">&#125;];</div><div class="line">[application registerForRemoteNotifications];</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">注意:</div><div class="line">1.注册是进行本地推送和远程推送的必备条件</div><div class="line">2.本地推送和远程推送是同一个注册方法</div></pre></td></tr></table></figure>
+<h3 id="发送推送通知"><a href="#发送推送通知" class="headerlink" title="发送推送通知"></a>发送推送通知</h3><p>远程推送需要自己后台发送，此处省略,着重讲下本地推送。</p>
+<ul>
+<li>iOS4~iOS10</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">UILocalNotification *localNoti = [[UILocalNotification alloc] init];</div><div class="line">localNoti.fireDate = [NSDate dateWithTimeIntervalSinceNow:3];</div><div class="line">localNoti.timeZone = [NSTimeZone defaultTimeZone];</div><div class="line">localNoti.soundName = UILocalNotificationDefaultSoundName;</div><div class="line">localNoti.alertBody = @&quot;notification&quot;;        </div><div class="line">[application scheduleLocalNotification:localNoti];</div></pre></td></tr></table></figure>
+<ul>
+<li>iOS10~…</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">UNMutableNotificationContent *content = [[UNMutableNotificationContent alloc] init];</div><div class="line">content.title = @&quot;title&quot;;</div><div class="line">content.subtitle = @&quot;subtitle&quot;;</div><div class="line">content.body = @&quot;notification&quot;;</div><div class="line">content.sound = [UNNotificationSound defaultSound];</div><div class="line">UNTimeIntervalNotificationTrigger *trigger = [UNTimeIntervalNotificationTrigger triggerWithTimeInterval:3 repeats:NO];</div><div class="line">UNNotificationRequest *request = [UNNotificationRequest requestWithIdentifier:@&quot;notification1&quot; content:content trigger:trigger];</div><div class="line">[[UNUserNotificationCenter currentNotificationCenter] addNotificationRequest:request withCompletionHandler:^(NSError * _Nullable error) &#123;</div><div class="line">        &#125;];</div></pre></td></tr></table></figure>
+<h3 id="接收推送通知-本地推送"><a href="#接收推送通知-本地推送" class="headerlink" title="接收推送通知(本地推送)"></a>接收推送通知(本地推送)</h3><p><strong>应用处于退出状态</strong>  </p>
+<ul>
+<li>iOS4~…</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions &#123;</div><div class="line">    UILocalNotification *localNotification = [launchOptions valueForKeyPath:UIApplicationLaunchOptionsLocalNotificationKey];</div><div class="line">    if (localNotification) &#123;</div><div class="line">    &#125;</div><div class="line">    return YES;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><strong>应用处于前台、后台状态</strong>  </p>
+<ul>
+<li>iOS4~iOS10</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">- (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification &#123;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>iOS10~…</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">- (void)userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void (^)())completionHandler &#123;</div><div class="line">    // 判断当前通知类型</div><div class="line">    if ([[[[response notification] request] trigger] isKindOfClass:[UNPushNotificationTrigger class]]) &#123;</div><div class="line">        </div><div class="line">    &#125;</div><div class="line">    else &#123;</div><div class="line">        [self handleReceiveLocalNotification:[response notification]];</div><div class="line">    &#125;</div><div class="line">    completionHandler();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="接收推送通知-远程推送"><a href="#接收推送通知-远程推送" class="headerlink" title="接收推送通知(远程推送)"></a>接收推送通知(远程推送)</h3><p><strong>应用处于退出状态</strong>  </p>
+<ul>
+<li>iOS3~…</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions &#123;</div><div class="line">    UILocalNotification *localNotification = [launchOptions valueForKeyPath:UIApplicationLaunchOptionsRemoteNotificationKey];</div><div class="line">    if (localNotification) &#123;</div><div class="line">    &#125;</div><div class="line">    return YES;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><strong>应用处于前台、后台状态</strong>  </p>
+<ul>
+<li>iOS3~iOS10</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo &#123;</div><div class="line">    if (application.applicationState == UIApplicationStateActive) &#123;</div><div class="line">        //处理app在前台收到的消息推送</div><div class="line">    &#125;else if (application.applicationState == UIApplicationStateInactive) &#123;</div><div class="line">        //处理app在后台收到的消息推送</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>iOS10~…</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">// APP处于前台接收到通知触发</div><div class="line">- (void)userNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)notification withCompletionHandler:(void (^)(UNNotificationPresentationOptions))completionHandler &#123;</div><div class="line">// 需要执行这个方法，选择是否提醒用户，有Badge、Sound、Alert三种类型可以选择设置      </div><div class="line">completionHandler(UNNotificationPresentationOptionSound | UNNotificationPresentationOptionAlert | UNNotificationPresentationOptionBadge);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">// APP处于后台通过点击通知栏直接触发</div><div class="line">- (void)userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void (^)())completionHandler &#123;</div><div class="line">    // 判断当前通知类型</div><div class="line">    if ([[[[response notification] request] trigger] isKindOfClass:[UNPushNotificationTrigger class]]) &#123;</div><div class="line">        </div><div class="line">    &#125;</div><div class="line">    else &#123;</div><div class="line">        [self handleReceiveLocalNotification:[response notification]];</div><div class="line">    &#125;</div><div class="line">    completionHandler();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>用户可以通过下面这个图，在这个方法中写入相关的处理逻辑。<br><img src="/2016/10/17/Notification历史和现状/2.png" alt="2"></p>
+<h3 id="静默推送"><a href="#静默推送" class="headerlink" title="静默推送"></a>静默推送</h3><p>iOS 7在推送方面最大的变化就是允许，应用收到通知后在后台（background）状态下运行一段代码，可用于从服务器获取内容更新。功能使用场景：（多媒体）聊天，Email更新，基于通知的订阅内容同步等功能，提升了终端用户的体验。<br>如果只携带content-available: 1 不携带任何badge，sound 和消息内容等参数，则可以不打扰用户的情况下进行内容更新等操作即为“Silent Remote Notifications”。<br><strong>客户端设置开启Remote notifications</strong><br><img src="/2016/10/17/Notification历史和现状/1.png" alt="1"><br><strong>接收推送通知</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(nonnull void (^)(UIBackgroundFetchResult))completionHandler&#123;</div><div class="line">    </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">注意</div><div class="line">1.“Silent Remote Notifications”是在 Apple 的限制下有一定的频率控制，但具体频率不详。所以并不是所有的 “Silent Remote Notifications” 都能按照预期到达客户端触发函数。</div><div class="line">2.“Background”下提供给应用的运行时间窗是有限制的，如果需要下载较大的文件请参考 Apple 的 NSURLSession 的介绍。</div><div class="line">3.“Background Remote Notification” 的前提是要求客户端处于Background 或 Suspended 状态，如果用户通过 App Switcher 将应用从后台 Kill 掉应用将不会唤醒应用处理 background 代码。</div></pre></td></tr></table></figure>
+<p>这里涉及到iOS的多任务，感兴趣的同学可以去了解<a href="https://objccn.io/issue-5-5/" target="_blank" rel="external">iOS7的多任务</a></p>
+<h3 id="UIUserNotificationSettings"><a href="#UIUserNotificationSettings" class="headerlink" title="UIUserNotificationSettings"></a>UIUserNotificationSettings</h3><ul>
+<li>iOS 8在原本的推送type的基础上，增加了一个categories参数，这个参数的目的是用来注册一组和通知关联起来的button的事件。</li>
+<li>这个<code>categories</code>由一系列的<code>UIUserNotificationCategory</code>组成。每个<code>UIUserNotificationCategory</code>对象包含你的app用来响应本地或者远程通知的信息。</li>
+</ul>
+<p><strong>设置Category</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line">UIUserNotificationType userNotiType =</div><div class="line">   UIUserNotificationTypeBadge |</div><div class="line">   UIUserNotificationTypeSound |</div><div class="line">   UIUserNotificationTypeAlert;</div><div class="line">        </div><div class="line">//创建Category1</div><div class="line">UIMutableUserNotificationAction * action1 = [[UIMutableUserNotificationAction alloc] init];</div><div class="line">action1.identifier = @&quot;action1&quot;;</div><div class="line">action1.title=@&quot;策略1行为1&quot;;</div><div class="line">action1.activationMode = UIUserNotificationActivationModeForeground;</div><div class="line">action1.destructive = YES;</div><div class="line">        </div><div class="line">UIMutableUserNotificationCategory * category1 = [[UIMutableUserNotificationCategory alloc] init];</div><div class="line">category1.identifier = @&quot;Category1&quot;;</div><div class="line">[category1 setActions:@[action1] forContext:(UIUserNotificationActionContextDefault)];</div><div class="line">        </div><div class="line">//创建Category2</div><div class="line">UIMutableUserNotificationAction * action2 = [[UIMutableUserNotificationAction alloc] init];</div><div class="line">action2.identifier = @&quot;action2&quot;;</div><div class="line">action2.title=@&quot;策略2行为1&quot;;</div><div class="line">action2.activationMode = UIUserNotificationActivationModeForeground;</div><div class="line">action2.destructive = YES;</div><div class="line">        </div><div class="line">UIMutableUserNotificationCategory * category2 = [[UIMutableUserNotificationCategory alloc] init];</div><div class="line">category2.identifier = @&quot;Category2&quot;;</div><div class="line">[category2 setActions:@[action2] forContext:(UIUserNotificationActionContextDefault)];</div><div class="line">        </div><div class="line">UIUserNotificationSettings *mySettings = [UIUserNotificationSettings settingsForTypes:userNotiType categories:[NSSet setWithObjects: category1,category2, nil]];</div><div class="line">[application registerUserNotificationSettings:mySettings];</div><div class="line">[application registerForRemoteNotifications];</div></pre></td></tr></table></figure>
+<p><strong>回调函数</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">- (void)application:(UIApplication *)application handleActionWithIdentifier:(nullable NSString *)identifier forRemoteNotification:(nonnull NSDictionary *)userInfo completionHandler:(nonnull void (^)())completionHandler&#123;</div><div class="line">    </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><strong>服务器设置</strong><br>服务端payload格式:aps增加category字段，当该字段与客户端UIMutableUserNotificationCategory的identifier匹配时，触发设定的action和button显示。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&#123;&quot;aps&quot;:&#123;&quot;alert&quot;:&quot;example&quot;, &quot;sound&quot;:&quot;default&quot;, &quot;badge&quot;: 1, &quot;category&quot;:&quot;identifier&quot;&#125;&#125;</div></pre></td></tr></table></figure>
+<h3 id="UIUserNotificationActionBehaviorTextInput"><a href="#UIUserNotificationActionBehaviorTextInput" class="headerlink" title="UIUserNotificationActionBehaviorTextInput"></a>UIUserNotificationActionBehaviorTextInput</h3><p>iOS9在原有的UIMutableUserNotificationAction类型增加了Text输入类型(UIUserNotificationActionBehaviorTextInput),通过behavior来设置。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">UIMutableUserNotificationAction *replyAction = [[UIMutableUserNotificationAction alloc]init];</div><div class="line">replyAction.title = @&quot;Reply&quot;;</div><div class="line">replyAction.identifier = @&quot;comment-reply&quot;;</div><div class="line">replyAction.activationMode = UIUserNotificationActivationModeBackground;</div><div class="line">replyAction.behavior = UIUserNotificationActionBehaviorTextInput;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">注意点</div><div class="line">1.当`Action`为`UIUserNotificationActionBehaviorTextInput`时,需要通过`responseInfo`的`UIUserNotificationActionResponseTypedTextKey`来获取输入的文字内容,`UIUserNotificationTextInputActionButtonTitleKey`获取点击的按钮类型.</div></pre></td></tr></table></figure>
+<h3 id="User-Notification-Framework"><a href="#User-Notification-Framework" class="headerlink" title="User Notification Framework"></a>User Notification Framework</h3><p><strong>获取用户详细的授权相关</strong> </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[[UNUserNotificationCenter currentNotificationCenter] getNotificationSettingsWithCompletionHandler:^(UNNotificationSettings * _Nonnull settings) &#123;</div><div class="line">        </div><div class="line">&#125;];</div></pre></td></tr></table></figure>
+<p><strong>Content</strong> </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">UNMutableNotificationContent *content = [[UNMutableNotificationContent alloc] init];</div><div class="line">content.title = @&quot;title&quot;;</div><div class="line">content.subtitle = @&quot;subtitle&quot;;</div><div class="line">content.body = @&quot;notification&quot;;</div><div class="line">        </div><div class="line">&#123;</div><div class="line">&quot;aps&quot; : &#123;</div><div class="line">    &quot;alert&quot; : &#123; </div><div class="line">         &quot;title&quot; : &quot;Introduction to Notifications&quot;, </div><div class="line">         &quot;subtitle&quot; : &quot;Session 707&quot;,         </div><div class="line">         &quot;body&quot; : &quot;Woah! These new notifications look amazing! Don’t you agree?&quot;</div><div class="line">                &#125;,</div><div class="line">    &quot;badge&quot; : 1</div><div class="line">        &#125;,</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><strong>Notification Management</strong>  </p>
+<ul>
+<li>Local Notification 通过更新request在id不变的情况下重新添加，就可以刷新原有的推送</li>
+<li>Remote Notification 通过新的字段 apns-collapse-id</li>
+<li>删除计划的推送</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">- (void)removePendingNotificationRequestsWithIdentifiers:(NSArray&lt;NSString *&gt; *)identifiers;</div><div class="line">- (void)removeAllPendingNotificationRequests;</div><div class="line">- (void)removeDeliveredNotificationsWithIdentifiers:(NSArray&lt;NSString *&gt; *)identifiers __TVOS_PROHIBITED;</div><div class="line">- (void)removeAllDeliveredNotifications __TVOS_PROHIBITED;</div></pre></td></tr></table></figure>
+<ul>
+<li>获取已发送的推送</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">- (void)getPendingNotificationRequestsWithCompletionHandler:(void(^)(NSArray&lt;UNNotificationRequest *&gt; *requests))completionHandler;</div><div class="line">- (void)getDeliveredNotificationsWithCompletionHandler:(void(^)(NSArray&lt;UNNotification *&gt; *notifications))completionHandler __TVOS_PROHIBITED;</div></pre></td></tr></table></figure>
+<p><strong>Notification Actions</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">UNNotificationAction *action1 = [UNNotificationAction actionWithIdentifier:@&quot;action1&quot; title:@&quot;打开应用&quot; options:UNNotificationActionOptionForeground];</div><div class="line">UNNotificationAction *action2 = [UNNotificationAction actionWithIdentifier:@&quot;action1&quot; title:@&quot;什么都不做&quot; options:UNNotificationActionOptionDestructive];</div><div class="line">        </div><div class="line">// 创建category</div><div class="line">UNNotificationCategory *category = [UNNotificationCategory categoryWithIdentifier:@&quot;category1&quot; actions:@[action1, action2] intentIdentifiers:@[] options:UNNotificationCategoryOptionNone];</div><div class="line"></div><div class="line">// 添加category</div><div class="line">[[UNUserNotificationCenter currentNotificationCenter] setNotificationCategories:[NSSet setWithArray:@[category]]];</div></pre></td></tr></table></figure>
+<p>触发方式就是<code>&quot;category&quot;:&quot;category1&quot;</code><br>点击Action的回调看上面的接收推送通知(远程推送)部分</p>
+<h3 id="Service-Extension"><a href="#Service-Extension" class="headerlink" title="Service Extension"></a>Service Extension</h3><p>待续。。。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/images/wechat-reward-image.png" alt="AndyMu WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="/images/alipay-reward-image.png" alt="AndyMu Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/03/21/浅谈APP马甲/" rel="next" title="浅谈APP马甲">
+                <i class="fa fa-chevron-left"></i> 浅谈APP马甲
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/05/23/BuildSettings常用参数和Xcode常用变量/" rel="prev" title="BuildSettings常用参数和Xcode常用变量">
+                BuildSettings常用参数和Xcode常用变量 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/10/17/Notification历史和现状/"
+           data-title="Notification历史和现状" data-url="http://yoursite.com/2016/10/17/Notification历史和现状/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.png"
+               alt="AndyMu" />
+          <p class="site-author-name" itemprop="name">AndyMu</p>
+          <p class="site-description motion-element" itemprop="description">我是一只有点懒惰的小蚂蚁,为着自己的大米在码农的日子上渐行渐远。</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">13</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/zhenhuamu" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/u/2684149271" target="_blank" title="微博">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  微博
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#发展历程"><span class="nav-number">2.</span> <span class="nav-text">发展历程</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#代码现状"><span class="nav-number">3.</span> <span class="nav-text">代码现状</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#注册"><span class="nav-number">3.0.1.</span> <span class="nav-text">注册</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#发送推送通知"><span class="nav-number">3.0.2.</span> <span class="nav-text">发送推送通知</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#接收推送通知-本地推送"><span class="nav-number">3.0.3.</span> <span class="nav-text">接收推送通知(本地推送)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#接收推送通知-远程推送"><span class="nav-number">3.0.4.</span> <span class="nav-text">接收推送通知(远程推送)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#静默推送"><span class="nav-number">3.0.5.</span> <span class="nav-text">静默推送</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#UIUserNotificationSettings"><span class="nav-number">3.0.6.</span> <span class="nav-text">UIUserNotificationSettings</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#UIUserNotificationActionBehaviorTextInput"><span class="nav-number">3.0.7.</span> <span class="nav-text">UIUserNotificationActionBehaviorTextInput</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#User-Notification-Framework"><span class="nav-number">3.0.8.</span> <span class="nav-text">User Notification Framework</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Service-Extension"><span class="nav-number">3.0.9.</span> <span class="nav-text">Service Extension</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2013 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">AndyMu</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"zhenhuamu"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+</body>
+</html>
