@@ -85,25 +85,25 @@
 
 
 <meta name="description" content="转载来自–ObjC中国。
-–iOS 7 和 Mac OS X 10.9 Mavericks 中一个显著的变化就是对 Foundation URL 加载系统的彻底重构。  
-现在已经有人在深入苹果的网络层基础架构的地方做研究了，所以我想是时候来分享一些对于我对于这些新的 API 的看法和心得了，新的 API 将如何影响我们编写程序，以及它们对于 API 设计理念的影响。
-NSURLConnectio">
+
+iOS 7 和 Mac OS X 10.9 Mavericks 中一个显著的变化就是对 Foundation URL 加载系统的彻底重构。现在已经有人在深入苹果的网络层基础架构的地方做研究了，所以我想是时候来分享一些对于我对于这些新的 API 的看法和心得了，新的 API 将如何影响我们编写程序，以及它们对于 API 设计理念的影响。
+NSURLConnection作为">
 <meta property="og:type" content="article">
 <meta property="og:title" content="从NSURLConnection到NSURLSession">
 <meta property="og:url" content="http://yoursite.com/2014/08/24/从NSURLConnection到NSURLSession/index.html">
 <meta property="og:site_name" content="AndyMu">
 <meta property="og:description" content="转载来自–ObjC中国。
-–iOS 7 和 Mac OS X 10.9 Mavericks 中一个显著的变化就是对 Foundation URL 加载系统的彻底重构。  
-现在已经有人在深入苹果的网络层基础架构的地方做研究了，所以我想是时候来分享一些对于我对于这些新的 API 的看法和心得了，新的 API 将如何影响我们编写程序，以及它们对于 API 设计理念的影响。
-NSURLConnectio">
+
+iOS 7 和 Mac OS X 10.9 Mavericks 中一个显著的变化就是对 Foundation URL 加载系统的彻底重构。现在已经有人在深入苹果的网络层基础架构的地方做研究了，所以我想是时候来分享一些对于我对于这些新的 API 的看法和心得了，新的 API 将如何影响我们编写程序，以及它们对于 API 设计理念的影响。
+NSURLConnection作为">
 <meta property="og:image" content="http://yoursite.com/2014/08/24/从NSURLConnection到NSURLSession/1.png">
-<meta property="og:updated_time" content="2017-06-24T14:42:41.000Z">
+<meta property="og:updated_time" content="2017-06-24T14:45:05.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="从NSURLConnection到NSURLSession">
 <meta name="twitter:description" content="转载来自–ObjC中国。
-–iOS 7 和 Mac OS X 10.9 Mavericks 中一个显著的变化就是对 Foundation URL 加载系统的彻底重构。  
-现在已经有人在深入苹果的网络层基础架构的地方做研究了，所以我想是时候来分享一些对于我对于这些新的 API 的看法和心得了，新的 API 将如何影响我们编写程序，以及它们对于 API 设计理念的影响。
-NSURLConnectio">
+
+iOS 7 和 Mac OS X 10.9 Mavericks 中一个显著的变化就是对 Foundation URL 加载系统的彻底重构。现在已经有人在深入苹果的网络层基础架构的地方做研究了，所以我想是时候来分享一些对于我对于这些新的 API 的看法和心得了，新的 API 将如何影响我们编写程序，以及它们对于 API 设计理念的影响。
+NSURLConnection作为">
 <meta name="twitter:image" content="http://yoursite.com/2014/08/24/从NSURLConnection到NSURLSession/1.png">
 
 
@@ -370,8 +370,8 @@ NSURLConnectio">
 
       
         <p><a href="https://objccn.io/issue-5-4/" target="_blank" rel="external">转载来自–ObjC中国</a>。</p>
-<p>–<br>iOS 7 和 Mac OS X 10.9 Mavericks 中一个显著的变化就是对 Foundation URL 加载系统的彻底重构。  </p>
-<p>现在已经有人在深入苹果的网络层基础架构的地方做研究了，所以我想是时候来分享一些对于我对于这些新的 API 的看法和心得了，新的 API 将如何影响我们编写程序，以及它们对于 API 设计理念的影响。</p>
+<hr>
+<p>iOS 7 和 Mac OS X 10.9 Mavericks 中一个显著的变化就是对 Foundation URL 加载系统的彻底重构。<br>现在已经有人在深入苹果的网络层基础架构的地方做研究了，所以我想是时候来分享一些对于我对于这些新的 API 的看法和心得了，新的 API 将如何影响我们编写程序，以及它们对于 API 设计理念的影响。</p>
 <p><code>NSURLConnection</code>作为<code>Core Foundation</code>/<code>CFNetwork</code>框架的 API 之上的一个抽象，在 2003 年，随着第一版的 Safari 的发布就发布了。<code>NSURLConnection</code>这个名字，实际上是指代的<code>Foundation</code>框架的 URL 加载系统中一系列有关联的组件：<code>NSURLRequest</code>、<code>NSURLResponse</code>、<code>NSURLProtocol</code>、 <code>NSURLCache</code>、 <code>NSHTTPCookieStorage</code>、<code>NSURLCredentialStorage</code>以及同名类 <code>NSURLConnection</code>。</p>
 <p><code>NSURLRequest</code>被传递给<code>NSURLConnection</code>。被委托对象（遵守以前的非正式协议<code>&lt;NSURLConnectionDelegate&gt;</code>和 <code>&lt;NSURLConnectionDataDelegate&gt;</code>异步地返回一个 <code>NSURLResponse</code>以及包含服务器返回信息的<code>NSData</code>。</p>
 <p>在一个请求被发送到服务器之前，系统会先查询共享的缓存信息，然后根据<strong>策略（policy）</strong>以及<strong>可用性（availability）</strong>的不同，一个已经被缓存的响应可能会被立即返回。如果没有缓存的响应可用，则这个请求将根据我们指定的策略来缓存它的响应以便将来的请求可以使用。</p>
