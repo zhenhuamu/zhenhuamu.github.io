@@ -13,8 +13,17 @@
 
 
 
+
+
+
+
+
+
 <meta http-equiv="Cache-Control" content="no-transform" />
 <meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
 
 
 
@@ -49,13 +58,25 @@
   
 
   
+    
+      
+    
 
+    
+  
+
+  
+    
+      
+    
+
+    
   
 
   
     
     
-    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+    <link href="//fonts.googleapis.com/css?family=Spectral:300,300italic,400,400italic,700,700italic|Frijole:300,300italic,400,400italic,700,700italic|Copse:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
   
 
 
@@ -65,7 +86,7 @@
 
 <link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
 
-<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
 
 
   <meta name="keywords" content="Hexo, NexT" />
@@ -77,7 +98,7 @@
 
 
 
-  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
 
 
 
@@ -123,7 +144,7 @@ C语言函数调用，所调用的函数乃是消息传递机制中的核心函�
   var CONFIG = {
     root: '/',
     scheme: 'Mist',
-    sidebar: {"position":"left","display":"hide"},
+    sidebar: {"position":"left","display":"hide","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
     fancybox: true,
     motion: true,
     duoshuo: {
@@ -148,12 +169,10 @@ C语言函数调用，所调用的函数乃是消息传递机制中的核心函�
 
 
 
-  <title> Effective-Objecive-C-2-0-读书笔记（二） | AndyMu </title>
-</head>
-
-<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
-
+  <title>Effective-Objecive-C-2-0-读书笔记（二） | AndyMu</title>
   
+
+
 
 
 
@@ -161,7 +180,7 @@ C语言函数调用，所调用的函数乃是消息传递机制中的核心函�
     var _hmt = _hmt || [];
     (function() {
       var hm = document.createElement("script");
-      hm.src = "//hm.baidu.com/hm.js?2f238e42b6a0fb6febddb7c69e4d1198";
+      hm.src = "https://hm.baidu.com/hm.js?2f238e42b6a0fb6febddb7c69e4d1198";
       var s = document.getElementsByTagName("script")[0];
       s.parentNode.insertBefore(hm, s);
     })();
@@ -174,34 +193,44 @@ C语言函数调用，所调用的函数乃是消息传递机制中的核心函�
 
 
 
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
   
   
     
   
 
-  <div class="container one-collumn sidebar-position-left page-post-detail ">
+  <div class="container sidebar-position-left page-post-detail ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-meta ">
-  
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
 
-  <div class="custom-logo-site-title">
-    <a href="/"  class="brand" rel="start">
-      <span class="logo-line-before"><i></i></span>
-      <span class="site-title">AndyMu</span>
-      <span class="logo-line-after"><i></i></span>
-    </a>
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">AndyMu</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
   </div>
-  <p class="site-subtitle"></p>
-</div>
 
-<div class="site-nav-toggle">
-  <button>
-    <span class="btn-bar"></span>
-    <span class="btn-bar"></span>
-    <span class="btn-bar"></span>
-  </button>
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
 </div>
 
 <nav class="site-nav">
@@ -222,7 +251,7 @@ C语言函数调用，所调用的函数乃是消息传递机制中的核心函�
       
         
         <li class="menu-item menu-item-archives">
-          <a href="/archives" rel="section">
+          <a href="/archives/" rel="section">
             
               <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
             
@@ -232,7 +261,7 @@ C语言函数调用，所调用的函数乃是消息传递机制中的核心函�
       
         
         <li class="menu-item menu-item-categories">
-          <a href="/categories" rel="section">
+          <a href="/categories/" rel="section">
             
               <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
             
@@ -242,7 +271,7 @@ C语言函数调用，所调用的函数乃是消息传递机制中的核心函�
       
         
         <li class="menu-item menu-item-tags">
-          <a href="/tags" rel="section">
+          <a href="/tags/" rel="section">
             
               <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
             
@@ -252,7 +281,7 @@ C语言函数调用，所调用的函数乃是消息传递机制中的核心函�
       
         
         <li class="menu-item menu-item-about">
-          <a href="/about" rel="section">
+          <a href="/about/" rel="section">
             
               <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
             
@@ -299,34 +328,24 @@ C语言函数调用，所调用的函数乃是消息传递机制中的核心函�
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-  <link itemprop="mainEntityOfPage" href="http://yoursite.com/2014/06/16/Effective-Objecive-C-2-0-读书笔记（二）/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2014/06/16/Effective-Objecive-C-2-0-读书笔记（二）/">
 
-  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
-    <meta itemprop="name" content="AndyMu">
-    <meta itemprop="description" content="">
-    <meta itemprop="image" content="/images/avatar.png">
-  </span>
-
-  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-    <meta itemprop="name" content="AndyMu">
-    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
-      <img style="display:none;" itemprop="url image" alt="AndyMu" src="">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="AndyMu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
     </span>
-  </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="AndyMu">
+    </span>
 
     
       <header class="post-header">
 
         
         
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                Effective-Objecive-C-2-0-读书笔记（二）
-              
-            
-          </h1>
+          <h1 class="post-title" itemprop="name headline">Effective-Objecive-C-2-0-读书笔记（二）</h1>
         
 
         <div class="post-meta">
@@ -335,8 +354,10 @@ C语言函数调用，所调用的函数乃是消息传递机制中的核心函�
               <span class="post-meta-item-icon">
                 <i class="fa fa-calendar-o"></i>
               </span>
-              <span class="post-meta-item-text">发表于</span>
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2014-06-16T16:20:52+08:00">
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2014-06-16T16:20:52+08:00">
                 2014-06-16
               </time>
             
@@ -352,6 +373,9 @@ C语言函数调用，所调用的函数乃是消息传递机制中的核心函�
             
               <span class="post-comments-count">
                 <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
                 <a href="/2014/06/16/Effective-Objecive-C-2-0-读书笔记（二）/#comments" itemprop="discussionUrl">
                   <span class="post-comments-count ds-thread-count" data-thread-key="2014/06/16/Effective-Objecive-C-2-0-读书笔记（二）/" itemprop="commentCount"></span>
                 </a>
@@ -360,8 +384,8 @@ C语言函数调用，所调用的函数乃是消息传递机制中的核心函�
           
 
           
-
           
+
           
 
           
@@ -371,7 +395,6 @@ C语言函数调用，所调用的函数乃是消息传递机制中的核心函�
         </div>
       </header>
     
-
 
     <div class="post-body" itemprop="articleBody">
 
@@ -556,8 +579,18 @@ method_exchangeImplementations(originalMethod, swppedMethod);</code> </li>
       
     </div>
 
+    <div>
+      
+        
+
+      
+    </div>
 
     <footer class="post-footer">
+      
+
+      
+      
       
 
       
@@ -643,15 +676,20 @@ method_exchangeImplementations(originalMethod, swppedMethod);</code> </li>
                src="/images/avatar.png"
                alt="AndyMu" />
           <p class="site-author-name" itemprop="name">AndyMu</p>
-          <p class="site-description motion-element" itemprop="description">我是一只有点懒惰的小蚂蚁,为着自己的大米在码农的日子上渐行渐远。</p>
+           
+              <p class="site-description motion-element" itemprop="description">我是一只有点懒惰的小蚂蚁,为着自己的大米在码农的日子上渐行渐远。</p>
+          
         </div>
         <nav class="site-state motion-element">
-          <div class="site-state-item site-state-posts">
-            <a href="/archives">
-              <span class="site-state-item-count">14</span>
-              <span class="site-state-item-name">日志</span>
-            </a>
-          </div>
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">14</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
 
           
 
@@ -674,9 +712,9 @@ method_exchangeImplementations(originalMethod, swppedMethod);</code> </li>
               </span>
             
               <span class="links-of-author-item">
-                <a href="http://weibo.com/u/2684149271" target="_blank" title="微博">
+                <a href="http://weibo.com/2684149271/profile?topnav=1&wvr=6" target="_blank" title="微博">
                   
-                    <i class="fa fa-fw fa-weibo"></i>
+                    <i class="fa fa-fw fa-globe"></i>
                   
                   微博
                 </a>
@@ -714,6 +752,8 @@ method_exchangeImplementations(originalMethod, swppedMethod);</code> </li>
       <!--/noindex-->
       
 
+      
+
     </div>
   </aside>
 
@@ -726,7 +766,7 @@ method_exchangeImplementations(originalMethod, swppedMethod);</code> </li>
       <div class="footer-inner">
         <div class="copyright" >
   
-  &copy;  2013 - 
+  &copy;  2014 - 
   <span itemprop="copyrightYear">2017</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
@@ -753,9 +793,13 @@ method_exchangeImplementations(originalMethod, swppedMethod);</code> </li>
       </div>
     </footer>
 
-    <div class="back-to-top">
-      <i class="fa fa-arrow-up"></i>
-    </div>
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
   </div>
 
   
@@ -777,6 +821,17 @@ method_exchangeImplementations(originalMethod, swppedMethod);</code> </li>
   
 
 
+  
+
+
+
+
+
+
+
+
+
+
 
   
   <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
@@ -796,29 +851,32 @@ method_exchangeImplementations(originalMethod, swppedMethod);</code> </li>
   
   <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
 
-
   
-
-
-  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
-
-  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
-
-
-
-  
-  
-
-  
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
-<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
-
+  <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
 
 
   
 
 
-  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
 
 
 
@@ -855,8 +913,19 @@ method_exchangeImplementations(originalMethod, swppedMethod);</code> </li>
 
 
 
+
+
+
+
+
+
+
+
   
-  
+
+
+
+
 
   
 
@@ -866,6 +935,9 @@ method_exchangeImplementations(originalMethod, swppedMethod);</code> </li>
 
   
 
+  
+
+  
 
 </body>
 </html>
