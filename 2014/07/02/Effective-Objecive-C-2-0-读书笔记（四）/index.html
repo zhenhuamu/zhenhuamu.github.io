@@ -119,17 +119,17 @@
 对象在经历其生命期后，最终会为系统所回收，这时就要执行dealloc方法了。在每个对象的生命周期内，此方法仅执行一次，也就是当保留计数降为0的时候。
 在dealloc方法中，通常还要做一件事，那就是把原来配置过的观测行为都清理掉。如果用NSNotificationCenter给此对象订阅过某种通知，那么一般应该在这里注销。
 系统并不保证每个创建出">
-<meta property="og:image" content="http://yoursite.com/2014/07/02/Effective-Objecive-C-2-0-读书笔记（四）/1.png">
-<meta property="og:image" content="http://yoursite.com/2014/07/02/Effective-Objecive-C-2-0-读书笔记（四）/2.png">
-<meta property="og:image" content="http://yoursite.com/2014/07/02/Effective-Objecive-C-2-0-读书笔记（四）/3.png">
-<meta property="og:image" content="http://yoursite.com/2014/07/02/Effective-Objecive-C-2-0-读书笔记（四）/4.png">
-<meta property="og:image" content="http://yoursite.com/2014/07/02/Effective-Objecive-C-2-0-读书笔记（四）/5.png">
-<meta property="og:image" content="http://yoursite.com/2014/07/02/Effective-Objecive-C-2-0-读书笔记（四）/6.png">
-<meta property="og:image" content="http://yoursite.com/2014/07/02/Effective-Objecive-C-2-0-读书笔记（四）/7.png">
-<meta property="og:image" content="http://yoursite.com/2014/07/02/Effective-Objecive-C-2-0-读书笔记（四）/8.png">
-<meta property="og:image" content="http://yoursite.com/2014/07/02/Effective-Objecive-C-2-0-读书笔记（四）/9.png">
-<meta property="og:image" content="http://yoursite.com/2014/07/02/Effective-Objecive-C-2-0-读书笔记（四）/10.png">
-<meta property="og:updated_time" content="2017-04-23T11:48:11.000Z">
+<meta property="og:image" content="http://yoursite.com/2014/07/02/Effective-Objecive-C-2-0-读书笔记（四）/1.jpg">
+<meta property="og:image" content="http://yoursite.com/2014/07/02/Effective-Objecive-C-2-0-读书笔记（四）/2.jpg">
+<meta property="og:image" content="http://yoursite.com/2014/07/02/Effective-Objecive-C-2-0-读书笔记（四）/3.jpg">
+<meta property="og:image" content="http://yoursite.com/2014/07/02/Effective-Objecive-C-2-0-读书笔记（四）/4.jpg">
+<meta property="og:image" content="http://yoursite.com/2014/07/02/Effective-Objecive-C-2-0-读书笔记（四）/5.jpg">
+<meta property="og:image" content="http://yoursite.com/2014/07/02/Effective-Objecive-C-2-0-读书笔记（四）/6.jpg">
+<meta property="og:image" content="http://yoursite.com/2014/07/02/Effective-Objecive-C-2-0-读书笔记（四）/7.jpg">
+<meta property="og:image" content="http://yoursite.com/2014/07/02/Effective-Objecive-C-2-0-读书笔记（四）/8.jpg">
+<meta property="og:image" content="http://yoursite.com/2014/07/02/Effective-Objecive-C-2-0-读书笔记（四）/9.jpg">
+<meta property="og:image" content="http://yoursite.com/2014/07/02/Effective-Objecive-C-2-0-读书笔记（四）/10.jpg">
+<meta property="og:updated_time" content="2017-06-25T09:57:36.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Effective-Objecive-C-2-0-读书笔记（四）">
 <meta name="twitter:description" content="31.在dealloc方法中只释放引用并解除监听
@@ -137,7 +137,7 @@
 对象在经历其生命期后，最终会为系统所回收，这时就要执行dealloc方法了。在每个对象的生命周期内，此方法仅执行一次，也就是当保留计数降为0的时候。
 在dealloc方法中，通常还要做一件事，那就是把原来配置过的观测行为都清理掉。如果用NSNotificationCenter给此对象订阅过某种通知，那么一般应该在这里注销。
 系统并不保证每个创建出">
-<meta name="twitter:image" content="http://yoursite.com/2014/07/02/Effective-Objecive-C-2-0-读书笔记（四）/1.png">
+<meta name="twitter:image" content="http://yoursite.com/2014/07/02/Effective-Objecive-C-2-0-读书笔记（四）/1.jpg">
 
 
 
@@ -418,13 +418,13 @@
 <h2 id="32-编写”异常安全代码”时留意内存管理问题"><a href="#32-编写”异常安全代码”时留意内存管理问题" class="headerlink" title="32.编写”异常安全代码”时留意内存管理问题"></a>32.编写”异常安全代码”时留意内存管理问题</h2><hr>
 <h2 id="33-以弱引用避免保留环"><a href="#33-以弱引用避免保留环" class="headerlink" title="33.以弱引用避免保留环"></a>33.以弱引用避免保留环</h2><hr>
 <ul>
-<li>最简单的保留环由两个对象构成，他们相互引用对方。<br><img src="/2014/07/02/Effective-Objecive-C-2-0-读书笔记（四）/1.png" alt="1"></li>
+<li>最简单的保留环由两个对象构成，他们相互引用对方。<br><img src="/2014/07/02/Effective-Objecive-C-2-0-读书笔记（四）/1.jpg" alt="1"></li>
 </ul>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">@class TDClassA;</div><div class="line">@class TDClassB;@interface TDClassA : NSObject</div><div class="line">@property (nonatomic, strong)TDClassB *other;@end</div><div class="line">@interface TDClassB : NSObject</div><div class="line">@property (nonatomic, strong)TDClassA *other;@end</div></pre></td></tr></table></figure>
 <ul>
 <li>避免保留环的最佳方式就是弱引用。这种引用经常用来表示”非拥有关系”，将属性声明为<code>unsafe_unretained</code>即可。</li>
 <li>用<code>unsafe_unretained</code>修饰的属性特质，其语义同<code>assign</code>特质等价。然而，<code>assign</code>通常只用于”整体类型(<code>int</code>,<code>float</code>,结构体等)”，<code>unsafe_unretained</code>则多用于对象类型。这个词本身就表明其所修饰的属性可能无法安全使用。</li>
-<li>安全使用的弱引用<code>weak</code>属性特质，它与<code>unsafe_unretained</code>的作用完全相同。只要系统把属性回收，属性值就会自动设为nil<br><img src="/2014/07/02/Effective-Objecive-C-2-0-读书笔记（四）/2.png" alt="2"></li>
+<li>安全使用的弱引用<code>weak</code>属性特质，它与<code>unsafe_unretained</code>的作用完全相同。只要系统把属性回收，属性值就会自动设为nil<br><img src="/2014/07/02/Effective-Objecive-C-2-0-读书笔记（四）/2.jpg" alt="2"></li>
 <li>使用<code>weak</code>而非<code>unsafe_unretained</code>引用令代码更安全</li>
 </ul>
 <blockquote>
@@ -480,10 +480,10 @@
 <ul>
 <li>为了用户界面编码时，一种常用的范式就是”异步执行任务”。这种范式的好处在于：处理用户界面的显示及触摸操作所用的线程，不会因为要执行I/O或网络通信这类耗时的任务而阻塞。这个线程通常称为主线程。</li>
 <li>异步方法在执行完任务之后，需要以某种手段通知相关代码。实现此功能有很多办法。1️⃣设计一个委托协议2️⃣定义块类型，当做参数直接传给方法。</li>
-<li>委托模式有个缺点:如果类要分别使用多个获取器下载不同数据，那么就得在<code>delegate</code>回调方法里根据传入的获取器参数来切换。<br><img src="/2014/07/02/Effective-Objecive-C-2-0-读书笔记（四）/3.png" alt="3"><br><img src="/2014/07/02/Effective-Objecive-C-2-0-读书笔记（四）/4.png" alt="4"></li>
+<li>委托模式有个缺点:如果类要分别使用多个获取器下载不同数据，那么就得在<code>delegate</code>回调方法里根据传入的获取器参数来切换。<br><img src="/2014/07/02/Effective-Objecive-C-2-0-读书笔记（四）/3.jpg" alt="3"><br><img src="/2014/07/02/Effective-Objecive-C-2-0-读书笔记（四）/4.jpg" alt="4"></li>
 <li>这么写代码，不仅会令<code>delegate</code>回调方法变得很长，而且还要把网络数据获取器对象保存为实例变量以便在判断语句中使用。</li>
-<li>块的好处是：无须保存获取器，也无须在回调方法里切换。每个<code>completion handler</code> 的业务逻辑，都是和相关的获取器对象一起来定义的:<br><img src="/2014/07/02/Effective-Objecive-C-2-0-读书笔记（四）/5.png" alt="5"><br><img src="/2014/07/02/Effective-Objecive-C-2-0-读书笔记（四）/6.png" alt="6"></li>
-<li>另一种风格则是像下面这样，把处理成功情况和失败情况所用代码全放在一个块里<br><img src="/2014/07/02/Effective-Objecive-C-2-0-读书笔记（四）/7.png" alt="7"></li>
+<li>块的好处是：无须保存获取器，也无须在回调方法里切换。每个<code>completion handler</code> 的业务逻辑，都是和相关的获取器对象一起来定义的:<br><img src="/2014/07/02/Effective-Objecive-C-2-0-读书笔记（四）/5.jpg" alt="5"><br><img src="/2014/07/02/Effective-Objecive-C-2-0-读书笔记（四）/6.jpg" alt="6"></li>
+<li>另一种风格则是像下面这样，把处理成功情况和失败情况所用代码全放在一个块里<br><img src="/2014/07/02/Effective-Objecive-C-2-0-读书笔记（四）/7.jpg" alt="7"></li>
 <li>总的来说，建议使用同一个块来处理成功与失败情况，苹果公司似乎也是这样设计其API的。</li>
 </ul>
 <blockquote>
@@ -493,11 +493,11 @@
 </blockquote>
 <h2 id="40-用块引用其所属对象时不要出现保留环"><a href="#40-用块引用其所属对象时不要出现保留环" class="headerlink" title="40.用块引用其所属对象时不要出现保留环"></a>40.用块引用其所属对象时不要出现保留环</h2><hr>
 <ul>
-<li>使用块时，若不仔细思量，则很容易导致”保留环”。<br><img src="/2014/07/02/Effective-Objecive-C-2-0-读书笔记（四）/8.png" alt="8"></li>
+<li>使用块时，若不仔细思量，则很容易导致”保留环”。<br><img src="/2014/07/02/Effective-Objecive-C-2-0-读书笔记（四）/8.jpg" alt="8"></li>
 <li>因为 <code>completion handler</code> 块要设置 <code>_fetchedData</code>实例变量，所以它必须捕获<code>self</code>变量，<code>handler</code>块保留了创建网络数据获取器的那个<code>EOCClass</code>实例，而<code>EOCClass</code>实例则通过<code>strong</code>实例变量保留了获取器，最后，获取对象有保留了<code>handler</code>块 这就是保留环。</li>
 <li>解决办法1️⃣令<code>_networkFetcher</code>实例变量不再引用获取器2️⃣令获取器对象自己设法保持存活。3️⃣修饰<code>self</code></li>
-<li>1️⃣<br><img src="/2014/07/02/Effective-Objecive-C-2-0-读书笔记（四）/9.png" alt="9"></li>
-<li>2️⃣<br><img src="/2014/07/02/Effective-Objecive-C-2-0-读书笔记（四）/10.png" alt="10"></li>
+<li>1️⃣<br><img src="/2014/07/02/Effective-Objecive-C-2-0-读书笔记（四）/9.jpg" alt="9"></li>
+<li>2️⃣<br><img src="/2014/07/02/Effective-Objecive-C-2-0-读书笔记（四）/10.jpg" alt="10"></li>
 <li>大部分网络通信都采用这种办法，因为假如令调用者自己来将获取器对象保持存活的话，他们会觉得很麻烦。</li>
 <li>3️⃣<code>__weak __typeof(self) weakSelf = self;</code></li>
 </ul>

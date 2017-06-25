@@ -119,11 +119,11 @@ cd到你要创建.podspec文件的目录pod spec create MZHBai">
 1231.这里不一定是gitbub,也可以是私有的git仓库。2.cocoapods是依赖tag版本的,所以必须打tag,以后再次更新只需打一个tag。3.创建LICENSE(许可证/授权)文件,此文件必须要有。
 创建.podspec
 cd到你要创建.podspec文件的目录pod spec create MZHBai">
-<meta property="og:image" content="http://yoursite.com/2017/05/30/让私有库支持Cocoapods/1.png">
-<meta property="og:image" content="http://yoursite.com/2017/05/30/让私有库支持Cocoapods/2.png">
-<meta property="og:image" content="http://yoursite.com/2017/05/30/让私有库支持Cocoapods/3.png">
-<meta property="og:image" content="http://yoursite.com/2017/05/30/让私有库支持Cocoapods/4.png">
-<meta property="og:updated_time" content="2017-05-30T15:22:37.000Z">
+<meta property="og:image" content="http://yoursite.com/2017/05/30/让私有库支持Cocoapods/1.jpg">
+<meta property="og:image" content="http://yoursite.com/2017/05/30/让私有库支持Cocoapods/2.jpg">
+<meta property="og:image" content="http://yoursite.com/2017/05/30/让私有库支持Cocoapods/3.jpg">
+<meta property="og:image" content="http://yoursite.com/2017/05/30/让私有库支持Cocoapods/4.jpg">
+<meta property="og:updated_time" content="2017-06-25T10:19:03.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="让私有库支持Cocoapods">
 <meta name="twitter:description" content="将私有库上传仓库并打tag
@@ -131,7 +131,7 @@ cd到你要创建.podspec文件的目录pod spec create MZHBai">
 1231.这里不一定是gitbub,也可以是私有的git仓库。2.cocoapods是依赖tag版本的,所以必须打tag,以后再次更新只需打一个tag。3.创建LICENSE(许可证/授权)文件,此文件必须要有。
 创建.podspec
 cd到你要创建.podspec文件的目录pod spec create MZHBai">
-<meta name="twitter:image" content="http://yoursite.com/2017/05/30/让私有库支持Cocoapods/1.png">
+<meta name="twitter:image" content="http://yoursite.com/2017/05/30/让私有库支持Cocoapods/1.jpg">
 
 
 
@@ -404,13 +404,13 @@ cd到你要创建.podspec文件的目录pod spec create MZHBai">
 <h3 id="创建-podspec"><a href="#创建-podspec" class="headerlink" title="创建.podspec"></a>创建<code>.podspec</code></h3><hr>
 <p>cd到你要创建<code>.podspec</code>文件的目录<br><code>pod spec create MZHBaiduMobStat</code></p>
 <h3 id="编辑-podspec"><a href="#编辑-podspec" class="headerlink" title="编辑.podspec"></a>编辑<code>.podspec</code></h3><hr>
-<p>创建的default的<code>.podspec</code>文件，里面有充足的注释，可以根据自己的需求做相应修改。<a href="https://guides.cocoapods.org/syntax/podspec.html" target="_blank" rel="external">官方介绍</a><br><img src="/2017/05/30/让私有库支持Cocoapods/1.png" alt="1"></p>
+<p>创建的default的<code>.podspec</code>文件，里面有充足的注释，可以根据自己的需求做相应修改。<a href="https://guides.cocoapods.org/syntax/podspec.html" target="_blank" rel="external">官方介绍</a><br><img src="/2017/05/30/让私有库支持Cocoapods/1.jpg" alt="1"></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">1.注意license、source、source_files、public_header_files、resource_bundles、vendored_libraries的路径否正确。</div><div class="line">2.需要注意，依赖项不仅要包含你自己类库的依赖，还要包括所有第三方类库的依赖，只有这样当你的类库打包成.a或.framework时才能让其他项目正常使用。</div></pre></td></tr></table></figure>
 <h3 id="验证-podspec"><a href="#验证-podspec" class="headerlink" title="验证.podspec"></a>验证<code>.podspec</code></h3><hr>
-<p>检查一下你工程下面的文件，你的项目、<code>.podspec</code>文件、<code>LICENSE</code>文件。验证会先测试本地<code>.podspec</code>文件是否存在语法错误.<br><code>pod spec lint MZHBaiduMobStat.podspec</code><br><img src="/2017/05/30/让私有库支持Cocoapods/2.png" alt="2"></p>
+<p>检查一下你工程下面的文件，你的项目、<code>.podspec</code>文件、<code>LICENSE</code>文件。验证会先测试本地<code>.podspec</code>文件是否存在语法错误.<br><code>pod spec lint MZHBaiduMobStat.podspec</code><br><img src="/2017/05/30/让私有库支持Cocoapods/2.jpg" alt="2"></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">1.--allow-warnings 忽略一些警告</div><div class="line">2.--verbose 可以看到详细的信息</div><div class="line">3.这个过程可能会出现错误信息,不过一般看提示修改即可。</div></pre></td></tr></table></figure>
 <h3 id="利用pod-trunk发布程序"><a href="#利用pod-trunk发布程序" class="headerlink" title="利用pod trunk发布程序"></a>利用pod trunk发布程序</h3><hr>
-<p>首先可以查看自己是否注册过trunk，若没有注册需要注册后使用。<br>1.查看自己是否注册过<br><code>pod trunk me</code><br>2.注册<br><code>pod trunk register muzhenhua0601@163.com &quot;AndyMu&quot; --verbose</code><br>3.注册成功<br><img src="/2017/05/30/让私有库支持Cocoapods/3.png" alt="3"><br>4.发布<br>发布时会验证<code>podspec</code>的有效性，如果你在手动验证<code>podspec</code>时使用了<code>--allow-warnings</code>等修饰符，那么发布的时候也应该使用相同的字段修饰，否则出现相同的报错。<br><code>pod trunk push MZHBaiduMobStat.podspec</code><br><img src="/2017/05/30/让私有库支持Cocoapods/4.png" alt="4"><br>5.验证<br><code>pod search MZHBaiduMobStat</code></p>
+<p>首先可以查看自己是否注册过trunk，若没有注册需要注册后使用。<br>1.查看自己是否注册过<br><code>pod trunk me</code><br>2.注册<br><code>pod trunk register muzhenhua0601@163.com &quot;AndyMu&quot; --verbose</code><br>3.注册成功<br><img src="/2017/05/30/让私有库支持Cocoapods/3.jpg" alt="3"><br>4.发布<br>发布时会验证<code>podspec</code>的有效性，如果你在手动验证<code>podspec</code>时使用了<code>--allow-warnings</code>等修饰符，那么发布的时候也应该使用相同的字段修饰，否则出现相同的报错。<br><code>pod trunk push MZHBaiduMobStat.podspec</code><br><img src="/2017/05/30/让私有库支持Cocoapods/4.jpg" alt="4"><br>5.验证<br><code>pod search MZHBaiduMobStat</code></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">1.trunk需要CocoaPods 0.33版本以上。</div><div class="line">2.注册完成之后会给你的邮箱发个激活邮件，需要激活下。</div><div class="line">3.注册trunk的时候可能比较慢，可以挂代理注册。并且注册完后，许要等2、3分支才查看到结果。</div><div class="line">4.在验证的时候，可能已经发布成功了但是搜不到，需要</div><div class="line">pod setup : 初始化</div><div class="line">pod repo update : 更新仓库</div><div class="line">5.如果第4步不生效，可以删除~/Library/Caches/CocoaPods目录下的search_index.json文件</div></pre></td></tr></table></figure>
 
       

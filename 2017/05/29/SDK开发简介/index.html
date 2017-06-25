@@ -127,15 +127,15 @@
 编译时间减少
 
 库在使用的时候需要Link,Link的方式有两种，静态和动态，也就产生了相应的静态库和动态库">
-<meta property="og:image" content="http://yoursite.com/2017/05/29/SDK开发简介/1.png">
-<meta property="og:image" content="http://yoursite.com/2017/05/29/SDK开发简介/2.png">
-<meta property="og:image" content="http://yoursite.com/2017/05/29/SDK开发简介/3.png">
-<meta property="og:image" content="http://yoursite.com/2017/05/29/SDK开发简介/4.png">
-<meta property="og:image" content="http://yoursite.com/2017/05/29/SDK开发简介/5.png">
-<meta property="og:image" content="http://yoursite.com/2017/05/29/SDK开发简介/8.png">
-<meta property="og:image" content="http://yoursite.com/2017/05/29/SDK开发简介/6.png">
-<meta property="og:image" content="http://yoursite.com/2017/05/29/SDK开发简介/7.png">
-<meta property="og:updated_time" content="2017-05-29T07:04:01.000Z">
+<meta property="og:image" content="http://yoursite.com/2017/05/29/SDK开发简介/1.jpg">
+<meta property="og:image" content="http://yoursite.com/2017/05/29/SDK开发简介/2.jpg">
+<meta property="og:image" content="http://yoursite.com/2017/05/29/SDK开发简介/3.jpg">
+<meta property="og:image" content="http://yoursite.com/2017/05/29/SDK开发简介/4.jpg">
+<meta property="og:image" content="http://yoursite.com/2017/05/29/SDK开发简介/5.jpg">
+<meta property="og:image" content="http://yoursite.com/2017/05/29/SDK开发简介/8.jpg">
+<meta property="og:image" content="http://yoursite.com/2017/05/29/SDK开发简介/6.jpg">
+<meta property="og:image" content="http://yoursite.com/2017/05/29/SDK开发简介/7.jpg">
+<meta property="og:updated_time" content="2017-06-25T10:14:43.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="SDK开发简介">
 <meta name="twitter:description" content="前言
@@ -147,7 +147,7 @@
 编译时间减少
 
 库在使用的时候需要Link,Link的方式有两种，静态和动态，也就产生了相应的静态库和动态库">
-<meta name="twitter:image" content="http://yoursite.com/2017/05/29/SDK开发简介/1.png">
+<meta name="twitter:image" content="http://yoursite.com/2017/05/29/SDK开发简介/1.jpg">
 
 
 
@@ -431,19 +431,19 @@
 <ol>
 <li>使用静态库<code>Cocoa Touch Static Library</code>模板新建工程</li>
 <li>在项目中导入需要的资源文件</li>
-<li>修改项目<code>Bulid Phase</code>配置<br><img src="/2017/05/29/SDK开发简介/1.png" alt="1"></li>
+<li>修改项目<code>Bulid Phase</code>配置<br><img src="/2017/05/29/SDK开发简介/1.jpg" alt="1"></li>
 </ol>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">注意: New Headers Phase 和 New Copy Files Phase 两种方式都可以，主要作用都是把.h文件导出。</div></pre></td></tr></table></figure>
-<p>4.修改<code>Scheme</code>的配置<br>  <img src="/2017/05/29/SDK开发简介/2.png" alt="2"><br>5.修改<code>Bulid Settings</code>配置<br>  <img src="/2017/05/29/SDK开发简介/3.png" alt="3"></p>
+<p>4.修改<code>Scheme</code>的配置<br>  <img src="/2017/05/29/SDK开发简介/2.jpg" alt="2"><br>5.修改<code>Bulid Settings</code>配置<br>  <img src="/2017/05/29/SDK开发简介/3.jpg" alt="3"></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">注意:</div><div class="line">模拟器：iPhone4s~5 : i386 iPhone5s~6plus : x86_64        </div><div class="line">真机：iPhone3gs~4s : armv7 iPhone5~5c : armv7s iPhone5s~6plus : arm64</div><div class="line">YES表示编译出来的.a静态库就只包含当前设备的指令集。</div><div class="line">NO表示会把所有指令集的都打包合并</div></pre></td></tr></table></figure>
-<p>6.编译(command + b)<br>编译时，需要用模拟器和真机各编译一次，这样才能在Products目录下有【Release-iphoneos】和【Release-iphonesimulator】两个文件件。前者里面是真机使用的.a静态库，后者是模拟器使用的.a静态库。<br>  <img src="/2017/05/29/SDK开发简介/4.png" alt="4"><br>  <img src="/2017/05/29/SDK开发简介/5.png" alt="5"><br>合并模拟器库文件和真机库文件<br><code>lipo -create -output lib.a lib-iphoneos.a lib-iphonesimulator.a</code></p>
+<p>6.编译(command + b)<br>编译时，需要用模拟器和真机各编译一次，这样才能在Products目录下有【Release-iphoneos】和【Release-iphonesimulator】两个文件件。前者里面是真机使用的.a静态库，后者是模拟器使用的.a静态库。<br>  <img src="/2017/05/29/SDK开发简介/4.jpg" alt="4"><br>  <img src="/2017/05/29/SDK开发简介/5.jpg" alt="5"><br>合并模拟器库文件和真机库文件<br><code>lipo -create -output lib.a lib-iphoneos.a lib-iphonesimulator.a</code></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">注意:</div><div class="line">引用静态库的工程，需要在【Link Binary With Libraries】添加.a静态库</div><div class="line">引用静态库的工程，需要在【Header Search Paths】中添加静态库项目的头文件的路径(&quot;..&quot;表示返回上层目录)</div><div class="line">如果静态库中有category类，则在使用静态库的项目配置中【Other Linker Flags】需要添加参数【-ObjC】</div></pre></td></tr></table></figure>
 <h1 id="创建Framework静态库"><a href="#创建Framework静态库" class="headerlink" title="创建Framework静态库"></a>创建Framework静态库</h1><hr>
-<p>1.使用Framework库<code>Cocoa Touch Framework</code>模板新建工程<br>2.确定info.plist中Bundle OS Type Code 的值<br><img src="/2017/05/29/SDK开发简介/8.png" alt="8"></p>
+<p>1.使用Framework库<code>Cocoa Touch Framework</code>模板新建工程<br>2.确定info.plist中Bundle OS Type Code 的值<br><img src="/2017/05/29/SDK开发简介/8.jpg" alt="8"></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">标示包类型</div><div class="line">The type code for apps is APPL;  </div><div class="line">for frameworks, it is FMWK;  </div><div class="line">for loadable bundles, it is BNDL.</div></pre></td></tr></table></figure>
-<p>3.在项目中导入需要的资源文件<br>4.修改项目<code>Bulid Phase</code>配置<br><img src="/2017/05/29/SDK开发简介/6.png" alt="6"></p>
+<p>3.在项目中导入需要的资源文件<br>4.修改项目<code>Bulid Phase</code>配置<br><img src="/2017/05/29/SDK开发简介/6.jpg" alt="6"></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">注意:</div><div class="line">这里需要注意的是暴露出来的头文件中import的其他类也得添加到public中暴露出来。</div><div class="line">如果不想将import的类暴露出来，那么在头文件中用@class 然后在对应的.m文件中再import。</div></pre></td></tr></table></figure>
-<p>5.修改Scheme的配置和上面的.a一样<br>6.修改<code>Bulid Settings</code>配置和上面.a一样，另外还要再修改生成的Mach-O格式<br><img src="/2017/05/29/SDK开发简介/7.png" alt="7"><br>7.编译(command + b) 和上面.a一样，需要注意的是，framework静态库合并的不是framework,而是framework下的一个二进制文件。<br>合并模拟器库文件和真机库文件<br><code>lipo -create -output ./Desktop/MyFirstFrameWork ../Release-iphones/MyFirstFrameWork.framework/MyFirstFrameWork ../Release-iphonesimulator/MyFirstFrameWork.framework/MyFirstFrameWork</code></p>
+<p>5.修改Scheme的配置和上面的.a一样<br>6.修改<code>Bulid Settings</code>配置和上面.a一样，另外还要再修改生成的Mach-O格式<br><img src="/2017/05/29/SDK开发简介/7.jpg" alt="7"><br>7.编译(command + b) 和上面.a一样，需要注意的是，framework静态库合并的不是framework,而是framework下的一个二进制文件。<br>合并模拟器库文件和真机库文件<br><code>lipo -create -output ./Desktop/MyFirstFrameWork ../Release-iphones/MyFirstFrameWork.framework/MyFirstFrameWork ../Release-iphonesimulator/MyFirstFrameWork.framework/MyFirstFrameWork</code></p>
 <h1 id="iOS常用静态库操作命令"><a href="#iOS常用静态库操作命令" class="headerlink" title="iOS常用静态库操作命令"></a>iOS常用静态库操作命令</h1><p>-</p>
 <ul>
 <li>合并模拟器库文件和真机库文件<br><code>lipo -create -output lib.a lib-armv6.a lib-i386.a</code></li>

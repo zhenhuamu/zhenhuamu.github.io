@@ -121,13 +121,13 @@ l">
 + (void)load 
 对于加入运行期系统中的每个类及分类来说，必定会调用此方法，而且仅调用一次。当包含类或分类的程序载入系统时，就会执行此方法。如果分类和其所属的类都定义了load方法，则先调用类里的，再调用分类里的。
 l">
-<meta property="og:image" content="http://yoursite.com/2014/07/15/Effective-Objecive-C-2-0-读书笔记（六）/1.png">
-<meta property="og:image" content="http://yoursite.com/2014/07/15/Effective-Objecive-C-2-0-读书笔记（六）/2.png">
-<meta property="og:image" content="http://yoursite.com/2014/07/15/Effective-Objecive-C-2-0-读书笔记（六）/3.png">
-<meta property="og:image" content="http://yoursite.com/2014/07/15/Effective-Objecive-C-2-0-读书笔记（六）/4.png">
-<meta property="og:image" content="http://yoursite.com/2014/07/15/Effective-Objecive-C-2-0-读书笔记（六）/5.png">
-<meta property="og:image" content="http://yoursite.com/2014/07/15/Effective-Objecive-C-2-0-读书笔记（六）/6.png">
-<meta property="og:updated_time" content="2017-04-23T11:25:18.000Z">
+<meta property="og:image" content="http://yoursite.com/2014/07/15/Effective-Objecive-C-2-0-读书笔记（六）/1.jpg">
+<meta property="og:image" content="http://yoursite.com/2014/07/15/Effective-Objecive-C-2-0-读书笔记（六）/2.jpg">
+<meta property="og:image" content="http://yoursite.com/2014/07/15/Effective-Objecive-C-2-0-读书笔记（六）/3.jpg">
+<meta property="og:image" content="http://yoursite.com/2014/07/15/Effective-Objecive-C-2-0-读书笔记（六）/4.jpg">
+<meta property="og:image" content="http://yoursite.com/2014/07/15/Effective-Objecive-C-2-0-读书笔记（六）/5.jpg">
+<meta property="og:image" content="http://yoursite.com/2014/07/15/Effective-Objecive-C-2-0-读书笔记（六）/6.jpg">
+<meta property="og:updated_time" content="2017-06-25T10:06:05.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Effective-Objecive-C-2-0-读书笔记（六）">
 <meta name="twitter:description" content="51.精简initialize与load的实现代码
@@ -136,7 +136,7 @@ l">
 + (void)load 
 对于加入运行期系统中的每个类及分类来说，必定会调用此方法，而且仅调用一次。当包含类或分类的程序载入系统时，就会执行此方法。如果分类和其所属的类都定义了load方法，则先调用类里的，再调用分类里的。
 l">
-<meta name="twitter:image" content="http://yoursite.com/2014/07/15/Effective-Objecive-C-2-0-读书笔记（六）/1.png">
+<meta name="twitter:image" content="http://yoursite.com/2014/07/15/Effective-Objecive-C-2-0-读书笔记（六）/1.jpg">
 
 
 
@@ -408,12 +408,12 @@ l">
 <li>在<code>Objective-C</code>中，绝大多数类都继承自<code>NSObject</code>这个根类，而该类有两个方法，可用来实现这种初始化操作。</li>
 <li><code>+ (void)load</code> </li>
 <li>对于加入运行期系统中的每个类及分类来说，必定会调用此方法，而且仅调用一次。当包含类或分类的程序载入系统时，就会执行此方法。如果分类和其所属的类都定义了<code>load</code>方法，则先调用类里的，再调用分类里的。</li>
-<li><code>load</code>方法的问题在于，执行方法时，运行期系统处于”脆弱状态”。在执行子类的<code>load</code>方法之前，必定会先执行所有超类的<code>load</code>方法，而如果代码还依赖了其他程序库，那么程序库里相关类的<code>load</code>方法定会先执行。<br><img src="/2014/07/15/Effective-Objecive-C-2-0-读书笔记（六）/1.png" alt="1"></li>
+<li><code>load</code>方法的问题在于，执行方法时，运行期系统处于”脆弱状态”。在执行子类的<code>load</code>方法之前，必定会先执行所有超类的<code>load</code>方法，而如果代码还依赖了其他程序库，那么程序库里相关类的<code>load</code>方法定会先执行。<br><img src="/2014/07/15/Effective-Objecive-C-2-0-读书笔记（六）/1.jpg" alt="1"></li>
 <li>此处使用<code>NSLog</code>没问题，而且相关字符串也会照常记录，因为<code>Foundataion</code>框架肯定在运行<code>load</code>方法之前就已经载入系统了。但是，在<code>EOCClassB</code>的<code>load</code>方法里使用<code>EOCClassA</code>却不太安全，因为无法确定在执行<code>EOCClassB</code>的<code>load</code>方法之前，<code>EOCClassA</code>是不是已经加载好了。有个重要的事情需注意，那就是<code>load</code>方法并不像普通的方法那样，它并不遵从那套继承规则，如果某个类本身没实现<code>load</code>方法，那么不管其各级超类是否实现此方法，系统都不会调用。</li>
 <li><code>+ （void）initialize</code></li>
-<li>对于每个类来说，该方法会在程序首次用该类之前调用，且之调用一次。它是由运行期系统来调用的，绝不应该通过代码直接调用。和<code>load</code>区别1️⃣它是”惰性调用的”也就是只在程序用到了相关的类时，才会调用。对于<code>load</code>来说，应用程序必须阻塞并等着所有类的<code>load</code>都执行完，才能继续。2️⃣就是运行期系统在执行该方法时，是处于正常状态的，因此，从运行期系统完整度上来讲，此时可以安全使用并调用任意类中的任意方法。3️⃣如果某个类未实现它，而超类实现了，那么就会运行超类的实现代码。<br><img src="/2014/07/15/Effective-Objecive-C-2-0-读书笔记（六）/2.png" alt="2"></li>
-<li>即便EOCSubClass类没有实现initialize方法，它也会收到这条消息。由各级超类所实现的initialize也会先行调用。所以，首次使用EOCSubClass时，控制台会输出如下消息：<br><img src="/2014/07/15/Effective-Objecive-C-2-0-读书笔记（六）/3.png" alt="3"></li>
-<li>所以通常都会这么来实现initialize方法：<br><img src="/2014/07/15/Effective-Objecive-C-2-0-读书笔记（六）/4.png" alt="4"></li>
+<li>对于每个类来说，该方法会在程序首次用该类之前调用，且之调用一次。它是由运行期系统来调用的，绝不应该通过代码直接调用。和<code>load</code>区别1️⃣它是”惰性调用的”也就是只在程序用到了相关的类时，才会调用。对于<code>load</code>来说，应用程序必须阻塞并等着所有类的<code>load</code>都执行完，才能继续。2️⃣就是运行期系统在执行该方法时，是处于正常状态的，因此，从运行期系统完整度上来讲，此时可以安全使用并调用任意类中的任意方法。3️⃣如果某个类未实现它，而超类实现了，那么就会运行超类的实现代码。<br><img src="/2014/07/15/Effective-Objecive-C-2-0-读书笔记（六）/2.jpg" alt="2"></li>
+<li>即便EOCSubClass类没有实现initialize方法，它也会收到这条消息。由各级超类所实现的initialize也会先行调用。所以，首次使用EOCSubClass时，控制台会输出如下消息：<br><img src="/2014/07/15/Effective-Objecive-C-2-0-读书笔记（六）/3.jpg" alt="3"></li>
+<li>所以通常都会这么来实现initialize方法：<br><img src="/2014/07/15/Effective-Objecive-C-2-0-读书笔记（六）/4.jpg" alt="4"></li>
 </ul>
 <blockquote>
 <p>在加载阶段，如果类实现了<code>load</code>方法，那么系统就会调用它。分类里也可以定义此方法，类的<code>load</code>方法要比分类的先调用。与其他方法不同，<code>load</code>方法不参与覆写机制</p>
@@ -429,7 +429,7 @@ l">
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">1️⃣NSTimer *timer = [NSTimer timerWithTimeInterval:self.graceTime target:self selector:@selector(handleGraceTimer:) userInfo:nil repeats:NO</div><div class="line">];</div><div class="line">[[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];</div><div class="line"></div><div class="line">2️⃣[NSTimer scheduledTimerWithTimeInterval:1.0f/60.0f target:self selector:@selector(fakeProgressTimerDidFire:) userInfo:nil repeats:YES];</div></pre></td></tr></table></figure>
 <ul>
 <li>执行完相关任务之后，一次性的计时器也会失效。开发者若将计时器设置成重复执行模式，那么必须自己调用<code>invalidate</code>方法，才能令其停止。</li>
-<li>由于计时器会保留其目标对象，所以反复执行任务通常会导致应用程序出问题，也就是说，设置成重复执行模式的那种计时器，很容易引入”保留环”。<br><img src="/2014/07/15/Effective-Objecive-C-2-0-读书笔记（六）/5.png" alt="5"><br><img src="/2014/07/15/Effective-Objecive-C-2-0-读书笔记（六）/6.png" alt="6"><br>解决方案如下</li>
+<li>由于计时器会保留其目标对象，所以反复执行任务通常会导致应用程序出问题，也就是说，设置成重复执行模式的那种计时器，很容易引入”保留环”。<br><img src="/2014/07/15/Effective-Objecive-C-2-0-读书笔记（六）/5.jpg" alt="5"><br><img src="/2014/07/15/Effective-Objecive-C-2-0-读书笔记（六）/6.jpg" alt="6"><br>解决方案如下</li>
 </ul>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div></pre></td><td class="code"><pre><div class="line">#import &lt;Foundation/Foundation.h&gt;</div><div class="line"></div><div class="line">@interface NSTimer (TDBlocksSupport)</div><div class="line"></div><div class="line">+ (NSTimer *)td_scheduledTimerWithTimeInterval:(NSTimeInterval)interval block:(void(^)())block repeats:(BOOL)repeats;</div><div class="line"></div><div class="line">@end</div><div class="line"></div><div class="line">#import &quot;NSTimer+TDBlocksSupport.h&quot;</div><div class="line"></div><div class="line">@implementation NSTimer (TDBlocksSupport)</div><div class="line"></div><div class="line">+ (NSTimer *)td_scheduledTimerWithTimeInterval:(NSTimeInterval)interval block:(void(^)())block repeats:(BOOL)repeats&#123;</div><div class="line">    return [self scheduledTimerWithTimeInterval:interval target:self selector:@selector(td_blockInvoke:) userInfo:[block copy] repeats:repeats];</div><div class="line">&#125;</div><div class="line"></div><div class="line">+ (void)td_blockInvoke:(NSTimer *)timer&#123;</div><div class="line">    void (^block)() = timer.userInfo;</div><div class="line">    if (block) &#123;</div><div class="line">        block();</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line">@end</div><div class="line"></div><div class="line">#import &lt;Foundation/Foundation.h&gt;</div><div class="line"></div><div class="line">@interface TDTimerClass : NSObject</div><div class="line"></div><div class="line">- (void)startPolling;</div><div class="line">- (void)stopPolling;</div><div class="line"></div><div class="line">@end</div><div class="line"></div><div class="line">#import &quot;TDTimerClass.h&quot;</div><div class="line">#import &quot;NSTimer+TDBlocksSupport.h&quot;</div><div class="line"></div><div class="line">@implementation TDTimerClass&#123;</div><div class="line">    NSTimer *_pollTimer;</div><div class="line">&#125;</div><div class="line"></div><div class="line">- (void)dealloc&#123;</div><div class="line">    [_pollTimer invalidate];</div><div class="line">&#125;</div><div class="line"></div><div class="line">- (void)stopPolling&#123;</div><div class="line">    [_pollTimer invalidate];</div><div class="line">    _pollTimer = nil;</div><div class="line">&#125;</div><div class="line"></div><div class="line">- (void)startPolling&#123;</div><div class="line">    __weak typeof(self) weakSelf = self;</div><div class="line">    _pollTimer = [NSTimer td_scheduledTimerWithTimeInterval:5.0 block:^&#123;</div><div class="line">        __strong typeof(weakSelf) strongSelf = weakSelf;</div><div class="line">        [strongSelf p_doPoll];</div><div class="line">    &#125; repeats:YES];</div><div class="line">&#125;</div><div class="line"></div><div class="line">- (void)p_doPoll&#123;</div><div class="line">   //Poll the resource</div><div class="line">&#125;</div><div class="line"></div><div class="line">@end</div></pre></td></tr></table></figure>
 <blockquote>
@@ -504,8 +504,8 @@ l">
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2014/08/24/从NSURLConnection到NSURLSession/" rel="prev" title="从NSURLConnection到NSURLSession">
-                从NSURLConnection到NSURLSession <i class="fa fa-chevron-right"></i>
+              <a href="/2014/08/24/从NSURLConnection到NSURLSession/" rel="prev" title="从 NSURLConnection 到 NSURLSession">
+                从 NSURLConnection 到 NSURLSession <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>

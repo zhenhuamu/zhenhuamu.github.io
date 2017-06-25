@@ -119,12 +119,12 @@ NSError 对象封装了三条信息Error domain  (错误范围，其类型为字
 Objective-C 语言现在采用的办法是：只在及其罕见的情况下抛出异常，异常抛出之后，无须考虑恢复问题，而且应用程序此时也应该退出。
 在出现”不那么严重的错误”时，Objective-C 语言所用的编程范式为：令方法返回nil/0，或者使用NSError 。
 NSError 对象封装了三条信息Error domain  (错误范围，其类型为字符串)">
-<meta property="og:image" content="http://yoursite.com/2014/06/22/Effective-Objecive-C-2-0-读书笔记（三）/1.png">
-<meta property="og:image" content="http://yoursite.com/2014/06/22/Effective-Objecive-C-2-0-读书笔记（三）/2.png">
-<meta property="og:image" content="http://yoursite.com/2014/06/22/Effective-Objecive-C-2-0-读书笔记（三）/3.png">
-<meta property="og:image" content="http://yoursite.com/2014/06/22/Effective-Objecive-C-2-0-读书笔记（三）/4.png">
-<meta property="og:image" content="http://yoursite.com/2014/06/22/Effective-Objecive-C-2-0-读书笔记（三）/5.png">
-<meta property="og:updated_time" content="2017-04-23T11:27:18.000Z">
+<meta property="og:image" content="http://yoursite.com/2014/06/22/Effective-Objecive-C-2-0-读书笔记（三）/1.jpg">
+<meta property="og:image" content="http://yoursite.com/2014/06/22/Effective-Objecive-C-2-0-读书笔记（三）/2.jpg">
+<meta property="og:image" content="http://yoursite.com/2014/06/22/Effective-Objecive-C-2-0-读书笔记（三）/3.jpg">
+<meta property="og:image" content="http://yoursite.com/2014/06/22/Effective-Objecive-C-2-0-读书笔记（三）/4.jpg">
+<meta property="og:image" content="http://yoursite.com/2014/06/22/Effective-Objecive-C-2-0-读书笔记（三）/5.jpg">
+<meta property="og:updated_time" content="2017-06-25T09:53:04.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Effective-Objecive-C-2-0-读书笔记（三）">
 <meta name="twitter:description" content="21.理解Objective-C错误模型
@@ -132,7 +132,7 @@ NSError 对象封装了三条信息Error domain  (错误范围，其类型为字
 Objective-C 语言现在采用的办法是：只在及其罕见的情况下抛出异常，异常抛出之后，无须考虑恢复问题，而且应用程序此时也应该退出。
 在出现”不那么严重的错误”时，Objective-C 语言所用的编程范式为：令方法返回nil/0，或者使用NSError 。
 NSError 对象封装了三条信息Error domain  (错误范围，其类型为字符串)">
-<meta name="twitter:image" content="http://yoursite.com/2014/06/22/Effective-Objecive-C-2-0-读书笔记（三）/1.png">
+<meta name="twitter:image" content="http://yoursite.com/2014/06/22/Effective-Objecive-C-2-0-读书笔记（三）/1.jpg">
 
 
 
@@ -421,7 +421,7 @@ NSError 对象封装了三条信息Error domain  (错误范围，其类型为字
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line">#import &lt;Foundation/Foundation.h&gt;</div><div class="line"></div><div class="line">@interface LNLocation : NSObject</div><div class="line">- (instancetype)initWithLongitude:(NSString *)longitude andLatitude:(NSString *)latitude;</div><div class="line">@property(nonatomic, copy)NSString *longitude;</div><div class="line">@property(nonatomic, copy)NSString *latitude;</div><div class="line">@end</div><div class="line"></div><div class="line">#import &quot;LNLocation.h&quot;</div><div class="line">@interface LNLocation()&lt;NSCopying&gt;&#123;</div><div class="line">    NSString *_locationInfo;</div><div class="line">&#125;</div><div class="line">@end</div><div class="line">@implementation LNLocation</div><div class="line"></div><div class="line">- (instancetype)initWithLongitude:(NSString *)longitude andLatitude:(NSString *)latitude&#123;</div><div class="line">    if (self = [super init]) &#123;</div><div class="line">        _longitude = [longitude copy];</div><div class="line">        _latitude = [latitude copy];</div><div class="line">        _locationInfo = [NSString new];</div><div class="line">    &#125;</div><div class="line">    return self;</div><div class="line">&#125;</div><div class="line"></div><div class="line">- (id)copyWithZone:(NSZone *)zone&#123;</div><div class="line">    LNLocation *location = [[[self class] allocWithZone:zone] initWithLongitude:_latitude andLatitude:_latitude];</div><div class="line">    location -&gt; _locationInfo = [_locationInfo copy];</div><div class="line">    return location;</div><div class="line">&#125;</div><div class="line"></div><div class="line">@end</div></pre></td></tr></table></figure>
 <ul>
 <li>对于不可变的<code>NSArray</code>与可变的<code>NSMutableArray</code>来说，下列关系总是成立的<br><code>[NSMutableArray copy] ==&gt; NSArray</code><br><code>[NSArray mutablecopy] ==&gt; NSMutableArray</code></li>
-<li>深拷贝的意思局势:在拷贝对象自身时，将其底层数据也一并复制过去。<code>Foundation</code>框架中的所有<code>collection</code>类在默认情况下都执行浅拷贝，也就是说，只拷贝容器对象本身，而不复制其中数据。<br><img src="/2014/06/22/Effective-Objecive-C-2-0-读书笔记（三）/1.png" alt="1"></li>
+<li>深拷贝的意思局势:在拷贝对象自身时，将其底层数据也一并复制过去。<code>Foundation</code>框架中的所有<code>collection</code>类在默认情况下都执行浅拷贝，也就是说，只拷贝容器对象本身，而不复制其中数据。<br><img src="/2014/06/22/Effective-Objecive-C-2-0-读书笔记（三）/1.jpg" alt="1"></li>
 </ul>
 <blockquote>
 <p>若想令自己所写的对象具有拷贝功能，则需实现<code>NSCopying</code>协议</p>
@@ -431,7 +431,7 @@ NSError 对象封装了三条信息Error domain  (错误范围，其类型为字
 </blockquote>
 <h2 id="23-通过委托与数据源协议进行对象间通信"><a href="#23-通过委托与数据源协议进行对象间通信" class="headerlink" title="23.通过委托与数据源协议进行对象间通信"></a>23.通过委托与数据源协议进行对象间通信</h2><hr>
 <ul>
-<li>委托模式的主旨是:定义一套接口，某对象若想接受另一个对象的委托，则需遵从此接口，以便成为其”委托对象”。而这”另一个对象”则可以给其委托对象回传一些信息，也可以在发生相关事件时通知委托对象<br><img src="/2014/06/22/Effective-Objecive-C-2-0-读书笔记（三）/2.png" alt="2"></li>
+<li>委托模式的主旨是:定义一套接口，某对象若想接受另一个对象的委托，则需遵从此接口，以便成为其”委托对象”。而这”另一个对象”则可以给其委托对象回传一些信息，也可以在发生相关事件时通知委托对象<br><img src="/2014/06/22/Effective-Objecive-C-2-0-读书笔记（三）/2.jpg" alt="2"></li>
 </ul>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">@protocol TDRectangleDelegate &lt;NSObject&gt;</div><div class="line"></div><div class="line">-(void)networkFetcher:(TDRectangle *)rectangle didReceiveData:(NSData*)data;</div><div class="line">-(void)networkFetcher:(TDRectangle *)rectangle didFailWithError:(NSError*)error;</div><div class="line"></div><div class="line">@end</div><div class="line">@interface TDRectangle : NSObject</div><div class="line">@property(nonatomic,weak)id&lt;TDRectangleDelegate&gt;delegate;</div></pre></td></tr></table></figure>
 <ul>
@@ -497,9 +497,9 @@ NSError 对象封装了三条信息Error domain  (错误范围，其类型为字
 <h2 id="29-理解引用计数"><a href="#29-理解引用计数" class="headerlink" title="29.理解引用计数"></a>29.理解引用计数</h2><hr>
 <ul>
 <li>在引用计数架构下，对象有个计数器，用以表示当前有多少个事物想令此对象继续存活下去。这在<code>Objective-C</code>中叫做”保留计数”</li>
-<li><code>NSObject</code>协议声明了下面三个方法用于操作计数器，以递增或递减其值:<br><code>retain</code> 递增保留计数<br><code>release</code> 递减保留计数<br><code>autorelease</code> 待稍后清理”自动释放池”(<code>autorelease pool</code>)时，再递减保留计数。<br><img src="/2014/06/22/Effective-Objecive-C-2-0-读书笔记（三）/3.png" alt="3"><br><img src="/2014/06/22/Effective-Objecive-C-2-0-读书笔记（三）/4.png" alt="4"></li>
+<li><code>NSObject</code>协议声明了下面三个方法用于操作计数器，以递增或递减其值:<br><code>retain</code> 递增保留计数<br><code>release</code> 递减保留计数<br><code>autorelease</code> 待稍后清理”自动释放池”(<code>autorelease pool</code>)时，再递减保留计数。<br><img src="/2014/06/22/Effective-Objecive-C-2-0-读书笔记（三）/3.jpg" alt="3"><br><img src="/2014/06/22/Effective-Objecive-C-2-0-读书笔记（三）/4.jpg" alt="4"></li>
 <li>为避免在不经意间使用了无效对象，一般调用完<code>release</code>之后都会清空指针。这就能保证不会出现可能指向无效对象的指针，这种指针通常称为”悬挂指针”</li>
-<li>属性存取方法中的内存管理  （此方法将保留新值并释放旧值，然后更新实例变量，令其指向新值）<br><img src="/2014/06/22/Effective-Objecive-C-2-0-读书笔记（三）/5.png" alt="5"></li>
+<li>属性存取方法中的内存管理  （此方法将保留新值并释放旧值，然后更新实例变量，令其指向新值）<br><img src="/2014/06/22/Effective-Objecive-C-2-0-读书笔记（三）/5.jpg" alt="5"></li>
 </ul>
 <blockquote>
 <p>引用计数机制通过可以递增递减的计数器来管理内存。对象创建好之后，其保留计数至少为1。若保留计数为正，则对象继续存活。当保留计数降为0时，对象就被销毁了。</p>

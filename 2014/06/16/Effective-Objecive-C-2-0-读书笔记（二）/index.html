@@ -121,12 +121,12 @@ C语言函数调用，所调用的函数乃是消息传递机制中的核心函�
 只有一个函数指令,不过待调用的函数地址无法硬编译在指令之中，而是要在运行期读取出来，这是”动态绑定”
 C语言函数调用，所调用的函数乃是消息传递机制中的核心函数，叫做objc_msgSend  
 ((void">
-<meta property="og:image" content="http://yoursite.com/2014/06/16/Effective-Objecive-C-2-0-读书笔记（二）/1.png">
-<meta property="og:image" content="http://yoursite.com/2014/06/16/Effective-Objecive-C-2-0-读书笔记（二）/2.png">
-<meta property="og:image" content="http://yoursite.com/2014/06/16/Effective-Objecive-C-2-0-读书笔记（二）/3.png">
-<meta property="og:image" content="http://yoursite.com/2014/06/16/Effective-Objecive-C-2-0-读书笔记（二）/4.png">
-<meta property="og:image" content="http://yoursite.com/2014/06/16/Effective-Objecive-C-2-0-读书笔记（二）/5.png">
-<meta property="og:updated_time" content="2017-04-23T09:00:19.000Z">
+<meta property="og:image" content="http://yoursite.com/2014/06/16/Effective-Objecive-C-2-0-读书笔记（二）/1.jpg">
+<meta property="og:image" content="http://yoursite.com/2014/06/16/Effective-Objecive-C-2-0-读书笔记（二）/2.jpg">
+<meta property="og:image" content="http://yoursite.com/2014/06/16/Effective-Objecive-C-2-0-读书笔记（二）/3.jpg">
+<meta property="og:image" content="http://yoursite.com/2014/06/16/Effective-Objecive-C-2-0-读书笔记（二）/4.jpg">
+<meta property="og:image" content="http://yoursite.com/2014/06/16/Effective-Objecive-C-2-0-读书笔记（二）/5.jpg">
+<meta property="og:updated_time" content="2017-06-25T09:52:05.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Effective-Objecive-C-2-0-读书笔记（二）">
 <meta name="twitter:description" content="11.理解objc_msgSend的作用
@@ -135,7 +135,7 @@ C语言函数调用，所调用的函数乃是消息传递机制中的核心函�
 只有一个函数指令,不过待调用的函数地址无法硬编译在指令之中，而是要在运行期读取出来，这是”动态绑定”
 C语言函数调用，所调用的函数乃是消息传递机制中的核心函数，叫做objc_msgSend  
 ((void">
-<meta name="twitter:image" content="http://yoursite.com/2014/06/16/Effective-Objecive-C-2-0-读书笔记（二）/1.png">
+<meta name="twitter:image" content="http://yoursite.com/2014/06/16/Effective-Objecive-C-2-0-读书笔记（二）/1.jpg">
 
 
 
@@ -452,11 +452,11 @@ method_exchangeImplementations(originalMethod, swppedMethod);</code> </li>
 <li>“在运行期检视对象类型”这一操作也叫做”类型信息查询”，这个强大而有用的特性内置于<code>Foundation</code>框架的<code>NSObject</code>协议里，凡是由公共根类(即<code>NSObject</code>与<code>NSProxy</code>)继承而来的对象都要遵从此协议。在程序中不要直接比较对象所属的类，明智的做法是调用”类型信息查询方法”。</li>
 <li>每一个<code>Objective-C</code>对象实例都是指向某块内存数据的指针。所以在声明变量时，类型后面跟一个”<em>”字符<br>`NSString </em>pointerVariable = @”Some string”;`</li>
 <li>对于通用的对象类型id,由于其本身已经是指针了，所以我们能够这样写:<br><code>id pointerVariable = @&quot;Some string”;</code></li>
-<li>描述<code>Objective-C</code>对象所用的数据结构定义在运行期程序库的头文件里，id类型本身也在定义在这里<br><img src="/2014/06/16/Effective-Objecive-C-2-0-读书笔记（二）/1.png" alt="1"><br>由此可见，每个对象结构体的首个成员是Class类的变量。该变量定义了对象所属的类，通常称为”isa”指针。<br><img src="/2014/06/16/Effective-Objecive-C-2-0-读书笔记（二）/2.png" alt="2"><br>此结构体存放类的”元数据”，例如类的实例实现了几个方法，具备多少个实例变量等信息。此结构体的首个变量也是isa指针，说明<code>Class</code>本身亦为<code>Objective-C</code>对象。结构体里还有个变量叫做<code>super_class</code>，它定义了本类的超类。类对象所属的类型是另外一个类，叫做”元类”，用来表述类对象本身具备的元数据。”类方法”就定义与此，因为这些方法可以理解成类对象的实例方法<br>。每个类仅有一个”类对象”，而每个”类对象”仅有一个与之相关的”元类”。<br><img src="/2014/06/16/Effective-Objecive-C-2-0-读书笔记（二）/3.png" alt="3"></li>
+<li>描述<code>Objective-C</code>对象所用的数据结构定义在运行期程序库的头文件里，id类型本身也在定义在这里<br><img src="/2014/06/16/Effective-Objecive-C-2-0-读书笔记（二）/1.jpg" alt="1"><br>由此可见，每个对象结构体的首个成员是Class类的变量。该变量定义了对象所属的类，通常称为”isa”指针。<br><img src="/2014/06/16/Effective-Objecive-C-2-0-读书笔记（二）/2.jpg" alt="2"><br>此结构体存放类的”元数据”，例如类的实例实现了几个方法，具备多少个实例变量等信息。此结构体的首个变量也是isa指针，说明<code>Class</code>本身亦为<code>Objective-C</code>对象。结构体里还有个变量叫做<code>super_class</code>，它定义了本类的超类。类对象所属的类型是另外一个类，叫做”元类”，用来表述类对象本身具备的元数据。”类方法”就定义与此，因为这些方法可以理解成类对象的实例方法<br>。每个类仅有一个”类对象”，而每个”类对象”仅有一个与之相关的”元类”。<br><img src="/2014/06/16/Effective-Objecive-C-2-0-读书笔记（二）/3.jpg" alt="3"></li>
 <li><code>super_class</code>指针确立了继承关系，而isa指针描述了实例所属的类。</li>
 <li><code>isMemberOfClass</code> 能够判断出对象是否为某个特定类的实例</li>
-<li><code>isKindOfClass</code> 则能够判断出对象是否为某类或其派生类的实例<br><img src="/2014/06/16/Effective-Objecive-C-2-0-读书笔记（二）/4.png" alt="4"></li>
-<li>由于<code>Objective-C</code>使用”动态类型系统”，所以用于查询对象所属类的类型信息查询功能非常有用。<br><img src="/2014/06/16/Effective-Objecive-C-2-0-读书笔记（二）/5.png" alt="5"></li>
+<li><code>isKindOfClass</code> 则能够判断出对象是否为某类或其派生类的实例<br><img src="/2014/06/16/Effective-Objecive-C-2-0-读书笔记（二）/4.jpg" alt="4"></li>
+<li>由于<code>Objective-C</code>使用”动态类型系统”，所以用于查询对象所属类的类型信息查询功能非常有用。<br><img src="/2014/06/16/Effective-Objecive-C-2-0-读书笔记（二）/5.jpg" alt="5"></li>
 </ul>
 <blockquote>
 <p>每个实例都有一个指向Class对象的指针，用以表明其类型，而这些Class对象则构成了类的继承体系</p>

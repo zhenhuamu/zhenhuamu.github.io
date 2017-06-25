@@ -113,14 +113,14 @@
 <meta property="og:site_name" content="AndyMu">
 <meta property="og:description" content="前言
 碎片化时间是移动设备用户在使用应用时的一大特点，用户希望随时拿起手机就能查看资讯，处理事务，而通知可以在重要的事件和信息发生时提醒用户。完美的通知展示可以很好地帮助用户使用应用，体现出应用的价值，进而有很大可能将用户带回应用，提高活跃度。正因如此，不论是 Apple 还是第三方开发者们，都很重视通知相关的开发工作，而通知也成为了很多应用的必备功能，开发者们都希望通知能带来更好地体验和更多的用">
-<meta property="og:image" content="http://yoursite.com/2016/10/17/Notification历史和现状/2.png">
-<meta property="og:image" content="http://yoursite.com/2016/10/17/Notification历史和现状/1.png">
-<meta property="og:updated_time" content="2017-06-17T12:19:24.000Z">
+<meta property="og:image" content="http://yoursite.com/2016/10/17/Notification历史和现状/2.jpg">
+<meta property="og:image" content="http://yoursite.com/2016/10/17/Notification历史和现状/1.jpg">
+<meta property="og:updated_time" content="2017-06-25T10:24:44.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Notification历史和现状">
 <meta name="twitter:description" content="前言
 碎片化时间是移动设备用户在使用应用时的一大特点，用户希望随时拿起手机就能查看资讯，处理事务，而通知可以在重要的事件和信息发生时提醒用户。完美的通知展示可以很好地帮助用户使用应用，体现出应用的价值，进而有很大可能将用户带回应用，提高活跃度。正因如此，不论是 Apple 还是第三方开发者们，都很重视通知相关的开发工作，而通知也成为了很多应用的必备功能，开发者们都希望通知能带来更好地体验和更多的用">
-<meta name="twitter:image" content="http://yoursite.com/2016/10/17/Notification历史和现状/2.png">
+<meta name="twitter:image" content="http://yoursite.com/2016/10/17/Notification历史和现状/2.jpg">
 
 
 
@@ -453,8 +453,8 @@
 </ul>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">// APP处于前台接收到通知触发</div><div class="line">- (void)userNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)notification withCompletionHandler:(void (^)(UNNotificationPresentationOptions))completionHandler &#123;</div><div class="line">// 需要执行这个方法，选择是否提醒用户，有Badge、Sound、Alert三种类型可以选择设置      </div><div class="line">completionHandler(UNNotificationPresentationOptionSound | UNNotificationPresentationOptionAlert | UNNotificationPresentationOptionBadge);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">// APP处于后台通过点击通知栏直接触发</div><div class="line">- (void)userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void (^)())completionHandler &#123;</div><div class="line">    // 判断当前通知类型</div><div class="line">    if ([[[[response notification] request] trigger] isKindOfClass:[UNPushNotificationTrigger class]]) &#123;</div><div class="line">        </div><div class="line">    &#125;</div><div class="line">    else &#123;</div><div class="line">        [self handleReceiveLocalNotification:[response notification]];</div><div class="line">    &#125;</div><div class="line">    completionHandler();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>用户可以通过下面这个图，在这个方法中写入相关的处理逻辑。<br><img src="/2016/10/17/Notification历史和现状/2.png" alt="2"></p>
-<h3 id="静默推送"><a href="#静默推送" class="headerlink" title="静默推送"></a>静默推送</h3><p>iOS 7在推送方面最大的变化就是允许，应用收到通知后在后台（background）状态下运行一段代码，可用于从服务器获取内容更新。功能使用场景：（多媒体）聊天，Email更新，基于通知的订阅内容同步等功能，提升了终端用户的体验。<br>如果只携带content-available: 1 不携带任何badge，sound 和消息内容等参数，则可以不打扰用户的情况下进行内容更新等操作即为“Silent Remote Notifications”。<br><strong>客户端设置开启Remote notifications</strong><br><img src="/2016/10/17/Notification历史和现状/1.png" alt="1"><br><strong>接收推送通知</strong></p>
+<p>用户可以通过下面这个图，在这个方法中写入相关的处理逻辑。<br><img src="/2016/10/17/Notification历史和现状/2.jpg" alt="2"></p>
+<h3 id="静默推送"><a href="#静默推送" class="headerlink" title="静默推送"></a>静默推送</h3><p>iOS 7在推送方面最大的变化就是允许，应用收到通知后在后台（background）状态下运行一段代码，可用于从服务器获取内容更新。功能使用场景：（多媒体）聊天，Email更新，基于通知的订阅内容同步等功能，提升了终端用户的体验。<br>如果只携带content-available: 1 不携带任何badge，sound 和消息内容等参数，则可以不打扰用户的情况下进行内容更新等操作即为“Silent Remote Notifications”。<br><strong>客户端设置开启Remote notifications</strong><br><img src="/2016/10/17/Notification历史和现状/1.jpg" alt="1"><br><strong>接收推送通知</strong></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(nonnull void (^)(UIBackgroundFetchResult))completionHandler&#123;</div><div class="line">    </div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">注意</div><div class="line">1.“Silent Remote Notifications”是在 Apple 的限制下有一定的频率控制，但具体频率不详。所以并不是所有的 “Silent Remote Notifications” 都能按照预期到达客户端触发函数。</div><div class="line">2.“Background”下提供给应用的运行时间窗是有限制的，如果需要下载较大的文件请参考 Apple 的 NSURLSession 的介绍。</div><div class="line">3.“Background Remote Notification” 的前提是要求客户端处于Background 或 Suspended 状态，如果用户通过 App Switcher 将应用从后台 Kill 掉应用将不会唤醒应用处理 background 代码。</div></pre></td></tr></table></figure>
 <p>这里涉及到iOS的多任务，感兴趣的同学可以去了解<a href="https://objccn.io/issue-5-5/" target="_blank" rel="external">iOS7的多任务</a></p>
