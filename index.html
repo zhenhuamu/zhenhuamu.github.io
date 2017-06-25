@@ -386,33 +386,18 @@
       
         
           
-            <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><hr>
-<p>CocoaPods is a dependency manager for Swift and Objective-C Cocoa projects. It has over 32 thousand libraries and is used in over 2.1 million apps. CocoaPods can help you scale your projects elegantly.<br><a href="https://cocoapods.org" target="_blank" rel="external">COCOAPODS</a></p>
-<p>Cocoapods是OS X和iOS开发平台的类库管理工具，通常我们用pod来管理第三方开源类库，但我们也可能会开发一个用pod管理依赖关系的静态类库给其他人使用，使用CocoaPods开发并打包静态库就是这篇文章要谈的内容。</p>
-<h3 id="基于pod的命令pod-lib-create来自动创建"><a href="#基于pod的命令pod-lib-create来自动创建" class="headerlink" title="基于pod的命令pod lib create来自动创建"></a>基于<code>pod</code>的命令<code>pod lib create</code>来自动创建</h3><hr>
-<p><strong>1.项目的初始搭建</strong><br>执行<code>pod lib create MZHLib</code>命令之后，会需要简单回答几个问题。<br><img src="/2017/06/05/使用CocoaPods开发并打包静态库/1.png" alt="1"></p>
-<p><strong>2.<code>podspec</code>文件</strong><br><code>podspec</code>文件是<code>cocopods</code>引入第三方代码库的配置索引文件,具体详情可见我上片文章<a href="http://zhenhuamu.github.io/2017/05/30/让私有库支持Cocoapods/" target="_blank" rel="external">让私有库支持Cocoapods</a></p>
-<p><strong>3.验证<code>podspec</code>文件</strong><br>验证<code>podspec</code>文件是否正确是使用命令，在<code>podspec</code>所在目录下执行<code>pod lib lint</code>。可以通过添加<code>--allow-warnings</code>忽略一些警告，也可以通过添加<code>--verbose</code>查看详细信息。具体详情可见我上片文章<a href="http://zhenhuamu.github.io/2017/05/30/让私有库支持Cocoapods/" target="_blank" rel="external">让私有库支持Cocoapods</a> </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">pod spec lint 用来验证本地使用pod spec create添加的podspec文件(这个命令常常会出现 2 out of 2 specs failed validation.此类的错误,推荐大家都使用 pod lib lint)</div><div class="line">pod lib lint 这个是检验由pod lib create创建的lib工程的spec的合法性(这个命令也是可以适用于第一种情况的)</div></pre></td></tr></table></figure>
-<p><strong>4.添加资源文件</strong><br>新增加类，重新运行Pod install来应用更新。<br><img src="/2017/06/05/使用CocoaPods开发并打包静态库/4.png" alt="4"><br><strong>5.建立自己私有的spec仓库。</strong>  </p>
-<ul>
-<li><code>cocoapods</code>的仓库  </li>
-</ul>
-<p><code>.cocoapods</code>下的文件夹<code>repos</code>,这里的<code>repo</code>是<code>repository</code>仓库的缩写.<code>repos</code>下存放的是仓库的集合.这里的<code>master</code>就是<code>cocoapods</code>官方建立的仓库,也就是我们所谓的公共库<code>specs</code>目录下存放的就是所有的提交到<code>cocoapods</code>的开源库的<code>podspec</code>文件的集合.<br>其结构如下:<br><img src="/2017/06/05/使用CocoaPods开发并打包静态库/5.png" alt="5"><br>将<code>spec</code>文件转换成<code>json</code>  <code>pod ipc spec</code><br>重建<code>pod</code>的<code>repo</code>文件夹<br><code>pod repo remove master</code><br><code>pod setup</code>   </p>
-<ul>
-<li>建立一个本地的私有仓库<a href="http://guides.cocoapods.org/making/private-cocoapods.html" target="_blank" rel="external">官方建立私有repo</a></li>
-</ul>
-<p>先在<code>github</code>上创建一个空的仓库，这个仓库是用来存放我们私有库的<code>specs</code>文件，就如同官方的<code>https://github.com/CocoaPods/Specs</code>是用来存放所有官方的<code>specs</code>文件一样<br><img src="/2017/06/05/使用CocoaPods开发并打包静态库/6.png" alt="6"><br>使用<code>$ pod repo add REPO_NAME SOURCE_URL</code> 命令创建本地的仓库,其中的<code>REPO_NAME</code>是我们要添加的私有<code>repo</code>的名称,后面的是其地址,注意这个只是创建而已,也就是只是在<code>~/.cocoapods/repos</code>目录下 目录下添加了一个文件夹而已,但是,并没有在其中添加<code>spec</code>文件<br><img src="/2017/06/05/使用CocoaPods开发并打包静态库/7.png" alt="7"><br><strong>6.私有的<code>spec</code>仓库添加<code>podspec</code>文件</strong><br><code>pod repo push AndyMuSpecs MZHLib.podspec</code> (确认<code>podspec</code>验证通过)<br>[在MZHLib.podspec所在的目录下哦]<br><img src="/2017/06/05/使用CocoaPods开发并打包静态库/8.png" alt="8"><br>执行成功后,可以看到<code>.cocoapods</code>发生了变化了，还可以看到我们的<code>podspec</code>文件已经添加到了<code>AndyMuSpecs</code>这个<code>repo</code>下了。<br><img src="/2017/06/05/使用CocoaPods开发并打包静态库/9.png" alt="9"><br><img src="/2017/06/05/使用CocoaPods开发并打包静态库/10.png" alt="10"><br><strong>7.使用私有<code>specs</code></strong><br>在podfile文件最上方添加<br><code>source &#39;https://github.com/zhenhuamu/AndyMuSpecs.git&#39;</code>  私有spec仓库的地址<br><code>source &#39;https://github.com/CocoaPods/Specs.git&#39;</code><br>官方仓库的地址</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">默认情况下,如果你不添加source的话,</div><div class="line">系统会默认使用https://github.com/CocoaPods/Specs.git官方源,</div><div class="line">但是当你添加了source后,系统就不再自动搜索官方源,</div><div class="line">所以这两句都必须添加!!!!!</div></pre></td></tr></table></figure>
-<h3 id="周边"><a href="#周边" class="headerlink" title="周边"></a>周边</h3><hr>
-<ul>
-<li>查看本地有多少个repos<br><code>pod repo</code></li>
-<li>列出所有可用的第三方库<br><code>pod list</code></li>
-<li>引入pod的其他方式<br><code>pod &#39;MZHLib&#39;,:path =&gt; &#39;/Users/zhenhuamu/MZHLib&#39;</code><br><code>pod &#39;MZHLib&#39;,:git =&gt; &#39;https://github.com/zhenhuamu/AndyMuSpecs.git&#39;</code><br><code>pod &#39;MZHLib&#39;,:podspec =&gt; &#39;/Users/zhenhuamu/MZHLib/MZHLib.podspec&#39;</code></li>
-<li>打包<code>framework</code>的第三方插件命令<br><code>cocoapods</code>的插件<code>cocoapods-packager</code>来完成类库的打包,安装命令<code>sudo gem install cocoapods-packager</code>它的好处是,该插件通过对引用的三方库进行重命名很好的解决了类库命名冲突的问题<br>cd到podspec所在文件目录下<br><code>pod package XXXLIB.podspec --library --force</code><br>打包成.a文件 –force是指强制覆盖<br><code>pod package XXXLIB.podspec --force</code><br>打包成.framework文件</li>
-</ul>
-
-          
+          前言
+CocoaPods is a dependency manager for Swift and Objective-C Cocoa projects. It has over 32 thousand libraries and is used in over 2.1 million apps. CocoaPods can help you scale your projects elegantly.COCOAPODS
+Cocoapods是OS X和iOS开发平台的类库管理工具，通常我们用pod来管理第三方开源类库，但我们也可能会开发一个用pod管理依赖关系的静态类库给其他人使用，使用CocoaPods开发并打包静态库就是这篇文章要谈的内容。
+基于pod的命令pod lib create
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/06/05/使用CocoaPods开发并打包静态库/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -532,22 +517,22 @@
       
         
           
-            <h3 id="将私有库上传仓库并打tag"><a href="#将私有库上传仓库并打tag" class="headerlink" title="将私有库上传仓库并打tag"></a>将私有库上传仓库并打<code>tag</code></h3><hr>
-<p>将自己的私有库代码上传到github，并打tag。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">1.这里不一定是gitbub,也可以是私有的git仓库。</div><div class="line">2.cocoapods是依赖tag版本的,所以必须打tag,以后再次更新只需打一个tag。</div><div class="line">3.创建LICENSE(许可证/授权)文件,此文件必须要有。</div></pre></td></tr></table></figure>
-<h3 id="创建-podspec"><a href="#创建-podspec" class="headerlink" title="创建.podspec"></a>创建<code>.podspec</code></h3><hr>
-<p>cd到你要创建<code>.podspec</code>文件的目录<br><code>pod spec create MZHBaiduMobStat</code></p>
-<h3 id="编辑-podspec"><a href="#编辑-podspec" class="headerlink" title="编辑.podspec"></a>编辑<code>.podspec</code></h3><hr>
-<p>创建的default的<code>.podspec</code>文件，里面有充足的注释，可以根据自己的需求做相应修改。<a href="https://guides.cocoapods.org/syntax/podspec.html" target="_blank" rel="external">官方介绍</a><br><img src="/2017/05/30/让私有库支持Cocoapods/1.png" alt="1"></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">1.注意license、source、source_files、public_header_files、resource_bundles、vendored_libraries的路径否正确。</div><div class="line">2.需要注意，依赖项不仅要包含你自己类库的依赖，还要包括所有第三方类库的依赖，只有这样当你的类库打包成.a或.framework时才能让其他项目正常使用。</div></pre></td></tr></table></figure>
-<h3 id="验证-podspec"><a href="#验证-podspec" class="headerlink" title="验证.podspec"></a>验证<code>.podspec</code></h3><hr>
-<p>检查一下你工程下面的文件，你的项目、<code>.podspec</code>文件、<code>LICENSE</code>文件。验证会先测试本地<code>.podspec</code>文件是否存在语法错误.<br><code>pod spec lint MZHBaiduMobStat.podspec</code><br><img src="/2017/05/30/让私有库支持Cocoapods/2.png" alt="2"></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">1.--allow-warnings 忽略一些警告</div><div class="line">2.--verbose 可以看到详细的信息</div><div class="line">3.这个过程可能会出现错误信息,不过一般看提示修改即可。</div></pre></td></tr></table></figure>
-<h3 id="利用pod-trunk发布程序"><a href="#利用pod-trunk发布程序" class="headerlink" title="利用pod trunk发布程序"></a>利用pod trunk发布程序</h3><hr>
-<p>首先可以查看自己是否注册过trunk，若没有注册需要注册后使用。<br>1.查看自己是否注册过<br><code>pod trunk me</code><br>2.注册<br><code>pod trunk register muzhenhua0601@163.com &quot;AndyMu&quot; --verbose</code><br>3.注册成功<br><img src="/2017/05/30/让私有库支持Cocoapods/3.png" alt="3"><br>4.发布<br>发布时会验证<code>podspec</code>的有效性，如果你在手动验证<code>podspec</code>时使用了<code>--allow-warnings</code>等修饰符，那么发布的时候也应该使用相同的字段修饰，否则出现相同的报错。<br><code>pod trunk push MZHBaiduMobStat.podspec</code><br><img src="/2017/05/30/让私有库支持Cocoapods/4.png" alt="4"><br>5.验证<br><code>pod search MZHBaiduMobStat</code></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">1.trunk需要CocoaPods 0.33版本以上。</div><div class="line">2.注册完成之后会给你的邮箱发个激活邮件，需要激活下。</div><div class="line">3.注册trunk的时候可能比较慢，可以挂代理注册。并且注册完后，许要等2、3分支才查看到结果。</div><div class="line">4.在验证的时候，可能已经发布成功了但是搜不到，需要</div><div class="line">pod setup : 初始化</div><div class="line">pod repo update : 更新仓库</div><div class="line">5.如果第4步不生效，可以删除~/Library/Caches/CocoaPods目录下的search_index.json文件</div></pre></td></tr></table></figure>
-
-          
+          将私有库上传仓库并打tag
+将自己的私有库代码上传到github，并打tag。
+1231.这里不一定是gitbub,也可以是私有的git仓库。2.cocoapods是依赖tag版本的,所以必须打tag,以后再次更新只需打一个tag。3.创建LICENSE(许可证/授权)文件,此文件必须要有。
+创建.podspec
+cd到你要创建.podspec文件的目录pod spec create MZHBaiduMobStat
+编辑.podspec
+创建的default的.podspec文件，里面有充足的注释，可以根据自己的需求做相应修改。官方介绍
+121.注意license、source、source_files、public_header_files、resource_bundles、vendore
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/05/30/让私有库支持Cocoapods/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -667,80 +652,24 @@
       
         
           
-            <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><hr>
-<p>软件开发工具包（Software Development Kit）一般都是一些软件工程师为特定的软件包、软件框架、硬件平台、操作系统等建立应用软件时的开发工具的集合</p>
-<h1 id="库"><a href="#库" class="headerlink" title="库"></a>库</h1><hr>
-<p>库(Library)说白了就是一段编译好的二进制代码，加上头文件就可以供别人使用。  </p>
-<ul>
-<li>源码混淆，只暴露头文件。</li>
-<li>编译时间减少</li>
-</ul>
-<p>库在使用的时候需要Link,Link的方式有两种，静态和动态，也就产生了相应的静态库和动态库。</p>
-<h5 id="静态库"><a href="#静态库" class="headerlink" title="静态库"></a>静态库</h5><p>静态库即静态链接库(Windows下的.lib，Linux和Max下的.a)。之所以叫静态库，是因为静态库在编译的时候会被直接拷贝一份，复制到目标程序里，这段代码在目标程序里就不会再改变了。<br>静态库的好处很明显，编译完成之后，库文件实际上就没什么作用了。目标程序没有外部依赖，直接就可以运行。当然其缺点也很明显，就是会使目标程序的体积增大。</p>
-<h5 id="动态库"><a href="#动态库" class="headerlink" title="动态库"></a>动态库</h5><p>动态库即动态链接库(windows下的.dll，Linux下的.so，Mac下的.dylib之后被替换成.tbd)。与静态库相反，动态库在编译时并不会被拷贝到目标程序中，目标程序中只会存储指向动态库的引用。等到程序运行时，动态库才会被真正加载进来。<br>动态库的优点是，不需要拷贝到目标程序中，不会影响目标程序的体积。而且同一份可以被多个程序使用。同时，编译时才载入的特性，也可以让我们随时对库进行替换，而不需要重新编译代码。</p>
-<h1 id="iOS-Framework"><a href="#iOS-Framework" class="headerlink" title="iOS Framework"></a>iOS Framework</h1><hr>
-<p>Mac OS/iOS 平台还可以使用Framework。Framework实际上是一种打包方式，将库的二进制文件，头文件和有关资源文件打包到一起，方便管理和分发。<br>在iOS8之前，iOS平台不支持使用动态Framework，开发者可以使用的Framework只有苹果自家的UIKit.Framework，Foundation.Framework等。由于上面提到的限制，开发者想要在iOS平台共享代码，唯一的选择就是打包成静态库.a文件，同时附上头文件。<br>iOS8/Xcode 6推出之后，iOS平台添加了动态库的支持，同时Xcode 6 也原生自带了Framework支持(动态和静态都可以)，但是这种动态Framework和系统的UIKit.Framework还是有很大区别的。系统的Framework不需要拷贝到目标程序中，我们自己做出来的Framework哪怕是动态的，最后也还要拷贝的App中，因此苹果有把这种Framework称为 <a href="https://developer.apple.com/library/content/documentation/General/Conceptual/ExtensibilityPG/ExtensionScenarios.html" target="_blank" rel="external">Embedded Framework</a>。 </p>
-<h1 id="创建-a静态库"><a href="#创建-a静态库" class="headerlink" title="创建.a静态库"></a>创建.a静态库</h1><hr>
-<ol>
-<li>使用静态库<code>Cocoa Touch Static Library</code>模板新建工程</li>
-<li>在项目中导入需要的资源文件</li>
-<li>修改项目<code>Bulid Phase</code>配置<br><img src="/2017/05/29/SDK开发简介/1.png" alt="1"></li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">注意: New Headers Phase 和 New Copy Files Phase 两种方式都可以，主要作用都是把.h文件导出。</div></pre></td></tr></table></figure>
-<p>4.修改<code>Scheme</code>的配置<br>  <img src="/2017/05/29/SDK开发简介/2.png" alt="2"><br>5.修改<code>Bulid Settings</code>配置<br>  <img src="/2017/05/29/SDK开发简介/3.png" alt="3"></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">注意:</div><div class="line">模拟器：iPhone4s~5 : i386 iPhone5s~6plus : x86_64        </div><div class="line">真机：iPhone3gs~4s : armv7 iPhone5~5c : armv7s iPhone5s~6plus : arm64</div><div class="line">YES表示编译出来的.a静态库就只包含当前设备的指令集。</div><div class="line">NO表示会把所有指令集的都打包合并</div></pre></td></tr></table></figure>
-<p>6.编译(command + b)<br>编译时，需要用模拟器和真机各编译一次，这样才能在Products目录下有【Release-iphoneos】和【Release-iphonesimulator】两个文件件。前者里面是真机使用的.a静态库，后者是模拟器使用的.a静态库。<br>  <img src="/2017/05/29/SDK开发简介/4.png" alt="4"><br>  <img src="/2017/05/29/SDK开发简介/5.png" alt="5"><br>合并模拟器库文件和真机库文件<br><code>lipo -create -output lib.a lib-iphoneos.a lib-iphonesimulator.a</code></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">注意:</div><div class="line">引用静态库的工程，需要在【Link Binary With Libraries】添加.a静态库</div><div class="line">引用静态库的工程，需要在【Header Search Paths】中添加静态库项目的头文件的路径(&quot;..&quot;表示返回上层目录)</div><div class="line">如果静态库中有category类，则在使用静态库的项目配置中【Other Linker Flags】需要添加参数【-ObjC】</div></pre></td></tr></table></figure>
-<h1 id="创建Framework静态库"><a href="#创建Framework静态库" class="headerlink" title="创建Framework静态库"></a>创建Framework静态库</h1><hr>
-<p>1.使用Framework库<code>Cocoa Touch Framework</code>模板新建工程<br>2.确定info.plist中Bundle OS Type Code 的值<br><img src="/2017/05/29/SDK开发简介/8.png" alt="8"></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">标示包类型</div><div class="line">The type code for apps is APPL;  </div><div class="line">for frameworks, it is FMWK;  </div><div class="line">for loadable bundles, it is BNDL.</div></pre></td></tr></table></figure>
-<p>3.在项目中导入需要的资源文件<br>4.修改项目<code>Bulid Phase</code>配置<br><img src="/2017/05/29/SDK开发简介/6.png" alt="6"></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">注意:</div><div class="line">这里需要注意的是暴露出来的头文件中import的其他类也得添加到public中暴露出来。</div><div class="line">如果不想将import的类暴露出来，那么在头文件中用@class 然后在对应的.m文件中再import。</div></pre></td></tr></table></figure>
-<p>5.修改Scheme的配置和上面的.a一样<br>6.修改<code>Bulid Settings</code>配置和上面.a一样，另外还要再修改生成的Mach-O格式<br><img src="/2017/05/29/SDK开发简介/7.png" alt="7"><br>7.编译(command + b) 和上面.a一样，需要注意的是，framework静态库合并的不是framework,而是framework下的一个二进制文件。<br>合并模拟器库文件和真机库文件<br><code>lipo -create -output ./Desktop/MyFirstFrameWork ../Release-iphones/MyFirstFrameWork.framework/MyFirstFrameWork ../Release-iphonesimulator/MyFirstFrameWork.framework/MyFirstFrameWork</code></p>
-<h1 id="iOS常用静态库操作命令"><a href="#iOS常用静态库操作命令" class="headerlink" title="iOS常用静态库操作命令"></a>iOS常用静态库操作命令</h1><p>-</p>
-<ul>
-<li>合并模拟器库文件和真机库文件<br><code>lipo -create -output lib.a lib-armv6.a lib-i386.a</code></li>
-<li>查看静态库中包含哪些架构<br><code>lipo -info lib.a</code></li>
-<li>解压出指定架构的静态库<br><code>lipo lib.a -thin armv7 -output lib-armv7.a</code></li>
-<li>将a格式的静态库解压为o文件(解压出lib.a中的所有o文件)<br><code>ar -x lib.a</code></li>
-<li>将o文件合并为a文件<br><code>libtool -static -o lib.a *.o</code></li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">注意:</div><div class="line">后两个命令常用于多个项目中引用的a库存在冲突时(duplicate symbol)解决冲突的一种方式。</div></pre></td></tr></table></figure>
-<h1 id="扩展"><a href="#扩展" class="headerlink" title="扩展"></a>扩展</h1><hr>
-<p>1.可以用Workspace关联SDK和SDKTest两个工程，进行测试SDK的实时测试更方便。<a href="http://www.jianshu.com/p/813477451c28" target="_blank" rel="external">__</a><br>2.使用Aggregate创建脚本文件build-universal-framework.sh合并模拟器和真机的FrameWork。<a href="http://www.jianshu.com/p/60f5312fa729" target="_blank" rel="external">__</a> </p>
-<h1 id="静态库中的注意事项"><a href="#静态库中的注意事项" class="headerlink" title="静态库中的注意事项"></a>静态库中的注意事项</h1><hr>
-<p>1.静态库所依赖的dylib或者framework，最终使用静态库的程序也需要引用<br>2.静态库是二进制代码，区分处理器类型的，可以使用lipo -create –output创建支持多处理器的静态库<br>3.静态库中使用的开源代码与引用静态库的工程使用的开源代码相同时，将会出现冲突.</p>
-<ul>
-<li>解决1: 静态库不打包相关的开源代码，在静态库使用说明文档中列出所依赖的开源库及其版本  </li>
-<li>解决2: 静态库在打包开源代码时，修改开源代码的类的命名加上三个字母以上的前缀(不建议)  </li>
-<li>对于已经打包好的静态库，可以利用lipo命令解包其中一个静态库，然后把发生冲突的.o文件删除，然后lipo命令重新打包，然后对每种处理器框架的.a文件重复操作，最后lipo重新合并静态库，替换原来的静态库  </li>
-</ul>
-<p>4.a.静态库中的类的命名与引用静态库的工程的类的命名相同时将会被视为重复定义（OC没有命名空间导致)</p>
-<ul>
-<li>解决:静态库中的类命名加上三个字母以上的前缀  </li>
-</ul>
-<p>5.静态库中使用Category,用Category添加的方法即使名字重复了也不会报错，但是会存在其中一个方法覆盖了另一个  </p>
-<ul>
-<li>解决: 建议给category添加的方法添加前缀</li>
-</ul>
-<p>6.全局变量重名是必然编译失败的</p>
-<ul>
-<li>解决:给静态库中用到的全局变量加前缀</li>
-</ul>
-<p>7.静态库中有可能会使用debug时打开log,release关闭log,发布到Appstore的应用不应该把调试的log打印出来，因此，在打包静态库时，把Build Configuration选择为Release一般可以把多数开源库的log都去掉了,如果静态库使用者希望能在开发时看到log，这时就看不到了</p>
-<ul>
-<li>解决:分开打debug和release的包</li>
-</ul>
-<p>8.报错<code>Include of non-modular header inside framework module</code></p>
-<ul>
-<li>解决:检查Headers Phase 中Public中.h是否头导入正确。或者设置【Allow Non-modular Includes ….】为YES</li>
-</ul>
-<p>9.找不到头文件</p>
-<ul>
-<li>解决:配置<code>Header Search Paths</code></li>
-</ul>
+          前言
+软件开发工具包（Software Development Kit）一般都是一些软件工程师为特定的软件包、软件框架、硬件平台、操作系统等建立应用软件时的开发工具的集合
+库
+库(Library)说白了就是一段编译好的二进制代码，加上头文件就可以供别人使用。  
 
-          
+源码混淆，只暴露头文件。
+编译时间减少
+
+库在使用的时候需要Link,Link的方式有两种，静态和动态，也就产生了相应的静态库和动态库。
+静态库静态库即静态链接库(Windows下的.lib，Linux和Max下的.a)。之所以叫静态库，是因为静态库在编译的时候会被直接拷贝一份，复制到目标程序里，这段代码在目标程序里就不会再改变了。静态库的好处很明显，编译完成之后，库文件实际上就没什么作用了。目标程序没有外部依赖，直接就可以运行。
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/05/29/SDK开发简介/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -860,34 +789,18 @@
       
         
           
-            <h2 id="配置的优先级"><a href="#配置的优先级" class="headerlink" title="配置的优先级"></a>配置的优先级</h2><hr>
-<p><img src="/2017/05/23/BuildSettings常用参数和Xcode常用变量/1.png" alt="1"></p>
-<h2 id="配置详情"><a href="#配置详情" class="headerlink" title="配置详情"></a>配置详情</h2><hr>
-<p><strong>1.Architectures</strong><br><img src="/2017/05/23/BuildSettings常用参数和Xcode常用变量/2.png" alt="2"><br><code>Additional SDKs：</code>在编译的时候需要附加的SDK。<br><code>Architecture ：</code> 支持的处理器架构。支持的指令集越多，就会编译出包含多个指令集代码的数据包，对应生成二进制包就越大，最终目标文件也会变大。<br><code>Base SDK：</code>App所能支持的最大iOS版本。Xcode默认会设置为能够支持的最新版本。<br><code>Build Active Architecture Only :</code> 如果此项为YES，则Xcode会根据当前所连接设备的版本只将相应的Architecture编译入app。否则会同时编译“Valid Architectures”中的指令集。<br><code>Supported Platform：</code>app支持的平台。目前可选的有iOS、macOS、tvOS、watchOS。<br><code>Valid Architectures：</code>指即将编译的指令集，可以设为 arm64、armv7s、armv7。 </p>
-<p><strong>2.Assets</strong><br><img src="/2017/05/23/BuildSettings常用参数和Xcode常用变量/3.png" alt="3"><br><code>Asset Pack Manifest URL Prefix:</code>资源包清单的下载路径URL前缀<br><code>Embed Asset Packs In Product Bundle:</code>是否将资源包嵌入产品的bundle中<br><code>Enable On Demand Resources:</code>是否开启按需获取资源功能<br><code>On Demand Resources Initial Install Tags:</code>按需加载资源时的初始安装资源文件标签<br><code>On Demand Resources Prefetch Order:</code>按需加载资源时预加载的标签顺序  </p>
-<p><strong>3.Build Locations</strong><br><img src="/2017/05/23/BuildSettings常用参数和Xcode常用变量/4.png" alt="4"><br><code>Build Products Paths:</code>产品文件和编译中间文件的根目录。产品文件和编译时临时文件都将放在这个目录的子目录中。<br><code>Intermediate Build Files Path:</code>编译时临时文件的存放位置。编译中间文件格式为product name+.build，如MyProduct.build。<br>Per-configuration Build Products Path:当前编译设置下的产品存放位置。<br><code>Per-configuration Intermediate Build Files Path:</code>当前编译设置下编译时临时文件的存放位置。<br><code>Precompiled Headers Cache Path:</code>预编译头文件缓存存放路径。通过这个配置，Targets可以互相共享预编译的头文件。   </p>
-<p><strong>4.Build Options</strong><br><img src="/2017/05/23/BuildSettings常用参数和Xcode常用变量/5.png" alt="5"><br><code>Always Embed Swift Standard Libraries：</code>始终嵌入swift标准库。对于未使用swift代码的情况可以设置为NO。<br><code>Build Variants:</code>此项可以设定生成产品的变种。您可以创建额外的产品变种作为特殊用途。例如，您可以使用编译配置文件的名称来创建一个高度定制的二进制文件。<br>Build Variants的值有三个：<br>normal-用于生成普通的二进制文件；<br>profile-用于可以生成配置信息的二进制文件；<br>debug-用于生成带有debug标志、额外断言和诊断代码的二进制文件。<br><code>Compiler For C/C++/Objective-C:</code>选择使用的编译器。目前Xcode8.2默认使用APPLE LLVM 8.0版本的编译器。<br><code>Debug Information Format:</code>记录debug信息的文件格式。共有DWARF with dSYM File和DWARF两种可以选择。建议选择DWARF with dSYM File。DWARF是较老的文件格式，会在编译时将debug信息写在执行文件中。<br><code>Enable BitCodebitcode:</code>是被编译程序的一种中间形式的代码。包含bitcode配置的程序将会在App store上被编译和链接。bitcode允许苹果在后期重新优化我们程序的二进制文件，而不需要我们重新提交一个新的版本到App store上。当我们提交程序到App store上时，Xcode会将程序编译为一个中间表现形式(bitcode)。然后App store会再将这个botcode编译为可执行的64位或32位程序。<br>现在需要考虑的是三个平台：iOS，Mac OS，watchOS。<br>对应iOS，bitcode是可选的。<br>对于watchOS，bitcode是必须的。<br>Mac OS不支持bitcode。<br><code>Enable Testability:</code>是否支持测试。默认选NO。<br><code>Generate Profiling Code:</code>是否生成配置代码。默认选择NO。<br><code>Precompiled Header Uses Files From Build Directory:</code>预编译build路径中的头文件。由于编译过程比较耗时，且两次编译之间未必会改动所有文件。因此将不会改动的常用文件保留成预编译文件将大大减少编译时的时间。建议这一项选择YES。<br><code>Require Only App-Extension-Safe API:</code>如果我们要想应用扩展使用内嵌框架，那么首先要配置一下。将target的Require Only App-Extension-Safe API选项设置为Yes。如果你不这样设置，那么Xcode会向你提示警告：linking against dylib not safe for use in application extensions。<br><code>Scan All Source Files for Includes:</code>扫描include文件所包含的所有源文件。<br><code>Validate Built Product:</code>这个选项决定了是否在编译的时候进行验证。验证的内容和app store的审查内容一致。默认选项是debug时不验证，release时验证。   </p>
-<p><strong>5.Deployment</strong><br><img src="/2017/05/23/BuildSettings常用参数和Xcode常用变量/6.png" alt="6"><br><code>Deployment Location:</code>指定产品文件是否放置在安装目录(DSTROOT)或构建目录(SYMROOT)。<br>YES: Product files are placed in $DSTROOT.<br>NO: Product files are placed in $SYMROOT.<br><code>Skip Install:</code>指定是否将产品的位置由DSTROOT表示或卸载产品目录中的目录由TARGET_TEMP_DIR表示<br><code>iOS Deployment Target：</code>iOS部署对象，比如iOS8到iOS10的一种版本 </p>
-<p><strong>6.Headers</strong> </p>
-<p><strong>7.Kernel Module</strong> </p>
-<p><strong>8.Linking</strong><br><img src="/2017/05/23/BuildSettings常用参数和Xcode常用变量/8.png" alt="8"><br><code>Other Linker Flags：</code>其他链接标签，当导入的静态库使用了类别，需要设为-ObjC</p>
-<p><strong>9.Packaging</strong><br><img src="/2017/05/23/BuildSettings常用参数和Xcode常用变量/9.png" alt="9"><br><code>Defines Module:</code>是否定义模块。默认app类的工程为NO，framwork工程默认为YES<br><code>Expand Build Setting in Info.plist File:</code>告诉编译器是否处理info.plist。默认是YES。这是一个很大的特点，因为它避免了有根据您的构建设置和配置不同的Info.plist中，避免您在多个地方修改设置。 但是如果你真的不想要它，只需在项目或目标的构建设置中关闭此设置<br>Info.plist File:创建工程后默认会创建一个info.plist文件。也可以根据需要进行主动创建<br><code>Private Headers Folder Path:</code>私有头文件的存放位置<br><code>Product Bundle Identifier:</code>产品bundle的标识<br><code>Product Module Name:</code>产品模块名称<br><code>Product Name:</code>产品名称<br><code>Public Headers Folder Path:</code>公共头文件路径<br><code>Wrapper Extension:</code>打包的扩展名，默认app  </p>
-<p><strong>10.Search Paths</strong><br><img src="/2017/05/23/BuildSettings常用参数和Xcode常用变量/10.png" alt="10"><br><code>Always Search User Path:</code>是否搜索用户指定的路径，默认是NO<br><code>Framework Search Paths:</code>工程引用的framework搜索路径<br><code>Header Search Paths:</code>工程中引用的头文件搜索路径<br><code>Library Search Paths:</code>library搜索路径，比如静态.a库<br><code>Sub-Directories to Exclude in Recursive Searches：</code>指定哪些类型的子目录在递归查找时忽略<br><code>Sub-Directories to include in Recursive Searches：</code>指定哪些类型的子目录在递归查找时包含User Header Search Paths：`设置头文件搜索路径，这个只有当Always Search User Path开启后才有效   </p>
-<p><strong>11.singing</strong><br><img src="/2017/05/23/BuildSettings常用参数和Xcode常用变量/11.png" alt="11"><br><code>Code Signing Entitlements:</code>授权机制。在Xcode的capabilities选项卡下选择一些选项后，Xcode就会生成这样一段XML，Xcode会自动生成一个entitlements文件，然后再需要的时候往里面添加条目。当构建整个应用时，这个文件也会提及给codesign作为应用所需要拥有哪些授权的参考。这些授权信息必须都在开发者中心的AppID中启用，并且包含在配置文件中<br><code>Code Signing Identity:</code>配置证书<br><code>Development Team:</code>开发者所在的群组<br><code>Provisioning Profile:</code>配置描述文件  </p>
-<p><strong>12.User-Defined</strong><br><img src="/2017/05/23/BuildSettings常用参数和Xcode常用变量/12.png" alt="12"><br>这里用户可以在debug、release或者自己定义的编译模式下设置不同的变量，可以达到一套代码同时支持多个不同版本的目的。比如可以编译出叫APP1和APP2两个名字不一样的APP。</p>
-<h2 id="常用变量"><a href="#常用变量" class="headerlink" title="常用变量"></a>常用变量</h2><hr>
-<p><code>$(TARGET_NAME)</code>  目标工程名称<br><code>$(SRCROOT)</code>  工程文件根目录（一般为.xcodeproj所在的目录）<br><code>$(PROJECT_DIR)</code>  .xcodeproj所在目录<br><code>$(CURRENT_PROJECT_VERSION)</code> 当前工程版本号<br><code>$(PRODUCT_BUNDLE_IDENTIFIER)</code> 当前工程的bundle identifier<br><code>$(ASSETCATALOG_COMPILER_APPICON_NAME)</code>  产品 icon文件名字<br><code>$(INFOPLIST_FILE)</code> info.plist文件目录<br><code>$(GCC_PREPROCESSOR_DEFINITIONS)</code>  是 GCC 预编译头参数，通常我们可以对预编译宏定义进行默认赋值<br><code>$(DEVELOPMENT_TEAM)</code> 开发team<br><code>$(inherited)</code>  继承Projret相应的设置</p>
-<p>–</p>
-<p>默认情况下的变量<br><code>$(default)</code> 代替<br><code>/Users/xxx/Library/Developer/Xcode/DerivedData/CProjectSet-                 erpfssifqoxezbcceyoqjoclrfds</code></p>
-<p><code>$(SYMROOT)</code> = <code>$(default)/Build</code><br>对应于Build Products Path设置，如果为自荐方式，这个值填了无效果，如果为使用targets配置方式这里填的才起效果<br><code>$(SYMROOT)/intermediates</code><br>中间构建文件存放路径，其中在Intermediates Build files path中只需要设为<code>$(SYMROOT)</code>即可，intermediates系统自动生成<br><code>$(BUILD_DIR)</code> = <code>$(SYMROOT)/products</code><br><code>$(BUILD_ROOT)</code> = <code>$(BUILD_DIR)</code><br><code>$(CONFIGURATION)</code><br>当项目Build时选译Build configuration为Debug时值为Debug，当选为Release时，值为Release<br><code>$(EFFECTIVE_PLATFORM_NAME)</code><br>当模似器时为值为-iphonesimulator 当为真机时为-iphoneos<br><code>$(PROJECT_TEMP_DIR)</code><br><code>(SYMROOT)/intermediates/xxxx.build</code><br>基中xxxx表过项目名称<br><code>$(CONFIGURATION_BUILD_DIR)</code> = <code>$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)</code><br>(Per-Configuration Build Products Path)<br><code>$(CONFIGURATION_TEMP_DIR)</code> = <code>$(PROJECT_TEMP_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)</code><br>(Per-Configuration Intermediate File Path)<br><code>$(BUILT_PRODUCTS_DIR)</code><br>build成功后的，最终产品路径－－可以在Build Settings参数的Build Products Path项里设置</p>
-<hr>
-<h3 id="参考文章："><a href="#参考文章：" class="headerlink" title="参考文章："></a>参考文章：</h3><ol>
-<li><a href="http://www.jianshu.com/p/0509b438e84e" target="_blank" rel="external">Xcode Build Settings 分析</a></li>
-<li><a href="https://developer.apple.com/legacy/library/documentation/DeveloperTools/Reference/XcodeBuildSettingRef/0-Introduction/introduction.html" target="_blank" rel="external">苹果官方文档</a></li>
-<li><a href="http://www.jianshu.com/p/74b2a1a46179" target="_blank" rel="external">Xcode中的环境变量</a></li>
-</ol>
+          配置的优先级
 
-          
+配置详情
+1.ArchitecturesAdditional SDKs：在编译的时候需要附加的SDK。Architecture ： 支持的处理器架构。支持的指令集越多，就会编译出包含多个指令集代码的数据包，对应生成二进制包就越大，最终目标文件也会变大。Base SDK：App所能支持的最大iOS版本。Xcode默认会设置为能够支持的最新版本。Build Active Architecture Only : 如果此项为YES，则Xcode会根据当前所连接设备的版本只将相应的Architecture编译入app。否则会同时编译“Valid Architectures”中的指令集。Supported Platform：app支持的平台。目前可选的有iOS、macOS、tvOS、wa
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/05/23/BuildSettings常用参数和Xcode常用变量/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1007,111 +920,19 @@
       
         
           
-            <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><hr>
-<p>碎片化时间是移动设备用户在使用应用时的一大特点，用户希望随时拿起手机就能查看资讯，处理事务，而通知可以在重要的事件和信息发生时提醒用户。完美的通知展示可以很好地帮助用户使用应用，体现出应用的价值，进而有很大可能将用户带回应用，提高活跃度。正因如此，不论是 Apple 还是第三方开发者们，都很重视通知相关的开发工作，而通知也成为了很多应用的必备功能，开发者们都希望通知能带来更好地体验和更多的用户。<br>–来自<strong>onevcat</strong></p>
-<h1 id="发展历程"><a href="#发展历程" class="headerlink" title="发展历程"></a>发展历程</h1><hr>
-<ul>
-<li>iOS 3 - 引入推送通知<code>UIApplication</code>的 <code>registerForRemoteNotificationTypes</code>与<code>UIApplicationDelegate</code>的 <code>application(_:didRegisterForRemoteNotificationsWithDeviceToken:)</code>，<code>application(_:didReceiveRemoteNotification:)</code></li>
-<li>iOS 4 - 引入本地通知<code>scheduleLocalNotification</code>，<code>presentLocalNotificationNow:</code>， <code>application(_:didReceiveLocalNotification:)</code></li>
-<li>iOS 5 - 加入通知中心页面</li>
-<li>iOS 6 - 通知中心页面与 iCloud 同步</li>
-<li>iOS 7 - 后台静默推送<code>application(_:didReceiveRemoteNotification:fetchCompletionHandle:)</code></li>
-<li>iOS 8 - 重新设计<code>notification</code>权限请求，<code>Actionable</code>通知<code>registerUserNotificationSettings(_:)</code>，<code>UIUserNotificationAction</code>与<code>UIUserNotificationCategory</code>，<code>application(_:handleActionWithIdentifier:forRemoteNotification:completionHandler:)</code>等</li>
-<li>iOS 9 - Text Input action，基于HTTP/2的推送请求<code>UIUserNotificationActionBehavior</code>，全新的Provider API等  </li>
-</ul>
-<p>–来自<strong>onevcat</strong></p>
-<h1 id="代码现状"><a href="#代码现状" class="headerlink" title="代码现状"></a>代码现状</h1><hr>
-<p>这里推荐一个<a href="https://github.com/KnuffApp/Knuff" target="_blank" rel="external">推送测试工具</a>。</p>
-<h3 id="注册"><a href="#注册" class="headerlink" title="注册"></a>注册</h3><ul>
-<li>iOS7~iOS8</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">UIRemoteNotificationType remoteNotiType =</div><div class="line">        UIRemoteNotificationTypeBadge |</div><div class="line">        UIRemoteNotificationTypeSound |</div><div class="line">        UIRemoteNotificationTypeAlert;</div><div class="line">[application registerForRemoteNotificationTypes:remoteNotiType];</div></pre></td></tr></table></figure>
-<ul>
-<li>iOS8~iOS10</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">UIUserNotificationType userNotiType =</div><div class="line">        UIUserNotificationTypeBadge |</div><div class="line">        UIUserNotificationTypeSound |</div><div class="line">        UIUserNotificationTypeAlert;</div><div class="line">UIUserNotificationSettings *mySettings = [UIUserNotificationSettings settingsForTypes:userNotiType categories:nil];</div><div class="line">[application registerUserNotificationSettings:mySettings];</div><div class="line">[application registerForRemoteNotifications];</div><div class="line"></div><div class="line">//另一种方式也可以在这个回调方法中注册</div><div class="line">- (void)application:(UIApplication *)application didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSettings &#123;</div><div class="line">    //注册远程通知</div><div class="line">    [application registerForRemoteNotifications];</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<ul>
-<li>iOS10~…</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];</div><div class="line">center.delegate = self;</div><div class="line">[center requestAuthorizationWithOptions:</div><div class="line">            UNAuthorizationOptionAlert | </div><div class="line">            UNAuthorizationOptionBadge |</div><div class="line">            UNAuthorizationOptionSound</div><div class="line">                      completionHandler:^(BOOL granted, NSError * _Nullable error) &#123;</div><div class="line">&#125;];</div><div class="line">[application registerForRemoteNotifications];</div></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">注意:</div><div class="line">1.注册是进行本地推送和远程推送的必备条件</div><div class="line">2.本地推送和远程推送是同一个注册方法</div></pre></td></tr></table></figure>
-<h3 id="发送推送通知"><a href="#发送推送通知" class="headerlink" title="发送推送通知"></a>发送推送通知</h3><p>远程推送需要自己后台发送，此处省略,着重讲下本地推送。</p>
-<ul>
-<li>iOS4~iOS10</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">UILocalNotification *localNoti = [[UILocalNotification alloc] init];</div><div class="line">localNoti.fireDate = [NSDate dateWithTimeIntervalSinceNow:3];</div><div class="line">localNoti.timeZone = [NSTimeZone defaultTimeZone];</div><div class="line">localNoti.soundName = UILocalNotificationDefaultSoundName;</div><div class="line">localNoti.alertBody = @&quot;notification&quot;;        </div><div class="line">[application scheduleLocalNotification:localNoti];</div></pre></td></tr></table></figure>
-<ul>
-<li>iOS10~…</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">UNMutableNotificationContent *content = [[UNMutableNotificationContent alloc] init];</div><div class="line">content.title = @&quot;title&quot;;</div><div class="line">content.subtitle = @&quot;subtitle&quot;;</div><div class="line">content.body = @&quot;notification&quot;;</div><div class="line">content.sound = [UNNotificationSound defaultSound];</div><div class="line">UNTimeIntervalNotificationTrigger *trigger = [UNTimeIntervalNotificationTrigger triggerWithTimeInterval:3 repeats:NO];</div><div class="line">UNNotificationRequest *request = [UNNotificationRequest requestWithIdentifier:@&quot;notification1&quot; content:content trigger:trigger];</div><div class="line">[[UNUserNotificationCenter currentNotificationCenter] addNotificationRequest:request withCompletionHandler:^(NSError * _Nullable error) &#123;</div><div class="line">        &#125;];</div></pre></td></tr></table></figure>
-<h3 id="接收推送通知-本地推送"><a href="#接收推送通知-本地推送" class="headerlink" title="接收推送通知(本地推送)"></a>接收推送通知(本地推送)</h3><p><strong>应用处于退出状态</strong>  </p>
-<ul>
-<li>iOS4~…</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions &#123;</div><div class="line">    UILocalNotification *localNotification = [launchOptions valueForKeyPath:UIApplicationLaunchOptionsLocalNotificationKey];</div><div class="line">    if (localNotification) &#123;</div><div class="line">    &#125;</div><div class="line">    return YES;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p><strong>应用处于前台、后台状态</strong>  </p>
-<ul>
-<li>iOS4~iOS10</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">- (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification &#123;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<ul>
-<li>iOS10~…</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">- (void)userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void (^)())completionHandler &#123;</div><div class="line">    // 判断当前通知类型</div><div class="line">    if ([[[[response notification] request] trigger] isKindOfClass:[UNPushNotificationTrigger class]]) &#123;</div><div class="line">        </div><div class="line">    &#125;</div><div class="line">    else &#123;</div><div class="line">        [self handleReceiveLocalNotification:[response notification]];</div><div class="line">    &#125;</div><div class="line">    completionHandler();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h3 id="接收推送通知-远程推送"><a href="#接收推送通知-远程推送" class="headerlink" title="接收推送通知(远程推送)"></a>接收推送通知(远程推送)</h3><p><strong>应用处于退出状态</strong>  </p>
-<ul>
-<li>iOS3~…</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions &#123;</div><div class="line">    UILocalNotification *localNotification = [launchOptions valueForKeyPath:UIApplicationLaunchOptionsRemoteNotificationKey];</div><div class="line">    if (localNotification) &#123;</div><div class="line">    &#125;</div><div class="line">    return YES;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p><strong>应用处于前台、后台状态</strong>  </p>
-<ul>
-<li>iOS3~iOS10</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo &#123;</div><div class="line">    if (application.applicationState == UIApplicationStateActive) &#123;</div><div class="line">        //处理app在前台收到的消息推送</div><div class="line">    &#125;else if (application.applicationState == UIApplicationStateInactive) &#123;</div><div class="line">        //处理app在后台收到的消息推送</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<ul>
-<li>iOS10~…</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">// APP处于前台接收到通知触发</div><div class="line">- (void)userNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)notification withCompletionHandler:(void (^)(UNNotificationPresentationOptions))completionHandler &#123;</div><div class="line">// 需要执行这个方法，选择是否提醒用户，有Badge、Sound、Alert三种类型可以选择设置      </div><div class="line">completionHandler(UNNotificationPresentationOptionSound | UNNotificationPresentationOptionAlert | UNNotificationPresentationOptionBadge);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">// APP处于后台通过点击通知栏直接触发</div><div class="line">- (void)userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void (^)())completionHandler &#123;</div><div class="line">    // 判断当前通知类型</div><div class="line">    if ([[[[response notification] request] trigger] isKindOfClass:[UNPushNotificationTrigger class]]) &#123;</div><div class="line">        </div><div class="line">    &#125;</div><div class="line">    else &#123;</div><div class="line">        [self handleReceiveLocalNotification:[response notification]];</div><div class="line">    &#125;</div><div class="line">    completionHandler();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>用户可以通过下面这个图，在这个方法中写入相关的处理逻辑。<br><img src="/2016/10/17/Notification历史和现状/2.png" alt="2"></p>
-<h3 id="静默推送"><a href="#静默推送" class="headerlink" title="静默推送"></a>静默推送</h3><p>iOS 7在推送方面最大的变化就是允许，应用收到通知后在后台（background）状态下运行一段代码，可用于从服务器获取内容更新。功能使用场景：（多媒体）聊天，Email更新，基于通知的订阅内容同步等功能，提升了终端用户的体验。<br>如果只携带content-available: 1 不携带任何badge，sound 和消息内容等参数，则可以不打扰用户的情况下进行内容更新等操作即为“Silent Remote Notifications”。<br><strong>客户端设置开启Remote notifications</strong><br><img src="/2016/10/17/Notification历史和现状/1.png" alt="1"><br><strong>接收推送通知</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(nonnull void (^)(UIBackgroundFetchResult))completionHandler&#123;</div><div class="line">    </div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">注意</div><div class="line">1.“Silent Remote Notifications”是在 Apple 的限制下有一定的频率控制，但具体频率不详。所以并不是所有的 “Silent Remote Notifications” 都能按照预期到达客户端触发函数。</div><div class="line">2.“Background”下提供给应用的运行时间窗是有限制的，如果需要下载较大的文件请参考 Apple 的 NSURLSession 的介绍。</div><div class="line">3.“Background Remote Notification” 的前提是要求客户端处于Background 或 Suspended 状态，如果用户通过 App Switcher 将应用从后台 Kill 掉应用将不会唤醒应用处理 background 代码。</div></pre></td></tr></table></figure>
-<p>这里涉及到iOS的多任务，感兴趣的同学可以去了解<a href="https://objccn.io/issue-5-5/" target="_blank" rel="external">iOS7的多任务</a></p>
-<h3 id="UIUserNotificationSettings"><a href="#UIUserNotificationSettings" class="headerlink" title="UIUserNotificationSettings"></a>UIUserNotificationSettings</h3><ul>
-<li>iOS 8在原本的推送type的基础上，增加了一个categories参数，这个参数的目的是用来注册一组和通知关联起来的button的事件。</li>
-<li>这个<code>categories</code>由一系列的<code>UIUserNotificationCategory</code>组成。每个<code>UIUserNotificationCategory</code>对象包含你的app用来响应本地或者远程通知的信息。</li>
-</ul>
-<p><strong>设置Category</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line">UIUserNotificationType userNotiType =</div><div class="line">   UIUserNotificationTypeBadge |</div><div class="line">   UIUserNotificationTypeSound |</div><div class="line">   UIUserNotificationTypeAlert;</div><div class="line">        </div><div class="line">//创建Category1</div><div class="line">UIMutableUserNotificationAction * action1 = [[UIMutableUserNotificationAction alloc] init];</div><div class="line">action1.identifier = @&quot;action1&quot;;</div><div class="line">action1.title=@&quot;策略1行为1&quot;;</div><div class="line">action1.activationMode = UIUserNotificationActivationModeForeground;</div><div class="line">action1.destructive = YES;</div><div class="line">        </div><div class="line">UIMutableUserNotificationCategory * category1 = [[UIMutableUserNotificationCategory alloc] init];</div><div class="line">category1.identifier = @&quot;Category1&quot;;</div><div class="line">[category1 setActions:@[action1] forContext:(UIUserNotificationActionContextDefault)];</div><div class="line">        </div><div class="line">//创建Category2</div><div class="line">UIMutableUserNotificationAction * action2 = [[UIMutableUserNotificationAction alloc] init];</div><div class="line">action2.identifier = @&quot;action2&quot;;</div><div class="line">action2.title=@&quot;策略2行为1&quot;;</div><div class="line">action2.activationMode = UIUserNotificationActivationModeForeground;</div><div class="line">action2.destructive = YES;</div><div class="line">        </div><div class="line">UIMutableUserNotificationCategory * category2 = [[UIMutableUserNotificationCategory alloc] init];</div><div class="line">category2.identifier = @&quot;Category2&quot;;</div><div class="line">[category2 setActions:@[action2] forContext:(UIUserNotificationActionContextDefault)];</div><div class="line">        </div><div class="line">UIUserNotificationSettings *mySettings = [UIUserNotificationSettings settingsForTypes:userNotiType categories:[NSSet setWithObjects: category1,category2, nil]];</div><div class="line">[application registerUserNotificationSettings:mySettings];</div><div class="line">[application registerForRemoteNotifications];</div></pre></td></tr></table></figure>
-<p><strong>回调函数</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">- (void)application:(UIApplication *)application handleActionWithIdentifier:(nullable NSString *)identifier forRemoteNotification:(nonnull NSDictionary *)userInfo completionHandler:(nonnull void (^)())completionHandler&#123;</div><div class="line">    </div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p><strong>服务器设置</strong><br>服务端payload格式:aps增加category字段，当该字段与客户端UIMutableUserNotificationCategory的identifier匹配时，触发设定的action和button显示。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&#123;&quot;aps&quot;:&#123;&quot;alert&quot;:&quot;example&quot;, &quot;sound&quot;:&quot;default&quot;, &quot;badge&quot;: 1, &quot;category&quot;:&quot;identifier&quot;&#125;&#125;</div></pre></td></tr></table></figure>
-<h3 id="UIUserNotificationActionBehaviorTextInput"><a href="#UIUserNotificationActionBehaviorTextInput" class="headerlink" title="UIUserNotificationActionBehaviorTextInput"></a>UIUserNotificationActionBehaviorTextInput</h3><p>iOS9在原有的UIMutableUserNotificationAction类型增加了Text输入类型(UIUserNotificationActionBehaviorTextInput),通过behavior来设置。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">UIMutableUserNotificationAction *replyAction = [[UIMutableUserNotificationAction alloc]init];</div><div class="line">replyAction.title = @&quot;Reply&quot;;</div><div class="line">replyAction.identifier = @&quot;comment-reply&quot;;</div><div class="line">replyAction.activationMode = UIUserNotificationActivationModeBackground;</div><div class="line">replyAction.behavior = UIUserNotificationActionBehaviorTextInput;</div></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">注意点</div><div class="line">1.当`Action`为`UIUserNotificationActionBehaviorTextInput`时,需要通过`responseInfo`的`UIUserNotificationActionResponseTypedTextKey`来获取输入的文字内容,`UIUserNotificationTextInputActionButtonTitleKey`获取点击的按钮类型.</div></pre></td></tr></table></figure>
-<h3 id="User-Notification-Framework"><a href="#User-Notification-Framework" class="headerlink" title="User Notification Framework"></a>User Notification Framework</h3><p><strong>获取用户详细的授权相关</strong> </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[[UNUserNotificationCenter currentNotificationCenter] getNotificationSettingsWithCompletionHandler:^(UNNotificationSettings * _Nonnull settings) &#123;</div><div class="line">        </div><div class="line">&#125;];</div></pre></td></tr></table></figure>
-<p><strong>Content</strong> </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">UNMutableNotificationContent *content = [[UNMutableNotificationContent alloc] init];</div><div class="line">content.title = @&quot;title&quot;;</div><div class="line">content.subtitle = @&quot;subtitle&quot;;</div><div class="line">content.body = @&quot;notification&quot;;</div><div class="line">        </div><div class="line">&#123;</div><div class="line">&quot;aps&quot; : &#123;</div><div class="line">    &quot;alert&quot; : &#123; </div><div class="line">         &quot;title&quot; : &quot;Introduction to Notifications&quot;, </div><div class="line">         &quot;subtitle&quot; : &quot;Session 707&quot;,         </div><div class="line">         &quot;body&quot; : &quot;Woah! These new notifications look amazing! Don’t you agree?&quot;</div><div class="line">                &#125;,</div><div class="line">    &quot;badge&quot; : 1</div><div class="line">        &#125;,</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p><strong>Notification Management</strong>  </p>
-<ul>
-<li>Local Notification 通过更新request在id不变的情况下重新添加，就可以刷新原有的推送</li>
-<li>Remote Notification 通过新的字段 apns-collapse-id</li>
-<li>删除计划的推送</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">- (void)removePendingNotificationRequestsWithIdentifiers:(NSArray&lt;NSString *&gt; *)identifiers;</div><div class="line">- (void)removeAllPendingNotificationRequests;</div><div class="line">- (void)removeDeliveredNotificationsWithIdentifiers:(NSArray&lt;NSString *&gt; *)identifiers __TVOS_PROHIBITED;</div><div class="line">- (void)removeAllDeliveredNotifications __TVOS_PROHIBITED;</div></pre></td></tr></table></figure>
-<ul>
-<li>获取已发送的推送</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">- (void)getPendingNotificationRequestsWithCompletionHandler:(void(^)(NSArray&lt;UNNotificationRequest *&gt; *requests))completionHandler;</div><div class="line">- (void)getDeliveredNotificationsWithCompletionHandler:(void(^)(NSArray&lt;UNNotification *&gt; *notifications))completionHandler __TVOS_PROHIBITED;</div></pre></td></tr></table></figure>
-<p><strong>Notification Actions</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">UNNotificationAction *action1 = [UNNotificationAction actionWithIdentifier:@&quot;action1&quot; title:@&quot;打开应用&quot; options:UNNotificationActionOptionForeground];</div><div class="line">UNNotificationAction *action2 = [UNNotificationAction actionWithIdentifier:@&quot;action1&quot; title:@&quot;什么都不做&quot; options:UNNotificationActionOptionDestructive];</div><div class="line">        </div><div class="line">// 创建category</div><div class="line">UNNotificationCategory *category = [UNNotificationCategory categoryWithIdentifier:@&quot;category1&quot; actions:@[action1, action2] intentIdentifiers:@[] options:UNNotificationCategoryOptionNone];</div><div class="line"></div><div class="line">// 添加category</div><div class="line">[[UNUserNotificationCenter currentNotificationCenter] setNotificationCategories:[NSSet setWithArray:@[category]]];</div></pre></td></tr></table></figure>
-<p>触发方式就是<code>&quot;category&quot;:&quot;category1&quot;</code><br>点击Action的回调看上面的接收推送通知(远程推送)部分</p>
-<h3 id="Service-Extension"><a href="#Service-Extension" class="headerlink" title="Service Extension"></a>Service Extension</h3><p>待续。。。</p>
+          前言
+碎片化时间是移动设备用户在使用应用时的一大特点，用户希望随时拿起手机就能查看资讯，处理事务，而通知可以在重要的事件和信息发生时提醒用户。完美的通知展示可以很好地帮助用户使用应用，体现出应用的价值，进而有很大可能将用户带回应用，提高活跃度。正因如此，不论是 Apple 还是第三方开发者们，都很重视通知相关的开发工作，而通知也成为了很多应用的必备功能，开发者们都希望通知能带来更好地体验和更多的用户。–来自onevcat
+发展历程
 
-          
+iOS 3 - 引入推送通知UIApplication的 registerForRemoteNotificationTypes与UIApplicationDelegate的 application(_:didRegisterForRemoteNotificati
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2016/10/17/Notification历史和现状/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1231,29 +1052,33 @@
       
         
           
-            <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><hr>
-<ul>
-<li><strong>什么是App马甲</strong><br>在ASO中马甲的意思就是内容与主APP一样，但icon图标、应用名不同，一般来说开发者的帐号是不同的，但也有的同鞋做的马甲开发者帐号都是同一样，不过这样的话，隐蔽性要差一些。</li>
-<li><strong>APP马甲的作用</strong><br>1.替主号进行改版测试,将风险最小化<br>2.导量<br>3.增加关键词覆盖数<br>4.刷榜  </li>
-</ul>
-<blockquote>
-<p> 总而言之，言而总之。运营部门的需求不得不接，慢慢的我们的APP就有了多达4、5个的马甲。 </p>
-</blockquote>
-<h2 id="预热"><a href="#预热" class="headerlink" title="预热"></a>预热</h2><hr>
-<p>在满足运营部门需求的道路上，我们走的也是磕磕碰碰，其中的坑也是踩了不少，下面大概讲讲我们的心酸路程。  </p>
-<ul>
-<li><strong>路程</strong> </li>
-</ul>
-<blockquote>
-<p>项目<code>copy</code>-&gt;多<code>Targets</code>实现-&gt;<code>XCConfig</code>实现  </p>
-</blockquote>
-<h2 id="正题"><a href="#正题" class="headerlink" title="正题"></a>正题</h2><hr>
-<h3 id="项目copy"><a href="#项目copy" class="headerlink" title="项目copy"></a><em>项目copy</em></h3><p>顾名思义，项目copy就是有几个马甲就copy出几个相同的项目  </p>
-<h4 id="优点"><a href="#优点" class="headerlink" title="优点"></a><em>优点</em></h4><p>操作简单、无脑Copy</p>
-<h4 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a><em>缺点</em></h4><p>过程繁琐(每一次版本升级，都要从主版copy新的马甲项目，修改对应自身特性)、格调太低、往往会因为粗心大意忘记修改一些自己独特的配置信息    </p>
-<h4 id="实现方法"><a href="#实现方法" class="headerlink" title="实现方法"></a><em>实现方法</em></h4><p>略</p>
+          前言
 
-          
+什么是App马甲在ASO中马甲的意思就是内容与主APP一样，但icon图标、应用名不同，一般来说开发者的帐号是不同的，但也有的同鞋做的马甲开发者帐号都是同一样，不过这样的话，隐蔽性要差一些。
+APP马甲的作用1.替主号进行改版测试,将风险最小化2.导量3.增加关键词覆盖数4.刷榜  
+
+
+ 总而言之，言而总之。运营部门的需求不得不接，慢慢的我们的APP就有了多达4、5个的马甲。 
+
+预热
+在满足运营部门需求的道路上，我们走的也是磕磕碰碰，其中的坑也是踩了不少，下面大概讲讲我们的心酸路程。  
+
+路程 
+
+
+项目copy-&gt;多Targets实现-&gt;XCConfig实现  
+
+正题
+项目copy顾名思义，项目copy就是有几个马甲就copy出几个相同的项目  
+优点操作简单、
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2016/03/21/浅谈APP马甲/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1373,15 +1198,17 @@
       
         
           
-            <p><a href="https://objccn.io/issue-5-4/" target="_blank" rel="external">转载来自–ObjC中国</a>。</p>
-<hr>
-<p>iOS 7 和 Mac OS X 10.9 Mavericks 中一个显著的变化就是对 Foundation URL 加载系统的彻底重构。<br>现在已经有人在深入苹果的网络层基础架构的地方做研究了，所以我想是时候来分享一些对于我对于这些新的 API 的看法和心得了，新的 API 将如何影响我们编写程序，以及它们对于 API 设计理念的影响。<br><code>NSURLConnection</code>作为<code>Core Foundation</code>/<code>CFNetwork</code>框架的 API 之上的一个抽象，在 2003 年，随着第一版的 Safari 的发布就发布了。<code>NSURLConnection</code>这个名字，实际上是指代的<code>Foundation</code>框架的 URL 加载系统中一系列有关联的组件：<code>NSURLRequest</code>、<code>NSURLResponse</code>、<code>NSURLProtocol</code>、 <code>NSURLCache</code>、 <code>NSHTTPCookieStorage</code>、<code>NSURLCredentialStorage</code>以及同名类 <code>NSURLConnection</code>。<br><code>NSURLRequest</code>被传递给<code>NSURLConnection</code>。被委托对象（遵守以前的非正式协议<code>&lt;NSURLConnectionDelegate&gt;</code>和 <code>&lt;NSURLConnectionDataDelegate&gt;</code>异步地返回一个 <code>NSURLResponse</code>以及包含服务器返回信息的<code>NSData</code>。<br>在一个请求被发送到服务器之前，系统会先查询共享的缓存信息，然后根据<strong>策略（policy）</strong>以及<strong>可用性（availability）</strong>的不同，一个已经被缓存的响应可能会被立即返回。如果没有缓存的响应可用，则这个请求将根据我们指定的策略来缓存它的响应以便将来的请求可以使用。<br>在把请求发送给服务器的过程中，服务器可能会发出<strong>鉴权查询（authentication challenge）</strong>，这可以由共享的 cookie 或<strong>机密存储（credential storage）</strong>来自动响应，或者由被委托对象来响应。发送中的请求也可以被注册的<code>NSURLProtocol</code>对象所拦截，以便在必要的时候无缝地改变其加载行为。<br>不管怎样，<code>NSURLConnection</code>作为网络基础架构，已经服务了成千上万的 iOS 和 Mac OS 程序，并且做的还算相当不错。但是这些年，一些用例——尤其是在 iPhone 和 iPad 上面——已经对<code>NSURLConnection</code>的几个核心概念提出了挑战，让苹果有理由对它进行重构。<br>在 2013 的 WWDC 上，苹果推出了<code>NSURLConnection</code>的继任者：<code>NSURLSession</code>。</p>
-<hr>
-<p>和<code>NSURLConnection</code>一样，<code>NSURLSession</code>指的也不仅是同名类 <code>NSURLSession</code>，还包括一系列相互关联的类。<code>NSURLSession</code>包括了与之前相同的组件，<code>NSURLRequest</code>与<code>NSURLCache</code>，但是把 <code>NSURLConnection</code>替换成了<code>NSURLSession</code>、<code>NSURLSessionConfiguration</code>以及 <code>NSURLSessionTask</code>的 3 个子类：<code>NSURLSessionDataTask</code>，<code>NSURLSessionUploadTask</code>，<code>NSURLSessionDownloadTask</code>。<br>与<code>NSURLConnection</code>相比，<code>NSURLsession</code>最直接的改进就是可以配置每个 <code>session</code>的缓存，协议，cookie，以及<strong>证书策略（credential policy）</strong>，甚至跨程序共享这些信息。这将允许程序和网络基础框架之间相互独立，不会发生干扰。每个<code>NSURLSession</code>对象都由一个<code>NSURLSessionConfiguration</code>对象来进行初始化，后者指定了刚才提到的那些策略以及一些用来增强移动设备上性能的新选项。<br><code>NSURLSession</code>中另一大块就是session task。它负责处理数据的加载以及文件和数据在客户端与服务端之间的上传和下载。<code>NSURLSessionTask</code>与 <code>NSURLConnection</code>最大的相似之处在于它也负责数据的加载，最大的不同之处在于所有的 task 共享其创造者<code>NSURLSession</code>这一<strong>公共委托者（common delegate）</strong>。<br>我们先来深入探讨 task，过后再来讨论<code>NSURLSessionConfiguration</code>。</p>
-<h1 id="NSURLSessionTask"><a href="#NSURLSessionTask" class="headerlink" title="NSURLSessionTask"></a>NSURLSessionTask</h1><hr>
-<p><code>NSURLsessionTask</code>是一个抽象类，其下有 3 个实体子类可以直接使用：<code>NSURLSessionDataTask</code>、<code>NSURLSessionUploadTask</code>、<code>NSURLSessionDownloadTask</code>。这 3 个子类封装了现代程序三个最基本的网络任务：获取数据，比如 JSON 或者 XML，上传文件和下载文件。<br><img src="/2014/08/24/从NSURLConnection到NSURLSession/1.png" alt="1"><br>当一个 NSURLSessionDataTask 完成时，它会带有相关联的数据，而一个 NSURLSessionDownloadTask 任务结束时，它会带回已下载文件的一个临时的文件路径。因为一般来说，服务端对于一个上传任务的响应也会有相关数据返回，所以 NSURLSessionUploadTask 继承自 NSURLSessionDataTask。</p>
+          转载来自–ObjC中国。
 
-          
+iOS 7 和 Mac OS X 10.9 Mavericks 中一个显著的变化就是对 Foundation URL 加载系统的彻底重构。现在已经有人在深入苹果的网络层基础架构的地方做研究了，所以我想是时候来分享一些对于我对于这些新的 API 的看法和心得了，新的 API 将如何影响我们编写程序，以及它们对于 API 设计理念的影响。NSURLConnection作为Core Foundation/CFNetwork框架的 API 之上的一个抽象，在 2003 年，随着第一版的 Safari 的发布就发布了。NSURLConnection这个名字，实际上是指代的Foundation框架的 URL 加载系统中一系列有关联的组件：NSURLRequest、NSURLR
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2014/08/24/从NSURLConnection到NSURLSession/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1501,42 +1328,21 @@
       
         
           
-            <h2 id="51-精简initialize与load的实现代码"><a href="#51-精简initialize与load的实现代码" class="headerlink" title="51.精简initialize与load的实现代码"></a>51.精简initialize与load的实现代码</h2><hr>
-<ul>
-<li>在<code>Objective-C</code>中，绝大多数类都继承自<code>NSObject</code>这个根类，而该类有两个方法，可用来实现这种初始化操作。</li>
-<li><code>+ (void)load</code> </li>
-<li>对于加入运行期系统中的每个类及分类来说，必定会调用此方法，而且仅调用一次。当包含类或分类的程序载入系统时，就会执行此方法。如果分类和其所属的类都定义了<code>load</code>方法，则先调用类里的，再调用分类里的。</li>
-<li><code>load</code>方法的问题在于，执行方法时，运行期系统处于”脆弱状态”。在执行子类的<code>load</code>方法之前，必定会先执行所有超类的<code>load</code>方法，而如果代码还依赖了其他程序库，那么程序库里相关类的<code>load</code>方法定会先执行。<br><img src="/2014/07/15/Effective-Objecive-C-2-0-读书笔记（六）/1.png" alt="1"></li>
-<li>此处使用<code>NSLog</code>没问题，而且相关字符串也会照常记录，因为<code>Foundataion</code>框架肯定在运行<code>load</code>方法之前就已经载入系统了。但是，在<code>EOCClassB</code>的<code>load</code>方法里使用<code>EOCClassA</code>却不太安全，因为无法确定在执行<code>EOCClassB</code>的<code>load</code>方法之前，<code>EOCClassA</code>是不是已经加载好了。有个重要的事情需注意，那就是<code>load</code>方法并不像普通的方法那样，它并不遵从那套继承规则，如果某个类本身没实现<code>load</code>方法，那么不管其各级超类是否实现此方法，系统都不会调用。</li>
-<li><code>+ （void）initialize</code></li>
-<li>对于每个类来说，该方法会在程序首次用该类之前调用，且之调用一次。它是由运行期系统来调用的，绝不应该通过代码直接调用。和<code>load</code>区别1️⃣它是”惰性调用的”也就是只在程序用到了相关的类时，才会调用。对于<code>load</code>来说，应用程序必须阻塞并等着所有类的<code>load</code>都执行完，才能继续。2️⃣就是运行期系统在执行该方法时，是处于正常状态的，因此，从运行期系统完整度上来讲，此时可以安全使用并调用任意类中的任意方法。3️⃣如果某个类未实现它，而超类实现了，那么就会运行超类的实现代码。<br><img src="/2014/07/15/Effective-Objecive-C-2-0-读书笔记（六）/2.png" alt="2"></li>
-<li>即便EOCSubClass类没有实现initialize方法，它也会收到这条消息。由各级超类所实现的initialize也会先行调用。所以，首次使用EOCSubClass时，控制台会输出如下消息：<br><img src="/2014/07/15/Effective-Objecive-C-2-0-读书笔记（六）/3.png" alt="3"></li>
-<li>所以通常都会这么来实现initialize方法：<br><img src="/2014/07/15/Effective-Objecive-C-2-0-读书笔记（六）/4.png" alt="4"></li>
-</ul>
-<blockquote>
-<p>在加载阶段，如果类实现了<code>load</code>方法，那么系统就会调用它。分类里也可以定义此方法，类的<code>load</code>方法要比分类的先调用。与其他方法不同，<code>load</code>方法不参与覆写机制</p>
-<p>首次使用某个类之前，系统会向其发送<code>initialize</code>消息。由于此方法遵从普通的覆写规则，所以通常应该在里面判断当前初始化的是哪个类</p>
-<p><code>load</code>和<code>initialize</code>方法都应该实现的精简一些，这有助于保持应用程序的响应能力，也能减少引入”依赖环”的几率</p>
-<p>无法在编译期设定的全局变量，可以放在<code>initialize</code>方法里初始化</p>
-</blockquote>
-<h2 id="52-别忘了NSTimer会保留其目标对象"><a href="#52-别忘了NSTimer会保留其目标对象" class="headerlink" title="52.别忘了NSTimer会保留其目标对象"></a>52.别忘了NSTimer会保留其目标对象</h2><hr>
-<ul>
-<li>计时器是一种很方便也很有用的对象。<code>Foudation</code>框架中有个类叫做<code>NSTimer</code>，开发者可以指定绝对的日期与时间，以便到时执行任务，也可以指定执行任务的相对延迟时间。计时器还可以重复运行任务，有个与之相关联的”间隔值”可用来指定任务的触发频率。</li>
-<li>计时器要和”运行循环(run loop)”相关联，运行循环到时候触发任务。只有把计时器放在运行循环里，它才能正常触发任务。 </li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">1️⃣NSTimer *timer = [NSTimer timerWithTimeInterval:self.graceTime target:self selector:@selector(handleGraceTimer:) userInfo:nil repeats:NO</div><div class="line">];</div><div class="line">[[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];</div><div class="line"></div><div class="line">2️⃣[NSTimer scheduledTimerWithTimeInterval:1.0f/60.0f target:self selector:@selector(fakeProgressTimerDidFire:) userInfo:nil repeats:YES];</div></pre></td></tr></table></figure>
-<ul>
-<li>执行完相关任务之后，一次性的计时器也会失效。开发者若将计时器设置成重复执行模式，那么必须自己调用<code>invalidate</code>方法，才能令其停止。</li>
-<li>由于计时器会保留其目标对象，所以反复执行任务通常会导致应用程序出问题，也就是说，设置成重复执行模式的那种计时器，很容易引入”保留环”。<br><img src="/2014/07/15/Effective-Objecive-C-2-0-读书笔记（六）/5.png" alt="5"><br><img src="/2014/07/15/Effective-Objecive-C-2-0-读书笔记（六）/6.png" alt="6"><br>解决方案如下</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div></pre></td><td class="code"><pre><div class="line">#import &lt;Foundation/Foundation.h&gt;</div><div class="line"></div><div class="line">@interface NSTimer (TDBlocksSupport)</div><div class="line"></div><div class="line">+ (NSTimer *)td_scheduledTimerWithTimeInterval:(NSTimeInterval)interval block:(void(^)())block repeats:(BOOL)repeats;</div><div class="line"></div><div class="line">@end</div><div class="line"></div><div class="line">#import &quot;NSTimer+TDBlocksSupport.h&quot;</div><div class="line"></div><div class="line">@implementation NSTimer (TDBlocksSupport)</div><div class="line"></div><div class="line">+ (NSTimer *)td_scheduledTimerWithTimeInterval:(NSTimeInterval)interval block:(void(^)())block repeats:(BOOL)repeats&#123;</div><div class="line">    return [self scheduledTimerWithTimeInterval:interval target:self selector:@selector(td_blockInvoke:) userInfo:[block copy] repeats:repeats];</div><div class="line">&#125;</div><div class="line"></div><div class="line">+ (void)td_blockInvoke:(NSTimer *)timer&#123;</div><div class="line">    void (^block)() = timer.userInfo;</div><div class="line">    if (block) &#123;</div><div class="line">        block();</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line">@end</div><div class="line"></div><div class="line">#import &lt;Foundation/Foundation.h&gt;</div><div class="line"></div><div class="line">@interface TDTimerClass : NSObject</div><div class="line"></div><div class="line">- (void)startPolling;</div><div class="line">- (void)stopPolling;</div><div class="line"></div><div class="line">@end</div><div class="line"></div><div class="line">#import &quot;TDTimerClass.h&quot;</div><div class="line">#import &quot;NSTimer+TDBlocksSupport.h&quot;</div><div class="line"></div><div class="line">@implementation TDTimerClass&#123;</div><div class="line">    NSTimer *_pollTimer;</div><div class="line">&#125;</div><div class="line"></div><div class="line">- (void)dealloc&#123;</div><div class="line">    [_pollTimer invalidate];</div><div class="line">&#125;</div><div class="line"></div><div class="line">- (void)stopPolling&#123;</div><div class="line">    [_pollTimer invalidate];</div><div class="line">    _pollTimer = nil;</div><div class="line">&#125;</div><div class="line"></div><div class="line">- (void)startPolling&#123;</div><div class="line">    __weak typeof(self) weakSelf = self;</div><div class="line">    _pollTimer = [NSTimer td_scheduledTimerWithTimeInterval:5.0 block:^&#123;</div><div class="line">        __strong typeof(weakSelf) strongSelf = weakSelf;</div><div class="line">        [strongSelf p_doPoll];</div><div class="line">    &#125; repeats:YES];</div><div class="line">&#125;</div><div class="line"></div><div class="line">- (void)p_doPoll&#123;</div><div class="line">   //Poll the resource</div><div class="line">&#125;</div><div class="line"></div><div class="line">@end</div></pre></td></tr></table></figure>
-<blockquote>
-<p><code>NSTimer</code>对象会保留其目标，直到计时器本身失效为止，调用<code>invalidate</code>方法可令计时器失效，另外，一次性的计时器在触发完任务之后也会失效</p>
-<p>反复执行任务的计时器，很容易引入保留环，如果这种计时器的目标对象有保留了计时器本身，那肯定会导致保留环。这种环状保留关系，可能是直接发生的，也可能是通过对象图里的其他对象间接发生的。</p>
-<p>可以扩充<code>NSTimer</code>的功能，用“块”来打破保留环。不过，除非<code>NSTimer</code>将来在公共接口里提供此功能，否则必须创建分类，将相关实现代码加入其中。</p>
-</blockquote>
+          51.精简initialize与load的实现代码
 
-          
+在Objective-C中，绝大多数类都继承自NSObject这个根类，而该类有两个方法，可用来实现这种初始化操作。
++ (void)load 
+对于加入运行期系统中的每个类及分类来说，必定会调用此方法，而且仅调用一次。当包含类或分类的程序载入系统时，就会执行此方法。如果分类和其所属的类都定义了load方法，则先调用类里的，再调用分类里的。
+load方法的问题在于，执行方法时，运行期系统处于”脆弱状态”。在执行子类的load方法之前，必定会先执行所有超类的load方法，而如果代码还依赖了其他程序库，那么程序库里相关类的load方法定会先执行。
+此处使用NSLog没问题，而且相关字符串也会照常记录，因为Foundataion框架肯定在运行l
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2014/07/15/Effective-Objecive-C-2-0-读书笔记（六）/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1656,156 +1462,24 @@
       
         
           
-            <h2 id="41-多用派发队列，少用同步锁"><a href="#41-多用派发队列，少用同步锁" class="headerlink" title="41.多用派发队列，少用同步锁"></a>41.多用派发队列，少用同步锁</h2><hr>
-<ul>
-<li>在<code>Objective-C</code>中，如果有多个线程要执行同一份代码，那么有时候可能会出现问题。这种情况下，通常要使用锁来实现某种同步机制。</li>
-<li>同步块，这种写法会根据给定的对象，自动创建一个锁，并等待块中的代码执行完毕。然而，滥用<code>@synchronized (self)</code>则会降低代码效率，因为公用同一个锁的是同步块。 </li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">@synchronized (self) &#123;       </div><div class="line">    &#125;</div></pre></td></tr></table></figure>
-<ul>
-<li>NSLock对象(递归锁)，线程能够多次持有该锁，而不会出现死锁现象</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">_lcok = [[NSLock alloc]init];</div><div class="line">- (void)synchronized&#123;</div><div class="line">    [_lcok lock];  </div><div class="line">//</div><div class="line">    [_lcok unlock];</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<ul>
-<li>这两种方法都很好，不过也有其缺陷。比方说，在极端情况下，同步块会导致死锁，另外，其效率也不见得很高，而如果直接使用锁对象的话，一旦遇到死锁，就会非常麻烦。</li>
-<li>有种简单而高效的办法可以代替同步块或锁对象，那就是使用”串行同步队列”。全部加锁任务都在GCD中处理，而GCD是在相当深的底层来实现的，于是能够所许多优化。其实也并不一定非得是同步的。</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">dispatch_queue_t _syncQueue = dispatch_queue_create(&quot;com.boccfc.com&quot;, DISPATCH_QUEUE_CONCURRENT</div><div class="line">);</div><div class="line">    </div><div class="line">dispatch_sync(_syncQueue, ^&#123;       </div><div class="line">    &#125;);</div></pre></td></tr></table></figure>
-<ul>
-<li>下面为最为高效的办法去处理-读取并行,设置串行(使用栅栏块)<br><img src="/2014/07/05/Effective-Objecive-C-2-0-读书笔记（五）/1.png" alt="1"></li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">dispatch_barrier_sync(_syncQueue, ^&#123;   </div><div class="line">    &#125;);</div><div class="line">dispatch_barrier_async(_syncQueue, ^&#123;</div><div class="line">    &#125;);</div></pre></td></tr></table></figure>
-<ul>
-<li>在队列中，栅栏块必须单独执行，不能与其他块并行。这只对并发队列有意义，因为串行队列中的快总是按顺序逐个执行的。并发队列如果发现接下来要处理的块是个栅栏块，那么就一直要等当前(当前队列)所有并发块都执行完毕，才会单独执行这个栅栏块。</li>
-</ul>
-<blockquote>
-<p>派发队列可用来表述同步语义，这种做法要比使用<code>@synchronized</code>块或<code>NSLock</code>对象更简单</p>
-<p>将同步与异步派发结合起来，可以实现与普通加锁机制一样的同步行为，而这么做却不会阻塞执行异步派发的线程</p>
-<p>使用同步队列及栅栏块，可以令同步行为更加高效。</p>
-</blockquote>
-<h2 id="42-多用GCD，少用performSelector系列方法"><a href="#42-多用GCD，少用performSelector系列方法" class="headerlink" title="42.多用GCD，少用performSelector系列方法"></a>42.多用GCD，少用performSelector系列方法</h2><hr>
-<ul>
-<li>其中最简单的就是<code>”performSelector”</code>。该方法的签名如下，它接受一个参数，就是要执行的那个选择子，该方法与直接调用选择子等效。</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[object performSelector:@selector(selectName)];</div><div class="line">[object selectName];</div></pre></td></tr></table></figure>
-<ul>
-<li>当先把选择子保存起来，等某个事件发生之后再调用，<code>performSelector</code> 很有可能造成内存泄露。</li>
-<li>返回值只能是void或对象类型。参数类型是id，且参数最多为两个。</li>
-<li>尽量用替代方案<br><img src="/2014/07/05/Effective-Objecive-C-2-0-读书笔记（五）/2.png" alt="2"><br><img src="/2014/07/05/Effective-Objecive-C-2-0-读书笔记（五）/3.png" alt="3"></li>
-</ul>
-<blockquote>
-<p><code>performSelector</code> 系列方法在内存管理方面容易有疏失。它无法确定将要执行的选择子具体是什么，因而ARC编译器也就无法插入适当的内存管理方法</p>
-<p><code>performSelector</code> 系列方法所能处理的选择子太过局限了，选择子的返回值类型及发送给方法的参数个数都受限制</p>
-<p>如果想把任务放在另一个线程上执行，那么最好不要用<code>performSelector</code>系列方法，而是应该把任务封装在块里，然后调用机制的大众书派发相关方法来实现。</p>
-</blockquote>
-<h2 id="43-掌握GCD及操作队列的使用时机"><a href="#43-掌握GCD及操作队列的使用时机" class="headerlink" title="43.掌握GCD及操作队列的使用时机"></a>43.掌握GCD及操作队列的使用时机</h2><hr>
-<h2 id="44-通过Dispatch-Group-机制，根据系统资源状况来执行任务"><a href="#44-通过Dispatch-Group-机制，根据系统资源状况来执行任务" class="headerlink" title="44.通过Dispatch Group 机制，根据系统资源状况来执行任务"></a>44.通过Dispatch Group 机制，根据系统资源状况来执行任务</h2><hr>
-<ul>
-<li><code>dispatch group</code> 是GCD的一项特性，能够把任务分组。调用者可以等待这组任务执行完毕，也可以在提供回调函数之后继续往下执行，这组任务完成时，调用者会得到通知。</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">dispatch_group_t af_url_session_manager_completion_group = dispatch_group_create();</div></pre></td></tr></table></figure>
-<ul>
-<li>想把任务编组，有两种办法</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">1️⃣dispatch_group_async(dispatch_group_t  _Nonnull group, dispatch_queue_t  _Nonnull</div><div class="line"> queue, ^&#123;</div><div class="line">        </div><div class="line">    &#125;)</div><div class="line">2️⃣dispatch_group_enter(dispatch_group_t  _Nonnull</div><div class="line"> group)</div><div class="line">  dispatch_group_leave(dispatch_group_t  </div><div class="line">_Nonnull group)</div></pre></td></tr></table></figure>
-<ul>
-<li>下面这个函数可用于等待 <code>dispatch group</code> 执行完毕</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">1️⃣dispatch_group_wait(dispatch_group_t  _Nonnull group, dispatch_time_t timeout)   </div><div class="line">DISPATCH_TIME_FOREVER 表示函数会一直等待dispatch group 执行完</div><div class="line">2️⃣dispatch_group_notify(dispatch_group_t  _Nonnull group, dispatch_queue_t  _Nonnull</div><div class="line"> queue, ^&#123;</div><div class="line">        </div><div class="line">    &#125;)</div></pre></td></tr></table></figure>
-<ul>
-<li>与wait函数略有不同的是:开发者可以向此函数传入块，等<code>dispatch group</code> 执行完毕之后，块会在特定的线程上执行。<br><img src="/2014/07/05/Effective-Objecive-C-2-0-读书笔记（五）/4.png" alt="4"><br><img src="/2014/07/05/Effective-Objecive-C-2-0-读书笔记（五）/5.png" alt="5"></li>
-<li>开发者未必总需要使用 <code>dispatch group</code>。有时候采用单个队列搭配标准的异步派发，也可以实现同样效果<blockquote>
-<p>一系列任务可归入一个<code>dispatch group</code> 之中。开发者可以在这组任务执行完毕时获得通知</p>
-</blockquote>
-</li>
-</ul>
-<blockquote>
-<p>通过<code>dispatch group</code>,可以在并发式派发队列里同时执行多项任务。此时GCD会根据系统资源状况来调度这些并发执行的任务。开发者若自己来实现此功能，则需编写大量代码。</p>
-</blockquote>
-<h2 id="45-使用dispatch-once来执行只需运行一次的线程安全代码"><a href="#45-使用dispatch-once来执行只需运行一次的线程安全代码" class="headerlink" title="45.使用dispatch_once来执行只需运行一次的线程安全代码"></a>45.使用dispatch_once来执行只需运行一次的线程安全代码</h2><hr>
-<ul>
-<li>单例模式对<code>Objective-C</code>开发者来说并不陌生，常见的实现方式为：在类中编写名为<code>sharedInstance</code>的方法，该方法只会返回全类公用的单例实例，而不会每次调用时都创建新的实例。常见的有两种方法</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">1️⃣+ (id)sharedInstance&#123;   </div><div class="line">static TDRectangle * rectangle = nil;  </div><div class="line">@synchronized (self) &#123;    </div><div class="line">if(!rectangle) &#123;</div><div class="line">   rectangle = [[self alloc]init];</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">return rectangle;</div><div class="line">&#125;</div><div class="line">2️⃣+ (id)sharedInstance&#123;  </div><div class="line">static TDRectangle * rectangle = nil;    </div><div class="line">static dispatch_once_t onceToken;</div><div class="line">dispatch_once(&amp;onceToken, ^&#123;</div><div class="line">  rectangle = [[self alloc]init];</div><div class="line">    &#125;);  </div><div class="line">return rectangle;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<ul>
-<li>重要的一点在于，此操作完全是线程安全的。请注意，对于只需执行一次的块来说，每次调用函数时传入的标记都必须完全相同。开发者通常将标记变量申明在<code>static</code>或<code>global</code>作用域中。</li>
-</ul>
-<blockquote>
-<p>经常需要编写”只需执行一次的线程安全代码”。通过GCD所提供的<code>diapatch_once</code>函数，很容易就能实现此功能</p>
-<p>标记应该声明在<code>static</code>或<code>global</code>作用域中，这样的话，在把只需执行一次的块传给<code>dispatch_once</code>函数时，穿进去的标记也是相同的</p>
-</blockquote>
-<h2 id="46-不要使用dispatch-get-current-queue"><a href="#46-不要使用dispatch-get-current-queue" class="headerlink" title="46.不要使用dispatch_get_current_queue"></a>46.不要使用dispatch_get_current_queue</h2><hr>
-<h2 id="47-熟悉系统框架"><a href="#47-熟悉系统框架" class="headerlink" title="47.熟悉系统框架"></a>47.熟悉系统框架</h2><hr>
-<ul>
-<li>将一系列代码封装为动态库，并在其中放入描述其接口的头文件，这样做出来的东西就叫框架。有时为<code>iOS</code>平台构建的第三方框架所使用的是静态库，这是因为<code>iOS</code>应用程序不允许在其中包含动态库。不过，所用<code>iOS</code>平台的系统框架仍然使用动态库。</li>
-<li>开发”带图形界面的应用程序”时，会用到名为<code>Cocoa</code>的框架，在<code>iOS</code>上称为<code>Cocoa Touch</code>。其实<code>Cocoa</code>本身并不是框架，但是里面集成了一批创建应用程序时经常会用到的框架。</li>
-<li>开发过程中主要框架是<code>Foundation</code>，像是<code>NSObject、NSArray、NSDictionary、</code>等类都在其中。<code>Foundation</code>框架中的类，使用NS这个前缀。</li>
-<li>还有一个与<code>Founction</code>相伴的框架，叫做<code>CoreFoundation</code>。虽然从技术上讲，<code>CoreFounction</code>框架不是<code>Objective-C</code>框架，但它却是编写<code>Objective-C</code>应用程序时所应熟悉的重要框架，<code>Foundation</code>框架中的许多功能，都可以再次框架中找到对应的C语言API。</li>
-<li><code>CFNetwork</code> 此框架提供了C语言级别的网络通信能力，它将”BSD套接字”抽象成易于使用的网络接口。而<code>Foundation</code>则将该框架里的部分内容封装为<code>Objective-C</code>语言的接口，以便进行网络通信，例如可以用<code>NSURLConnection</code>从URL中下载数据</li>
-<li><code>CoreAudio</code> 该框架所提供的C语言API可用来操作设备上的音频硬件。这个框架属于比较难用的那种，因为音频处理本身就很复杂。所幸这套API可以抽象出另一套<code>Objective-C</code>式API,用后者处理音频问题会简单些</li>
-<li><code>AVFoundation</code> 此框架所提供的<code>Objective-C</code>接口可将对象可用来回放并录制音频及视频，比如能够在UI试图类里播放视频</li>
-<li><code>CoreData</code> 此框架所提供的<code>Objective-C</code>接口可将对象放入数据库，便于持久化保存。<code>CoreData</code> 会处理数据的获取及存储事宜</li>
-<li><code>CoreText</code> 此框架提供的C语言接口可以高效执行文字排版及渲染操作</li>
-<li>可以看出<code>Objective-C</code>编程的一项重要特点，那就是:经常需要使用底层的C语言级API。用C语言来实现API的好处是，可以绕过<code>Objective-C</code>的运行期系统，从而提升执行速度。</li>
-<li><code>iOS</code>应用程序核心UI框架是UIKit,在这些主要的UI框架之下，是<code>CoreAnimation</code>与<code>CoreGraphics</code>框架</li>
-</ul>
-<blockquote>
-<p>许多系统框架都可以直接使用。其中最重要的是<code>Foundation</code>与<code>CoreFoundataion</code>，这两个框架提供了构建应用程序所需的许多核心功能</p>
-<p>许多常见任务都能用框架来做，例如音频与视频处理、网路通信、数据管理等。</p>
-<p>请记住：用纯C写成的框架与用<code>Objective-C</code>写成的一样重要，若想成为优秀的<code>Objective-C</code>开发者，应该掌握C语言的核心概念</p>
-</blockquote>
-<h2 id="48-多用块枚举，少用for循环"><a href="#48-多用块枚举，少用for循环" class="headerlink" title="48.多用块枚举，少用for循环"></a>48.多用块枚举，少用for循环</h2><hr>
-<ul>
-<li>for循环 </li>
-<li>遍历数组的第一种办法就是采用老式的for循环，这令人想起：在作为<code>Objective-C</code>根基的C语言里，就已经由此特性了。这是个很基本的办法，因此功能非常有限。<br><img src="/2014/07/05/Effective-Objecive-C-2-0-读书笔记（五）/6.png" alt="6"></li>
-<li>字典与set都是“无序的”，所有无法根据特定的整数下标来直接访问其中的值。于是，就需要先获取字典里的所有键或是set里的所用对象，这两种情况下，都可以在获取到的有序数组上遍历，以便借此访问源字典及原set中的值。</li>
-<li><code>NSEnumerator</code><br><img src="/2014/07/05/Effective-Objecive-C-2-0-读书笔记（五）/7.png" alt="7"><br><img src="/2014/07/05/Effective-Objecive-C-2-0-读书笔记（五）/8.png" alt="8"></li>
-<li>这种写法的功能与标准的for循环相似，但是代码却多了一些。其真正优势在于：不论遍历那种<code>collection</code>，都可以采用这套相似的语法。</li>
-<li>快速遍历</li>
-<li>快速遍历与使用<code>NSEnumerator</code>来遍历差不多，然而语法更简洁，它为for循环开设了in关键字。这个关键字简化了遍历<code>collection</code>所需的语法。<br><img src="/2014/07/05/Effective-Objecive-C-2-0-读书笔记（五）/9.png" alt="9"></li>
-<li>如果某个类的对象支持快速遍历，那么就可以宣称自己遵从名为<code>NSFastEnumeration</code>的协议，从而开发者可以采用此语法来迭代该对象。<br><img src="/2014/07/05/Effective-Objecive-C-2-0-读书笔记（五）/10.png" alt="10"></li>
-<li><p>在目前所介绍的遍历方式中，这种方法是语法最简单且效率最高的，然而如果在遍历字典时需要同时获取键与值，那么会多出来一步。</p>
-</li>
-<li><p>基于块的遍历方式<br><code>- (void)enumerateObjectsUsingBlock:(void (NS_NOESCAPE ^)(ObjectType obj, NSUInteger idx, BOOL *stop))block</code></p>
-</li>
-<li>此种写法遍历时既能获取对象，也能知道其下标。此方法还提供了一种优雅的机制，用于终止遍历操作。此方法不仅可用来遍历数组。NSSet里面也有同样的块枚举方法，NSDictionary也是这样。<br><code>- (void)enumerateKeysAndObjectsUsingBlock:(void (NS_NOESCAPE ^)(KeyType key, ObjectType obj, BOOL *stop))block</code></li>
-<li>此方法大大胜过其他方式的地方在于:1️⃣遍历时可以直接获取更多信息。2️⃣能够修改块的方法签名，以免进行类型转换操作</li>
-<li>用此方法也可以执行方向遍历。数组、字典、set都实现了前述方法的另一个版本，是开发者可向其传入”选项掩码”<br><code>- (void)enumerateKeysAndObjectsWithOptions:(NSEnumerationOptions)opts usingBlock:(void (NS_NOESCAPE ^)(KeyType key, ObjectType obj, BOOL *stop))block</code></li>
-<li><code>NSEnumerationConcurrent</code> 选项即可开启并行执行此功能，<code>NSEnumerationReverse</code> 选项即可开启方向遍历此功能。</li>
-</ul>
-<blockquote>
-<p>遍历<code>collection</code>有四种方式，最基本的办法是for循环，其次是<code>NSEnumerator</code>遍历法及快速遍历法，最新、最先进的方式则是”块枚举法”</p>
-<p>“快枚举法”本身就能通过GCD来并发执行遍历操作，无须另行编写代码。而采用其他遍历方法则无法轻易实现这一点</p>
-<p>若提前知道待遍历的<code>collection</code>含有何种对象，则应修改块签名，指出对象的具体类型</p>
-</blockquote>
-<h2 id="49-对自定义其内存管理语义的collection使用无缝桥接"><a href="#49-对自定义其内存管理语义的collection使用无缝桥接" class="headerlink" title="49.对自定义其内存管理语义的collection使用无缝桥接"></a>49.对自定义其内存管理语义的collection使用无缝桥接</h2><hr>
-<ul>
-<li><code>Foundation</code>框架定义了这些数组、字典、set及其他各种<code>collection</code>所对应的<code>Objective-C</code>类。与之相似，<code>CoreFoundation</code>框架也定义了一套C语言API，用于操作表示这些<code>collection</code>及其他各种<code>collection</code>的数据结构。</li>
-<li>例如:<code>NSArray</code>是<code>Foundation</code>框架中表示数组的<code>Objective-C</code>类，而<code>CFArray</code>则是<code>CoreFoundation</code>框架中的等价物。</li>
-<li>使用”无缝桥接”技术，可以再定义与<code>Foundation</code>框架中的<code>Objective-C</code>类和定义与<code>CoreFoundation</code>框架中的C数据结构之间互相装换。</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">NSArray *anNSArray = @[@1,@2,@3,@4,@5];</div><div class="line">CFArrayRef aCFArray = (__bridge CFArrayRef)anNSArray;</div><div class="line"></div><div class="line">NSArray *otherAnNSArray = (__bridge_transfer NSArray *)aCFArray;</div></pre></td></tr></table></figure>
-<ul>
-<li><code>__bridge</code>本身的意思是：ARC仍然具备这个<code>Objective-C</code>对象的所有权。而<code>__bridge__retained</code>则与之相反，意味着ARC将交出对象的所有权。若是前面那段代码改用它来实现，那么用完数组之后就要加上<code>CFRelease(aCFArray)</code>以释放其内存。与之相似，反响转换可通过<code>__bridge__transfer</code>来实现。</li>
-<li>以纯<code>Objective-C</code>来编写应用程序时，为何要用到这种功能呢?这是因为:<code>Foundation</code>框架中的<code>Objective-C</code>类所具备的某些功能，是<code>CoreFoundation</code>框架中的C语言数据结构所不具备的，反之亦然。</li>
-</ul>
-<blockquote>
-<p>通过无缝桥接技术，可以再<code>Foundation</code>框架中的<code>Objective-C</code>对象与<code>CoreFoundation</code>框架中的C语言数据结构体之间来回转换</p>
-<p>在<code>CoreFoundation</code>层面创建<code>collection</code>时，可以指定许多回调函数，这些函数表示此<code>collection</code>应如何处理其元素。然后，可运用无缝桥接技术，将其转换成具备特殊内存管理语义的<code>Objective-C colletcion</code></p>
-</blockquote>
-<h2 id="50-构建缓存时选用NSCache而非NSDictionary"><a href="#50-构建缓存时选用NSCache而非NSDictionary" class="headerlink" title="50.构建缓存时选用NSCache而非NSDictionary"></a>50.构建缓存时选用NSCache而非NSDictionary</h2><hr>
-<ul>
-<li>当系统资源将要耗尽时，它可以自动删减缓存。它还会先行删减”最久未使用的”对象</li>
-<li><code>NSCache</code>并不会”拷贝”键，而是会”保留”它。</li>
-<li><code>NSCache</code>是线程安全的。</li>
-<li>下面代码演示了缓存的用法<br><img src="/2014/07/05/Effective-Objecive-C-2-0-读书笔记（五）/11.png" alt="11"><br><img src="/2014/07/05/Effective-Objecive-C-2-0-读书笔记（五）/12.png" alt="12"><br><img src="/2014/07/05/Effective-Objecive-C-2-0-读书笔记（五）/13.png" alt="13"><br><img src="/2014/07/05/Effective-Objecive-C-2-0-读书笔记（五）/14.png" alt="14"></li>
-</ul>
-<blockquote>
-<p>实现缓存时应选用<code>NSCache</code>而非<code>NSDictionary</code>对象。因为<code>NSCache</code>可以提供优雅的自动删减功能，而且是”线程安全的”，此外，它与字典不同，并不会拷贝键。</p>
-<p>可以给<code>NSCache</code>对象设置上限，用以限制缓存中的对象个数及”总成本”，而这些尺度则定义了缓存删减其中对象的时机。但是绝对不要把这些尺度当成可靠的”硬限制”，他们仅对<code>NSCashe</code>起引导作用</p>
-</blockquote>
+          41.多用派发队列，少用同步锁
 
-          
+在Objective-C中，如果有多个线程要执行同一份代码，那么有时候可能会出现问题。这种情况下，通常要使用锁来实现某种同步机制。
+同步块，这种写法会根据给定的对象，自动创建一个锁，并等待块中的代码执行完毕。然而，滥用@synchronized (self)则会降低代码效率，因为公用同一个锁的是同步块。 
+
+12@synchronized (self) &#123;           &#125;
+
+NSLock对象(递归锁)，线程能够多次持有该锁，而不会出现死锁现象
+
+123456_lcok = [[NSLock alloc]init];- (void)synchronized&#123;    [_lcok lock];  //    [_lcok u
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2014/07/05/Effective-Objecive-C-2-0-读书笔记（五）/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1925,109 +1599,19 @@
       
         
           
-            <h2 id="31-在dealloc方法中只释放引用并解除监听"><a href="#31-在dealloc方法中只释放引用并解除监听" class="headerlink" title="31.在dealloc方法中只释放引用并解除监听"></a>31.在dealloc方法中只释放引用并解除监听</h2><hr>
-<ul>
-<li>对象在经历其生命期后，最终会为系统所回收，这时就要执行<code>dealloc</code>方法了。在每个对象的生命周期内，此方法仅执行一次，也就是当保留计数降为0的时候。</li>
-<li>在<code>dealloc</code>方法中，通常还要做一件事，那就是把原来配置过的观测行为都清理掉。如果用<code>NSNotificationCenter</code>给此对象订阅过某种通知，那么一般应该在这里注销。</li>
-<li>系统并不保证每个创建出来的<code>dealloc</code>都会执行，极个别情况下，当程序终止时，仍有对象处于存活状态，此时就不会调用其<code>dealloc</code>方法，如果一定要清理某些对象，可在此方法中调用那些对象的清理方法<br><code>- (void)applicationWillTerminate:(UIApplication *)application</code>   </li>
-</ul>
-<blockquote>
-<p>在<code>dealloc</code>方法里，应该做的事情就是释放指向其他对象的引用，并取消原来订阅的”键值观测(KVO)或<code>NSNotificationCetnter</code>等通知，不要做其他事情”。</p>
-<p>如果对象持有文件描述等系统资源，那么应该专门编写一个方法来释放此种资源。</p>
-<p>执行异步任务的方法不应该在dealloc里调用；只能在正常状态下执行的那些方法也不应在dealloc里调用，因为此时对象已处于正在回收的状态了。</p>
-</blockquote>
-<h2 id="32-编写”异常安全代码”时留意内存管理问题"><a href="#32-编写”异常安全代码”时留意内存管理问题" class="headerlink" title="32.编写”异常安全代码”时留意内存管理问题"></a>32.编写”异常安全代码”时留意内存管理问题</h2><hr>
-<h2 id="33-以弱引用避免保留环"><a href="#33-以弱引用避免保留环" class="headerlink" title="33.以弱引用避免保留环"></a>33.以弱引用避免保留环</h2><hr>
-<ul>
-<li>最简单的保留环由两个对象构成，他们相互引用对方。<br><img src="/2014/07/02/Effective-Objecive-C-2-0-读书笔记（四）/1.png" alt="1"></li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">@class TDClassA;</div><div class="line">@class TDClassB;@interface TDClassA : NSObject</div><div class="line">@property (nonatomic, strong)TDClassB *other;@end</div><div class="line">@interface TDClassB : NSObject</div><div class="line">@property (nonatomic, strong)TDClassA *other;@end</div></pre></td></tr></table></figure>
-<ul>
-<li>避免保留环的最佳方式就是弱引用。这种引用经常用来表示”非拥有关系”，将属性声明为<code>unsafe_unretained</code>即可。</li>
-<li>用<code>unsafe_unretained</code>修饰的属性特质，其语义同<code>assign</code>特质等价。然而，<code>assign</code>通常只用于”整体类型(<code>int</code>,<code>float</code>,结构体等)”，<code>unsafe_unretained</code>则多用于对象类型。这个词本身就表明其所修饰的属性可能无法安全使用。</li>
-<li>安全使用的弱引用<code>weak</code>属性特质，它与<code>unsafe_unretained</code>的作用完全相同。只要系统把属性回收，属性值就会自动设为nil<br><img src="/2014/07/02/Effective-Objecive-C-2-0-读书笔记（四）/2.png" alt="2"></li>
-<li>使用<code>weak</code>而非<code>unsafe_unretained</code>引用令代码更安全</li>
-</ul>
-<blockquote>
-<p>将某些引用设为<code>weak</code>，可避免出现”保留环”</p>
-<p><code>weak</code>引用可以自动清空，也可以不自动清空。自动清空是随着ARC而引入的新特性，由运行期系统来实现。在具备自动清空功能的弱引用上，可以随意读取其数据，因为这种引用不会指向已经回收过的对象。</p>
-</blockquote>
-<h2 id="34-以”自动释放池块”降低内存峰值"><a href="#34-以”自动释放池块”降低内存峰值" class="headerlink" title="34.以”自动释放池块”降低内存峰值"></a>34.以”自动释放池块”降低内存峰值</h2><hr>
-<h2 id="35-用”僵尸对象”调试内存管理问题"><a href="#35-用”僵尸对象”调试内存管理问题" class="headerlink" title="35.用”僵尸对象”调试内存管理问题"></a>35.用”僵尸对象”调试内存管理问题</h2><hr>
-<h2 id="36-不要使用retainCount"><a href="#36-不要使用retainCount" class="headerlink" title="36.不要使用retainCount"></a>36.不要使用retainCount</h2><hr>
-<h2 id="37-理解”块”这一概念"><a href="#37-理解”块”这一概念" class="headerlink" title="37.理解”块”这一概念"></a>37.理解”块”这一概念</h2><hr>
-<ul>
-<li>块与函数类似，只不过是直接定义在另一个函数里的，和定义它的那个函数共享同一个范围内的东西。</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">void(^someBlock) () = ^&#123;   </div><div class="line">&#125;;</div></pre></td></tr></table></figure>
-<ul>
-<li>块的强大之处是：在声明它的范围里，所有变量都可以为其捕获。这也就是说，那个范围里的全部变量，在块里依然可用。</li>
-<li>默认情况下，为块所捕获的变量，是不可以在块里修改的。不过，声明变量的时候可以加上<code>__block</code>修饰符，这样就可以在块内修改了。</li>
-<li>如果块所捕获的变量是对象类型，那么就会自动保留它。系统在释放这个块的时候，也会将其一并释放。</li>
-<li>如果将块定义在<code>Objective-C</code>类的实例方法中，那么除了可以访问类的所有实例变量之外，还可以使用self变量。块总能修改实例变量，所以在声明时无须加<code>__block</code>。不过，如果通过读取或写入操作捕获了实例变量，那么也会自动把self变量一并捕获了，因为实例变量是与self所指代的实例关联在一起的。</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">- (void)blockDemo&#123;   </div><div class="line">void(^someBlock) () = ^&#123;      </div><div class="line">_anInstanceVariable = @&quot;&quot;;</div><div class="line">//self -&gt; _anInstanceVariable = @&quot;&quot;;</div><div class="line">   &#125;;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<ul>
-<li>直接访问实例变量和通过<code>self</code>来访问是等效的</li>
-<li>一定要记住：<code>self</code>也是个对象，因而块在捕获它时也会将其保留。如果self所指代的那个对象同时也保留了块，那么这种情况通常就会导致“保留环”。</li>
-<li>定义块的时候，其所占的内存区域是分配在栈中的。这就是说，块只在定义它的那个范围内有效。因为栈内存本来会自动回收，因此需给块对象发送<code>copy</code>消息以拷贝之，这样的话，就可以把块从栈复制到堆上了。</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">void(^block) ();</div><div class="line">block = [^&#123;&#125; copy];</div></pre></td></tr></table></figure>
-<ul>
-<li>除了”栈块”和”堆块”之外，还有一类块叫做”全局块”。块所使用的整个内存区域，在编译期已经完全确定了，因此，全局块可以声明在全局内存里，而不需要在每次用到的时候于栈中创建。</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">void(^someBlock) () = ^&#123;      </div><div class="line">_anInstanceVariable = @&quot;&quot;;</div><div class="line">    &#125;;</div></pre></td></tr></table></figure>
-<blockquote>
-<p>块是<code>C、C++、Objective-C</code>中的词法闭包</p>
-<p>块可接受参数，也可返回值</p>
-<p>块可以分配在栈或堆上，也可以是全局的。分配在栈上的块可拷贝到堆里，这样的话，就和标准的<code>Objective-C</code>对象一样，具备引用计数了。</p>
-</blockquote>
-<h2 id="38-为常用的块类型创建typedef"><a href="#38-为常用的块类型创建typedef" class="headerlink" title="38.为常用的块类型创建typedef"></a>38.为常用的块类型创建typedef</h2><hr>
-<ul>
-<li>为了隐藏复杂的块类型，需要用到C语言中名为”类型定义”的特性。<code>typedef</code>关键字用于给类型起个易读的别名。</li>
-<li><code>typedef int(^TDSomeBlock)(BOOL flag, int value);</code></li>
-<li>下面为定义别名和没有定义别名的区别</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">- (void)startWithCompletionHandler:(void(^)(NSData *data, NSError *error))completion;</div><div class="line">typedef void(^TDCompletionHandler)(NSData *data, NSError *error);</div><div class="line">- (void)startWithCompletionHandler:(TDCompletionHandler)completion;</div></pre></td></tr></table></figure>
-<ul>
-<li>使用类型定义的好处:1️⃣看上去简单、而且易于理解。2️⃣当你打算重构块的类型签名时会很方便。</li>
-</ul>
-<blockquote>
-<p>以<code>typedef</code>重新定义块类型，可令块变量用起来更加简单</p>
-<p>定义新类型时应遵从现有的命名习惯，勿使其名称与别的类型相冲突</p>
-<p>不妨为同一个块签名定义多个类型别名。如果要重构的代码使用了块类型的某个别名，那么只需修改相应<code>typedef</code>中的块签名即可，无须改动其他<code>typedef</code></p>
-</blockquote>
-<h2 id="39-用handler块降低代码分散程度"><a href="#39-用handler块降低代码分散程度" class="headerlink" title="39.用handler块降低代码分散程度"></a>39.用handler块降低代码分散程度</h2><hr>
-<ul>
-<li>为了用户界面编码时，一种常用的范式就是”异步执行任务”。这种范式的好处在于：处理用户界面的显示及触摸操作所用的线程，不会因为要执行I/O或网络通信这类耗时的任务而阻塞。这个线程通常称为主线程。</li>
-<li>异步方法在执行完任务之后，需要以某种手段通知相关代码。实现此功能有很多办法。1️⃣设计一个委托协议2️⃣定义块类型，当做参数直接传给方法。</li>
-<li>委托模式有个缺点:如果类要分别使用多个获取器下载不同数据，那么就得在<code>delegate</code>回调方法里根据传入的获取器参数来切换。<br><img src="/2014/07/02/Effective-Objecive-C-2-0-读书笔记（四）/3.png" alt="3"><br><img src="/2014/07/02/Effective-Objecive-C-2-0-读书笔记（四）/4.png" alt="4"></li>
-<li>这么写代码，不仅会令<code>delegate</code>回调方法变得很长，而且还要把网络数据获取器对象保存为实例变量以便在判断语句中使用。</li>
-<li>块的好处是：无须保存获取器，也无须在回调方法里切换。每个<code>completion handler</code> 的业务逻辑，都是和相关的获取器对象一起来定义的:<br><img src="/2014/07/02/Effective-Objecive-C-2-0-读书笔记（四）/5.png" alt="5"><br><img src="/2014/07/02/Effective-Objecive-C-2-0-读书笔记（四）/6.png" alt="6"></li>
-<li>另一种风格则是像下面这样，把处理成功情况和失败情况所用代码全放在一个块里<br><img src="/2014/07/02/Effective-Objecive-C-2-0-读书笔记（四）/7.png" alt="7"></li>
-<li>总的来说，建议使用同一个块来处理成功与失败情况，苹果公司似乎也是这样设计其API的。</li>
-</ul>
-<blockquote>
-<p>在创建对象时，可以使用内联的<code>handler</code>块将相关业务逻辑一并声明</p>
-<p>在有多个实例需要监控时，如果采用委托模式，那么经常需要根据传入的对象来切换，而若改用<code>hander</code>块来实现，则可直接将块与相关对象放在一起</p>
-<p>设计API时如果用到了<code>hander</code>块，那么可以增加一个参数，使调用者可以通过此参数来决定应该把块安排在哪个队列上执行</p>
-</blockquote>
-<h2 id="40-用块引用其所属对象时不要出现保留环"><a href="#40-用块引用其所属对象时不要出现保留环" class="headerlink" title="40.用块引用其所属对象时不要出现保留环"></a>40.用块引用其所属对象时不要出现保留环</h2><hr>
-<ul>
-<li>使用块时，若不仔细思量，则很容易导致”保留环”。<br><img src="/2014/07/02/Effective-Objecive-C-2-0-读书笔记（四）/8.png" alt="8"></li>
-<li>因为 <code>completion handler</code> 块要设置 <code>_fetchedData</code>实例变量，所以它必须捕获<code>self</code>变量，<code>handler</code>块保留了创建网络数据获取器的那个<code>EOCClass</code>实例，而<code>EOCClass</code>实例则通过<code>strong</code>实例变量保留了获取器，最后，获取对象有保留了<code>handler</code>块 这就是保留环。</li>
-<li>解决办法1️⃣令<code>_networkFetcher</code>实例变量不再引用获取器2️⃣令获取器对象自己设法保持存活。3️⃣修饰<code>self</code></li>
-<li>1️⃣<br><img src="/2014/07/02/Effective-Objecive-C-2-0-读书笔记（四）/9.png" alt="9"></li>
-<li>2️⃣<br><img src="/2014/07/02/Effective-Objecive-C-2-0-读书笔记（四）/10.png" alt="10"></li>
-<li>大部分网络通信都采用这种办法，因为假如令调用者自己来将获取器对象保持存活的话，他们会觉得很麻烦。</li>
-<li>3️⃣<code>__weak __typeof(self) weakSelf = self;</code></li>
-</ul>
-<blockquote>
-<p>如果块所捕获的对象直接或间接地保留了块本身，那么就得当心保留环问题。</p>
-<p>一定要找个适当的时机解除保留环，而不能把责任推给API的调用者</p>
-</blockquote>
+          31.在dealloc方法中只释放引用并解除监听
 
-          
+对象在经历其生命期后，最终会为系统所回收，这时就要执行dealloc方法了。在每个对象的生命周期内，此方法仅执行一次，也就是当保留计数降为0的时候。
+在dealloc方法中，通常还要做一件事，那就是把原来配置过的观测行为都清理掉。如果用NSNotificationCenter给此对象订阅过某种通知，那么一般应该在这里注销。
+系统并不保证每个创建出来的dealloc都会执行，极个别情况下，当程序终止时，仍有对象处于存活状态，此时就不会调用其dealloc方法，如果一定要清理某些对象，可在此方法中调用那些对象的清理方法- (void)applicationWillTerminate:(UIApplication *)application   
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2014/07/02/Effective-Objecive-C-2-0-读书笔记（四）/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
