@@ -89,7 +89,7 @@
 <link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="NSOperation," />
+  <meta name="keywords" content="AFNetworking," />
 
 
 
@@ -105,22 +105,27 @@
 
 
 
-<meta name="description" content="前言
-NSOperation是苹果提供给我们的一套多线程解决方案。实际上NSOperation是基于GCD更高一层的封装，但是比GCD更简单易用、代码可读性也更高。NSOperation需要配合NSOperationQueue来实现多线程。因为默认情况下，NSOperation单独使用时系统同步执行操作，并没有开辟新线程的能力，只有配合NSOperationQueue才能实现异步执行。
-NSOpe">
+<meta name="description" content="一、[[self class] alloc]与[self alloc]的区别
+采用[[self class] alloc]时，如果类派生了子类，产生的将是类型相同的子类对象，而不是基类对象。
+二、NS_ASSUME_NONNULL_BEGIN、NS_ASSUME_NONNULL_END、__nullable、__nonnull、__unused
+如果需要每个属性或每个方法都去指定nonnull，是">
 <meta property="og:type" content="article">
-<meta property="og:title" content="NSOperation简单使用">
-<meta property="og:url" content="http://yoursite.com/2015/03/08/NSOperation简单使用/index.html">
+<meta property="og:title" content="AFNetworking中琐碎小知识点">
+<meta property="og:url" content="http://yoursite.com/2015/07/08/AFNetworking中琐碎小知识点/index.html">
 <meta property="og:site_name" content="AndyMu">
-<meta property="og:description" content="前言
-NSOperation是苹果提供给我们的一套多线程解决方案。实际上NSOperation是基于GCD更高一层的封装，但是比GCD更简单易用、代码可读性也更高。NSOperation需要配合NSOperationQueue来实现多线程。因为默认情况下，NSOperation单独使用时系统同步执行操作，并没有开辟新线程的能力，只有配合NSOperationQueue才能实现异步执行。
-NSOpe">
-<meta property="og:updated_time" content="2017-07-08T09:50:47.000Z">
+<meta property="og:description" content="一、[[self class] alloc]与[self alloc]的区别
+采用[[self class] alloc]时，如果类派生了子类，产生的将是类型相同的子类对象，而不是基类对象。
+二、NS_ASSUME_NONNULL_BEGIN、NS_ASSUME_NONNULL_END、__nullable、__nonnull、__unused
+如果需要每个属性或每个方法都去指定nonnull，是">
+<meta property="og:image" content="http://yoursite.com/2015/07/08/AFNetworking中琐碎小知识点/1.jpg">
+<meta property="og:updated_time" content="2017-07-08T14:29:52.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="NSOperation简单使用">
-<meta name="twitter:description" content="前言
-NSOperation是苹果提供给我们的一套多线程解决方案。实际上NSOperation是基于GCD更高一层的封装，但是比GCD更简单易用、代码可读性也更高。NSOperation需要配合NSOperationQueue来实现多线程。因为默认情况下，NSOperation单独使用时系统同步执行操作，并没有开辟新线程的能力，只有配合NSOperationQueue才能实现异步执行。
-NSOpe">
+<meta name="twitter:title" content="AFNetworking中琐碎小知识点">
+<meta name="twitter:description" content="一、[[self class] alloc]与[self alloc]的区别
+采用[[self class] alloc]时，如果类派生了子类，产生的将是类型相同的子类对象，而不是基类对象。
+二、NS_ASSUME_NONNULL_BEGIN、NS_ASSUME_NONNULL_END、__nullable、__nonnull、__unused
+如果需要每个属性或每个方法都去指定nonnull，是">
+<meta name="twitter:image" content="http://yoursite.com/2015/07/08/AFNetworking中琐碎小知识点/1.jpg">
 
 
 
@@ -148,13 +153,13 @@ NSOpe">
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2015/03/08/NSOperation简单使用/"/>
+  <link rel="canonical" href="http://yoursite.com/2015/07/08/AFNetworking中琐碎小知识点/"/>
 
 
 
 
 
-  <title>NSOperation简单使用 | AndyMu</title>
+  <title>AFNetworking中琐碎小知识点 | AndyMu</title>
   
 
 
@@ -313,7 +318,7 @@ NSOpe">
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/03/08/NSOperation简单使用/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/07/08/AFNetworking中琐碎小知识点/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="AndyMu">
@@ -330,7 +335,7 @@ NSOpe">
 
         
         
-          <h1 class="post-title" itemprop="name headline">NSOperation简单使用</h1>
+          <h1 class="post-title" itemprop="name headline">AFNetworking中琐碎小知识点</h1>
         
 
         <div class="post-meta">
@@ -342,8 +347,8 @@ NSOpe">
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-03-08T16:21:38+08:00">
-                2015-03-08
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-07-08T18:08:12+08:00">
+                2015-07-08
               </time>
             
 
@@ -383,8 +388,8 @@ NSOpe">
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2015/03/08/NSOperation简单使用/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/03/08/NSOperation简单使用/" itemprop="commentCount"></span>
+                <a href="/2015/07/08/AFNetworking中琐碎小知识点/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/07/08/AFNetworking中琐碎小知识点/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -409,61 +414,30 @@ NSOpe">
       
 
       
-        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><hr>
-<p><code>NSOperation</code>是苹果提供给我们的一套多线程解决方案。实际上<code>NSOperation</code>是基于GCD更高一层的封装，但是比GCD更简单易用、代码可读性也更高。<br><code>NSOperation</code>需要配合<code>NSOperationQueue</code>来实现多线程。因为默认情况下，<code>NSOperation</code>单独使用时系统同步执行操作，并没有开辟新线程的能力，只有配合<code>NSOperationQueue</code>才能实现异步执行。</p>
-<h1 id="NSOperation和NSOperationQueue的基本使用"><a href="#NSOperation和NSOperationQueue的基本使用" class="headerlink" title="NSOperation和NSOperationQueue的基本使用"></a>NSOperation和NSOperationQueue的基本使用</h1><hr>
-<p><strong>NSOperation</strong>  </p>
-<ul>
-<li>子类NSInvocationOperation</li>
-<li>子类NSBlockOperation</li>
-</ul>
-<p>1.NSInvocationOperation</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">// 1.创建NSInvocationOperation对象</div><div class="line">NSInvocationOperation *op = [[NSInvocationOperation alloc] initWithTarget:self selector:@selector(run) object:nil];</div><div class="line"></div><div class="line">// 2.调用start方法开始执行操作</div><div class="line">[op start];</div><div class="line"></div><div class="line">- (void)run&#123;</div><div class="line">    NSLog(@&quot;------%@&quot;, [NSThread currentThread]);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>在没有使用<code>NSOperationQueue</code>、单独使用<code>NSInvocationOperation</code>的情况下，<code>NSInvocationOperation</code>在主线程执行操作，并没有开启新线程。 </p>
-<p>2.NSBlockOperation</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">NSBlockOperation *op = [NSBlockOperation blockOperationWithBlock:^&#123;</div><div class="line">    // 在主线程</div><div class="line">    NSLog(@&quot;------%@&quot;, [NSThread currentThread]);</div><div class="line">&#125;];</div><div class="line"></div><div class="line">[op start];</div></pre></td></tr></table></figure>
-<p>在没有使用<code>NSOperationQueue</code>、单独使用<code>NSBlockOperation</code>的情况下，<code>NSBlockOperation</code>也是在主线程执行操作，并没有开启新线程。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">- (void)blockOperation&#123;</div><div class="line">    NSBlockOperation *op = [NSBlockOperation blockOperationWithBlock:^&#123;</div><div class="line">        // 在主线程</div><div class="line">      NSLog(@&quot;1------%@&quot;, [NSThread currentThread]);</div><div class="line">    &#125;];    </div><div class="line"></div><div class="line">    // 添加额外的任务(在子线程执行)</div><div class="line">    [op addExecutionBlock:^&#123;</div><div class="line">        NSLog(@&quot;2------%@&quot;, [NSThread currentThread]);</div><div class="line">    &#125;];</div><div class="line"></div><div class="line">    [op start];</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p><code>NSBlockOperation</code>还提供了一个方法<code>addExecutionBlock:</code>，通过<code>addExecutionBlock:</code>就可以为<code>NSBlockOperation</code>添加额外的操作，这些额外的操作就会在其他线程并发执行。</p>
-<p><strong>NSOperationQueue</strong></p>
-<ul>
-<li>主队列</li>
-<li>其他队列</li>
-</ul>
-<p>1.主队列</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">NSOperationQueue *queue = [NSOperationQueue mainQueue];</div></pre></td></tr></table></figure>
-<p>2.其他队列</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">NSOperationQueue *queue = [[NSOperationQueue alloc] init];</div></pre></td></tr></table></figure>
-<p><strong>将任务加入到队列</strong></p>
-<ul>
-<li>addOperation:</li>
-<li>addOperationWithBlock:</li>
-<li>控制串行和并行</li>
-<li>操作依赖</li>
-</ul>
-<p>1.addOperation:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">- (void)addOperationToQueue&#123;</div><div class="line">    // 1.创建队列</div><div class="line">    NSOperationQueue *queue = [[NSOperationQueue alloc] init];</div><div class="line"></div><div class="line">    // 2. 创建操作  </div><div class="line">    // 创建NSInvocationOperation    </div><div class="line">    NSInvocationOperation *op1 = [[NSInvocationOperation alloc] initWithTarget:self selector:@selector(run) object:nil];    </div><div class="line">// 创建NSBlockOperation    </div><div class="line">    NSBlockOperation *op2 = [NSBlockOperation blockOperationWithBlock:^&#123;</div><div class="line">        for (int i = 0; i &lt; 2; ++i) &#123;</div><div class="line">            NSLog(@&quot;1-----%@&quot;, [NSThread currentThread]);</div><div class="line">        &#125;</div><div class="line">    &#125;];</div><div class="line"></div><div class="line">  // 3. 添加操作到队列中：addOperation:   </div><div class="line">    [queue addOperation:op1]; </div><div class="line">    [queue addOperation:op2]; </div><div class="line">&#125;</div><div class="line"></div><div class="line">- (void)run&#123;</div><div class="line">    for (int i = 0; i &lt; 2; ++i) &#123;</div><div class="line">        NSLog(@&quot;2-----%@&quot;, [NSThread currentThread]);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p><code>NSInvocationOperation</code>和<code>NSOperationQueue</code>结合后能够开启新线程，进行并发执行。<code>NSBlockOperation</code>和<code>NSOperationQueue</code>也能够开启新线程，进行并发执行。</p>
-<p>2.addaddOperationWithBlock:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">- (void)addOperationWithBlockToQueue&#123;</div><div class="line">    // 1. 创建队列</div><div class="line">    NSOperationQueue *queue = [[NSOperationQueue alloc] init];</div><div class="line"></div><div class="line">    // 2. 添加操作到队列中：addOperationWithBlock:</div><div class="line">    [queue addOperationWithBlock:^&#123;</div><div class="line">        for (int i = 0; i &lt; 2; ++i) &#123;</div><div class="line">            NSLog(@&quot;-----%@&quot;, [NSThread currentThread]);</div><div class="line">        &#125;</div><div class="line">    &#125;];</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p><code>addOperationWithBlock:</code>和<code>NSOperationQueue</code>能够开启新线程，进行并发执行。</p>
-<p>3.控制串行和并行<br>这里有个关键参数<code>maxConcurrentOperationCount</code>，叫做最大并发数。</p>
-<ul>
-<li><code>maxConcurrentOperationCount</code>默认情况下为-1，表示不进行限制，默认为并发执行。</li>
-<li>当<code>maxConcurrentOperationCount</code>为1时，进行串行执行。</li>
-<li>当<code>maxConcurrentOperationCount</code>大于1时，进行并发执行，当然这个值不应超过系统限制，即使自己设置一个很大的值，系统也会自动调整。</li>
-</ul>
-<p>4.操作依赖</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">- (void)addDependency&#123;</div><div class="line">    NSOperationQueue *queue = [[NSOperationQueue alloc] init];</div><div class="line"></div><div class="line">    NSBlockOperation *op1 = [NSBlockOperation blockOperationWithBlock:^&#123;</div><div class="line">        NSLog(@&quot;1-----%@&quot;, [NSThread  currentThread]);</div><div class="line">    &#125;];</div><div class="line">    NSBlockOperation *op2 = [NSBlockOperation blockOperationWithBlock:^&#123;</div><div class="line">        NSLog(@&quot;2-----%@&quot;, [NSThread  currentThread]);</div><div class="line">    &#125;];</div><div class="line"></div><div class="line">    [op2 addDependency:op1];    // 让op2 依赖于 op1，则先执行op1，在执行op2</div><div class="line"></div><div class="line">    [queue addOperation:op1];</div><div class="line">    [queue addOperation:op2];</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>可以看到，无论运行几次，其结果都是op1先执行，op2后执行。</p>
-<p><strong>其他</strong></p>
-<ul>
-<li><code>- (void)cancel; NSOperation</code>提供的方法，可取消单个操作</li>
-<li><code>- (void)cancelAllOperations</code>;<code>NSOperationQueue</code>提供的方法，可以取消队列的所有操作</li>
-<li><code>- (void)setSuspended:</code>; 可设置任务的暂停和恢复，YES代表暂停队列，NO代表恢复队列</li>
-<li><code>- (BOOL)isSuspended</code>; 判断暂停状态</li>
-</ul>
-<p>这里的暂停和取消并不代表可以将当前的操作立即取消，而是当当前的操作执行完毕之后不再执行新的操作。<br>暂停和取消的区别就在于：暂停操作之后还可以恢复操作，继续向下执行；而取消操作之后，所有的操作就清空了，无法再接着执行剩下的操作。</p>
+        <h2 id="一、-self-class-alloc-与-self-alloc-的区别"><a href="#一、-self-class-alloc-与-self-alloc-的区别" class="headerlink" title="一、[[self class] alloc]与[self alloc]的区别"></a>一、<code>[[self class] alloc]</code>与<code>[self alloc]</code>的区别</h2><hr>
+<p>采用<code>[[self class] alloc]</code>时，如果类派生了子类，产生的将是类型相同的子类对象，而不是基类对象。</p>
+<h2 id="二、NS-ASSUME-NONNULL-BEGIN、NS-ASSUME-NONNULL-END、-nullable、-nonnull、-unused"><a href="#二、NS-ASSUME-NONNULL-BEGIN、NS-ASSUME-NONNULL-END、-nullable、-nonnull、-unused" class="headerlink" title="二、NS_ASSUME_NONNULL_BEGIN、NS_ASSUME_NONNULL_END、__nullable、__nonnull、__unused"></a>二、<code>NS_ASSUME_NONNULL_BEGIN</code>、<code>NS_ASSUME_NONNULL_END</code>、<code>__nullable</code>、<code>__nonnull</code>、<code>__unused</code></h2><hr>
+<p>如果需要每个属性或每个方法都去指定<code>nonnull</code>，是一件非常繁琐的事。苹果为了减轻我们的工作量，专门提供了两个宏：<code>NS_ASSUME_NONNULL_BEGIN</code>和<code>NS_ASSUME_NONNULL_END</code>。在这两个宏之间的代码，所有简单指针对象都被假定为<code>nonnull</code><br><code>__nullable</code>和<code>_Nullable</code>等价<code>__nonnull</code>和<code>_Nonnull</code>等价<br><code>__nullable</code>表示对象可以是<code>NULL</code>或<code>nil</code>，而<code>__nonnull</code>表示对象不应该为空。当我们不遵循这一规则时，编译器就会给出警告。<br>不过这两个关键字仅限于使用在指针类型上。而在方法的声明中，我们还可以使用不带下划线的<code>nullable</code>和<code>nonnull</code>  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">@property (nonatomic, copy) NSArray * items1;</div><div class="line">@property (nonatomic, copy) NSArray * __nullable items2;</div><div class="line">+ (nonnull id)sharedTest;</div><div class="line">- (nullable id)itemWithName:(NSString * _Nonnull)name;</div></pre></td></tr></table></figure>
+<p>我们定义了变量后，如果不使用就会出现警告，如果在变量前加<code>__unused</code>前缀，就可以免除警告。其原理是告诉编译器，如果变量未使用就不参与编译。</p>
+<h2 id="三、NS-DESIGNATED-INITIALIZER-指定初始化函数-、DEPRECATED-ATTRIBUTE-已废弃"><a href="#三、NS-DESIGNATED-INITIALIZER-指定初始化函数-、DEPRECATED-ATTRIBUTE-已废弃" class="headerlink" title="三、NS_DESIGNATED_INITIALIZER(指定初始化函数)、DEPRECATED_ATTRIBUTE(已废弃)"></a>三、<code>NS_DESIGNATED_INITIALIZER</code>(指定初始化函数)、<code>DEPRECATED_ATTRIBUTE</code>(已废弃)</h2><hr>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">- (id)initWithName:(NSString *)name NS_DESIGNATED_INITIALIZER;</div></pre></td></tr></table></figure>
+<p>指定初始化器有以下几个规则：<br>1.指定初始化器方法必须调用父类的指定初始化器方法，如果父类为<code>NSObject</code>时调用<code>[super init]</code>。<br>2.<code>convenience initializer</code>方法必须调用其他的初始化方法，直到最后指向指定初始化器方法。<br>3.一个类如果有指定初始化器方法，那么就必须实现所有父类的指定初始化器方法。</p>
+<h2 id="四、API中常用到的方法"><a href="#四、API中常用到的方法" class="headerlink" title="四、API中常用到的方法"></a>四、API中常用到的方法</h2><hr>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">//完整的url字符串</div><div class="line">[url absoluteString]</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">//若url尾部没有反斜杠(“/”)，这个方法会在url后面加反斜杠(“/”)</div><div class="line">[url URLByAppendingPathComponent:@“”]</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">//返回转换为大写的字符串</div><div class="line">[[request HTTPMethod] uppercaseString]</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">//拆分数组,每个对象间拼接“&amp;”,返回参数字符串 </div><div class="line">[mutablePairs componentsJoinedByString:@&quot;&amp;”]</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">//url后面拼接参数的小技巧</div><div class="line">mutableRequest.URL = [NSURL URLWithString:[[mutableRequest.URL absoluteString] stringByAppendingFormat:mutableRequest.URL.query ? @&quot;&amp;%@&quot; : @&quot;?%@&quot;, query]];</div></pre></td></tr></table></figure>
+<h2 id="五、三目运算符简写"><a href="#五、三目运算符简写" class="headerlink" title="五、三目运算符简写"></a>五、三目运算符简写</h2><hr>
+<p>a ? b : c 当a==b的时候可以简写为a ? : c</p>
+<h2 id="六、NSError"><a href="#六、NSError" class="headerlink" title="六、NSError"></a>六、NSError</h2><hr>
+<p><img src="/2015/07/08/AFNetworking中琐碎小知识点/1.jpg" alt="1"><br><code>NSError**</code>,该参数会被编译器自动重写为<code>NSError* __autoreleasing *</code>形式，而在dict的枚举遍历方法中，有一个内部添加的<code>autoreleasepool</code>，所以，原代码相当于</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">- (BOOL)validate... error:(NSError * __autoreleasing *)error &#123;</div><div class="line">    for (NSUInteger index = 0; index &lt; dict.allKeys.count &amp;&amp; !stop; index++) &#123;</div><div class="line">        @autoreleasepool &#123; </div><div class="line">            ...</div><div class="line">            if (error) *error = [NSError errorWithDomain...];</div><div class="line">        &#125;</div><div class="line">    &#125;];</div><div class="line">    return isValid;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>所以一个<code>__autoreleasing</code>修饰的<code>NSError</code>对象在离开<code>autoreleasepool</code>时被释放了，这样外部访问<code>error</code>对象时，就会出现<code>EXC_BAD_ACCESS</code>错误。</p>
+<h2 id="七、NSFoundationVersionNumber"><a href="#七、NSFoundationVersionNumber" class="headerlink" title="七、NSFoundationVersionNumber"></a>七、NSFoundationVersionNumber</h2><hr>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">#ifndef NSFoundationVersionNumber_iOS_8_0 </div><div class="line">#define NSFoundationVersionNumber_With_Fixed_5871104061079552_bug </div><div class="line">1140.11</div><div class="line"></div><div class="line">#else</div><div class="line">#define NSFoundationVersionNumber_With_Fixed_5871104061079552_bug NSFoundationVersionNumber_iOS_8_0</div><div class="line">#endif</div><div class="line"></div><div class="line">if (NSFoundationVersionNumber &lt; NSFoundationVersionNumber_With_Fixed_5871104061079552_bug</div><div class="line">) &#123;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>如果代码以一个更高的最低部署目标构建，代码会自动编译，当我们遗漏了一些 iOS 版本时，这会很有帮助</p>
 
       
     </div>
@@ -514,7 +488,7 @@ NSOpe">
       
         <div class="post-tags">
           
-            <a href="/tags/NSOperation/" rel="tag"># NSOperation</a>
+            <a href="/tags/AFNetworking/" rel="tag"># AFNetworking</a>
           
         </div>
       
@@ -527,8 +501,8 @@ NSOpe">
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2014/08/24/从NSURLConnection到NSURLSession/" rel="next" title="从 NSURLConnection 到 NSURLSession">
-                <i class="fa fa-chevron-left"></i> 从 NSURLConnection 到 NSURLSession
+              <a href="/2015/03/08/NSOperation简单使用/" rel="next" title="NSOperation简单使用">
+                <i class="fa fa-chevron-left"></i> NSOperation简单使用
               </a>
             
           </div>
@@ -537,8 +511,8 @@ NSOpe">
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2015/07/08/AFNetworking中琐碎小知识点/" rel="prev" title="AFNetworking中琐碎小知识点">
-                AFNetworking中琐碎小知识点 <i class="fa fa-chevron-right"></i>
+              <a href="/2016/03/21/浅谈APP马甲/" rel="prev" title="浅谈APP马甲">
+                浅谈APP马甲 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -565,8 +539,8 @@ NSOpe">
           
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2015/03/08/NSOperation简单使用/"
-           data-title="NSOperation简单使用" data-url="http://yoursite.com/2015/03/08/NSOperation简单使用/">
+      <div class="ds-thread" data-thread-key="2015/07/08/AFNetworking中琐碎小知识点/"
+           data-title="AFNetworking中琐碎小知识点" data-url="http://yoursite.com/2015/07/08/AFNetworking中琐碎小知识点/">
       </div>
     
   </div>
@@ -692,7 +666,7 @@ NSOpe">
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#NSOperation和NSOperationQueue的基本使用"><span class="nav-number">2.</span> <span class="nav-text">NSOperation和NSOperationQueue的基本使用</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、-self-class-alloc-与-self-alloc-的区别"><span class="nav-number">1.</span> <span class="nav-text">一、[[self class] alloc]与[self alloc]的区别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、NS-ASSUME-NONNULL-BEGIN、NS-ASSUME-NONNULL-END、-nullable、-nonnull、-unused"><span class="nav-number">2.</span> <span class="nav-text">二、NS_ASSUME_NONNULL_BEGIN、NS_ASSUME_NONNULL_END、__nullable、__nonnull、__unused</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、NS-DESIGNATED-INITIALIZER-指定初始化函数-、DEPRECATED-ATTRIBUTE-已废弃"><span class="nav-number">3.</span> <span class="nav-text">三、NS_DESIGNATED_INITIALIZER(指定初始化函数)、DEPRECATED_ATTRIBUTE(已废弃)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#四、API中常用到的方法"><span class="nav-number">4.</span> <span class="nav-text">四、API中常用到的方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#五、三目运算符简写"><span class="nav-number">5.</span> <span class="nav-text">五、三目运算符简写</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#六、NSError"><span class="nav-number">6.</span> <span class="nav-text">六、NSError</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#七、NSFoundationVersionNumber"><span class="nav-number">7.</span> <span class="nav-text">七、NSFoundationVersionNumber</span></a></li></ol></div>
             
 
           </div>
