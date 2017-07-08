@@ -117,15 +117,15 @@
 采用[[self class] alloc]时，如果类派生了子类，产生的将是类型相同的子类对象，而不是基类对象。
 二、NS_ASSUME_NONNULL_BEGIN、NS_ASSUME_NONNULL_END、__nullable、__nonnull、__unused
 如果需要每个属性或每个方法都去指定nonnull，是">
-<meta property="og:image" content="http://yoursite.com/2015/07/08/AFNetworking中琐碎小知识点/1.jpg">
-<meta property="og:updated_time" content="2017-07-08T14:29:52.000Z">
+<meta property="og:image" content="http://yoursite.com/2015/07/08/AFNetworking中琐碎小知识点/1.png">
+<meta property="og:updated_time" content="2017-07-08T14:39:19.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="AFNetworking中琐碎小知识点">
 <meta name="twitter:description" content="一、[[self class] alloc]与[self alloc]的区别
 采用[[self class] alloc]时，如果类派生了子类，产生的将是类型相同的子类对象，而不是基类对象。
 二、NS_ASSUME_NONNULL_BEGIN、NS_ASSUME_NONNULL_END、__nullable、__nonnull、__unused
 如果需要每个属性或每个方法都去指定nonnull，是">
-<meta name="twitter:image" content="http://yoursite.com/2015/07/08/AFNetworking中琐碎小知识点/1.jpg">
+<meta name="twitter:image" content="http://yoursite.com/2015/07/08/AFNetworking中琐碎小知识点/1.png">
 
 
 
@@ -432,7 +432,7 @@
 <h2 id="五、三目运算符简写"><a href="#五、三目运算符简写" class="headerlink" title="五、三目运算符简写"></a>五、三目运算符简写</h2><hr>
 <p>a ? b : c 当a==b的时候可以简写为a ? : c</p>
 <h2 id="六、NSError"><a href="#六、NSError" class="headerlink" title="六、NSError"></a>六、NSError</h2><hr>
-<p><img src="/2015/07/08/AFNetworking中琐碎小知识点/1.jpg" alt="1"><br><code>NSError**</code>,该参数会被编译器自动重写为<code>NSError* __autoreleasing *</code>形式，而在dict的枚举遍历方法中，有一个内部添加的<code>autoreleasepool</code>，所以，原代码相当于</p>
+<p><img src="/2015/07/08/AFNetworking中琐碎小知识点/1.png" alt="1"><br><code>NSError**</code>,该参数会被编译器自动重写为<code>NSError* __autoreleasing *</code>形式，而在dict的枚举遍历方法中，有一个内部添加的<code>autoreleasepool</code>，所以，原代码相当于</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">- (BOOL)validate... error:(NSError * __autoreleasing *)error &#123;</div><div class="line">    for (NSUInteger index = 0; index &lt; dict.allKeys.count &amp;&amp; !stop; index++) &#123;</div><div class="line">        @autoreleasepool &#123; </div><div class="line">            ...</div><div class="line">            if (error) *error = [NSError errorWithDomain...];</div><div class="line">        &#125;</div><div class="line">    &#125;];</div><div class="line">    return isValid;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>所以一个<code>__autoreleasing</code>修饰的<code>NSError</code>对象在离开<code>autoreleasepool</code>时被释放了，这样外部访问<code>error</code>对象时，就会出现<code>EXC_BAD_ACCESS</code>错误。</p>
 <h2 id="七、NSFoundationVersionNumber"><a href="#七、NSFoundationVersionNumber" class="headerlink" title="七、NSFoundationVersionNumber"></a>七、NSFoundationVersionNumber</h2><hr>
