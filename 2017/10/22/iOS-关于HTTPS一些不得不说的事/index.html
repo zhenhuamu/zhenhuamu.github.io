@@ -111,10 +111,10 @@
 AFNetworking对HTTPS都做了什么？
 签名证书和自签名证书有什么区别？若使用AFNetworking客户端应该分别做什么？
 单项认证和双向认证，若使用AFNetworking客户端应该分别做什么？
-使用自签名证书，证书应该如何生成？
+使用自签名证书，证书如何生成？
 
 正文
-1. 什么是HTTPS?HTTPS和HTTP有什么区别?关于HT">
+1. 什么是HTTPS?HTTPS和HTTP有什么区别?关于HTTP">
 <meta property="og:type" content="article">
 <meta property="og:title" content="iOS-关于HTTPS一些不得不说的事">
 <meta property="og:url" content="http://yoursite.com/2017/10/22/iOS-关于HTTPS一些不得不说的事/index.html">
@@ -125,11 +125,12 @@ AFNetworking对HTTPS都做了什么？
 AFNetworking对HTTPS都做了什么？
 签名证书和自签名证书有什么区别？若使用AFNetworking客户端应该分别做什么？
 单项认证和双向认证，若使用AFNetworking客户端应该分别做什么？
-使用自签名证书，证书应该如何生成？
+使用自签名证书，证书如何生成？
 
 正文
-1. 什么是HTTPS?HTTPS和HTTP有什么区别?关于HT">
-<meta property="og:updated_time" content="2017-10-22T16:12:25.000Z">
+1. 什么是HTTPS?HTTPS和HTTP有什么区别?关于HTTP">
+<meta property="og:image" content="http://yoursite.com/2017/10/22/iOS-关于HTTPS一些不得不说的事/1.png">
+<meta property="og:updated_time" content="2017-10-29T11:12:19.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="iOS-关于HTTPS一些不得不说的事">
 <meta name="twitter:description" content="本文主要解决什么问题
@@ -138,10 +139,11 @@ AFNetworking对HTTPS都做了什么？
 AFNetworking对HTTPS都做了什么？
 签名证书和自签名证书有什么区别？若使用AFNetworking客户端应该分别做什么？
 单项认证和双向认证，若使用AFNetworking客户端应该分别做什么？
-使用自签名证书，证书应该如何生成？
+使用自签名证书，证书如何生成？
 
 正文
-1. 什么是HTTPS?HTTPS和HTTP有什么区别?关于HT">
+1. 什么是HTTPS?HTTPS和HTTP有什么区别?关于HTTP">
+<meta name="twitter:image" content="http://yoursite.com/2017/10/22/iOS-关于HTTPS一些不得不说的事/1.png">
 
 
 
@@ -436,7 +438,7 @@ AFNetworking对HTTPS都做了什么？
 <li><strong>AFNetworking</strong>对<strong>HTTPS</strong>都做了什么？</li>
 <li>签名证书和自签名证书有什么区别？若使用<strong>AFNetworking</strong>客户端应该分别做什么？</li>
 <li>单项认证和双向认证，若使用<strong>AFNetworking</strong>客户端应该分别做什么？</li>
-<li>使用自签名证书，证书应该如何生成？</li>
+<li>使用自签名证书，证书如何生成？</li>
 </ul>
 <h2 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h2><hr>
 <h3 id="1-什么是HTTPS-HTTPS和HTTP有什么区别"><a href="#1-什么是HTTPS-HTTPS和HTTP有什么区别" class="headerlink" title="1. 什么是HTTPS?HTTPS和HTTP有什么区别?"></a>1. 什么是<strong>HTTPS</strong>?<strong>HTTPS</strong>和<strong>HTTP</strong>有什么区别?</h3><p>关于HTTP和HTTPS想必大家应该已经很了解了，若有不是太了解的可以网上搜索，应该是已经泛滥了。这里给个传送门<a href="https://baike.baidu.com/item/https?fr=aladdin#reference-[1]-14121-wrap" target="_blank" rel="external"><strong><em>HTTPS-百度百科</em></strong></a>、<a href="http://blog.csdn.net/duanbokan/article/details/50847612" target="_blank" rel="external"><strong><em>HTTPS的单向认证和双向认证</em></strong></a>  </p>
@@ -505,10 +507,41 @@ AFNetworking对HTTPS都做了什么？
 </li>
 </ol>
 <p><strong><em>友情提醒</em></strong><br><code>NSURLAuthenticationMethodServerTrust</code>就是单项认证的意思。</p>
-<h3 id="5-使用签名证书或者自签名证书，服务端应该做什么？"><a href="#5-使用签名证书或者自签名证书，服务端应该做什么？" class="headerlink" title="5.使用签名证书或者自签名证书，服务端应该做什么？"></a>5.使用签名证书或者自签名证书，服务端应该做什么？</h3><h3 id="参考文章："><a href="#参考文章：" class="headerlink" title="参考文章："></a>参考文章：</h3><ol>
+<h3 id="5-使用自签名证书，服务端应该做什么？"><a href="#5-使用自签名证书，服务端应该做什么？" class="headerlink" title="5.使用自签名证书，服务端应该做什么？"></a>5.使用自签名证书，服务端应该做什么？</h3><ul>
+<li>什么是<strong>CA</strong><br>CA(<code>Certificate Authority</code>)是数字证书认证中心的简称，是指发放、管理、废除数字证书的机构。<br>CA的作用是检查证书持有者身份的合法性，并签发证书（在证书上签字），以防证书被伪造或篡改，以及对证书和密钥进行管理。</li>
+<li><strong>SSL</strong>证书中DN(<code>Distiguish Name</code>)识别名的结构<br>遵循x.509标准，标识名的目的就是为每个网络实体提供一个唯一的名字。为了达到这一目的，DN有一种分层结构。一个DN由一些列的RDN（Relative distinguished name,相对标识名）构成。<br>(C-&gt;Country, ST-&gt; State or Provice Name, L-&gt;Locality Name, O-&gt;Organization, OU-&gt;Organization Unit, CN-&gt;Common Name)  </li>
+<li>扩展名<br><code>.crt</code>证书文件，可以是DER（二进制）编码的，也可以是PEM（ ASCII (Base64) ）编码的 ，在类unix系统中比较常见。<br><code>.cer</code>证书文件，常见于Windows系统，编码类型同样可以是DER或者PEM的，windows下有工具可以转换crt到cer<br><code>.csr</code>证书签名请求，一般是生成请求以后发送给CA，然后CA会给你签名并发回证书。<br><code>.key</code>一般公钥或者密钥都会用这种扩展名，可以是DER编码的或者是PEM编码的。<br><code>.p12</code>包含一个X509证书和一个被密码保护的私钥。</li>
+</ul>
+<ol>
+<li><p><strong>CA建立</strong><br>生成CA私钥</p>
+<ul>
+<li><code>openssl genrsa -out ca.key 2048</code>  </li>
+</ul>
+<p>用CA私钥生成CA证书</p>
+<ul>
+<li><code>openssl req -new -x509 -days 36500 -key ca.key -out ca.crt</code><br><img src="/2017/10/22/iOS-关于HTTPS一些不得不说的事/1.png" alt="1"><br>-x509选项会生成自签名证书，没有-x509选项则生成证书请求文件。</li>
+</ul>
+</li>
+<li><p><strong>生成服务端、客户端证书等</strong><br>生成服务器端私钥和公钥</p>
+<ul>
+<li><code>openssl genrsa -out server.key 2048</code>  <code>openssl rsa -in server.key -pubout -out server.pem</code></li>
+</ul>
+<p>创建自己的CSR文件和并用其和CA证书和私钥，生成带CA签名的证书</p>
+<ul>
+<li><code>openssl req -new -key server.key -out server.csr</code>    <code>openssl x509 -req -CA ca.crt -CAkey ca.key -CAcreateserial -in server.csr -out server.crt</code></li>
+</ul>
+<p>证书的验证和类型转换</p>
+<ul>
+<li><code>openssl verify -CAfile ca.crt XXXX.crt</code>  <code>openssl x509 -in server.crt -out server.cer -outform der</code></li>
+</ul>
+<p>这里客户端证书生成和服务器一样的，就不再累赘了。</p>
+</li>
+</ol>
+<h3 id="参考文章："><a href="#参考文章：" class="headerlink" title="参考文章："></a>参考文章：</h3><ol>
 <li><a href="http://blog.csdn.net/duanbokan/article/details/50847612" target="_blank" rel="external">HTTPS的单向认证和双向认证</a></li>
 <li><a href="http://www.jianshu.com/p/a84237b07611" target="_blank" rel="external">AFNetworking之于https认证</a></li>
 <li><a href="http://www.jianshu.com/p/9e573607be13" target="_blank" rel="external">AFNetworking 3.0与服务端 自签名证书 https双向认证</a></li>
+<li><a href="http://blog.csdn.net/sdcxyz/article/details/47220129" target="_blank" rel="external">自签名证书和私有CA签名的证书的区别</a></li>
 </ol>
 
       
@@ -734,7 +767,7 @@ AFNetworking对HTTPS都做了什么？
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#本文主要解决什么问题"><span class="nav-number">1.</span> <span class="nav-text">本文主要解决什么问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#正文"><span class="nav-number">2.</span> <span class="nav-text">正文</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-什么是HTTPS-HTTPS和HTTP有什么区别"><span class="nav-number">2.1.</span> <span class="nav-text">1. 什么是HTTPS?HTTPS和HTTP有什么区别?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-AFNetworking对HTTPS都做了什么？"><span class="nav-number">2.2.</span> <span class="nav-text">2. AFNetworking对HTTPS都做了什么？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-签名证书和自签名证书有什么区别？若使用AFNetworking客户端应该分别做什么？"><span class="nav-number">2.3.</span> <span class="nav-text">3. 签名证书和自签名证书有什么区别？若使用AFNetworking客户端应该分别做什么？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-单项认证和双项认证，若使用AFNetworking，客户端应该分别做什么？"><span class="nav-number">2.4.</span> <span class="nav-text">4. 单项认证和双项认证，若使用AFNetworking，客户端应该分别做什么？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-使用签名证书或者自签名证书，服务端应该做什么？"><span class="nav-number">2.5.</span> <span class="nav-text">5.使用签名证书或者自签名证书，服务端应该做什么？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考文章："><span class="nav-number">2.6.</span> <span class="nav-text">参考文章：</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#本文主要解决什么问题"><span class="nav-number">1.</span> <span class="nav-text">本文主要解决什么问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#正文"><span class="nav-number">2.</span> <span class="nav-text">正文</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-什么是HTTPS-HTTPS和HTTP有什么区别"><span class="nav-number">2.1.</span> <span class="nav-text">1. 什么是HTTPS?HTTPS和HTTP有什么区别?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-AFNetworking对HTTPS都做了什么？"><span class="nav-number">2.2.</span> <span class="nav-text">2. AFNetworking对HTTPS都做了什么？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-签名证书和自签名证书有什么区别？若使用AFNetworking客户端应该分别做什么？"><span class="nav-number">2.3.</span> <span class="nav-text">3. 签名证书和自签名证书有什么区别？若使用AFNetworking客户端应该分别做什么？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-单项认证和双项认证，若使用AFNetworking，客户端应该分别做什么？"><span class="nav-number">2.4.</span> <span class="nav-text">4. 单项认证和双项认证，若使用AFNetworking，客户端应该分别做什么？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-使用自签名证书，服务端应该做什么？"><span class="nav-number">2.5.</span> <span class="nav-text">5.使用自签名证书，服务端应该做什么？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考文章："><span class="nav-number">2.6.</span> <span class="nav-text">参考文章：</span></a></li></ol></li></ol></div>
             
 
           </div>
